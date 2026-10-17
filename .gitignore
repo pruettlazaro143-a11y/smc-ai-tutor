@@ -1,2 +1,7 @@
 __pycache__/
 .DS_Store
+# 个人认知默认不提交，避免误传到公开仓库
+skills/smc-learning/my-notes/*
+!skills/smc-learning/my-notes/README.md
+!skills/smc-learning/my-notes/_template.md
+prompt/*.custom.md

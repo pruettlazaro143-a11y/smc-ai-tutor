@@ -8,11 +8,17 @@
 
 ![订单区 OB 示意图](diagrams/png/06-订单区OB.png)
 
+## 先说清楚：它是什么，不是什么
+
+这是一个**辅助学习**的工具：帮你把 SMC 的概念串起来，更好地理解一些市场行为背后的逻辑，比如价格为什么总在明显的高低点附近"扫一下"再走，为什么突破之后又迅速收回。
+
+它**替代不了你自己思考的深度和独立判断**。AI 会讲、会画、会出题，但它看不到你没给它的信息，也会出错。真正的能力，来自你自己在图上一遍遍标注、验证、复盘、修正。
+
 > 本项目只做学习用途，不构成任何投资建议。详见文末[免责声明](#免责声明)。
 
 ---
 
-## 三种用法
+## 四种用法
 
 ### 1. 任意 AI 助手（推荐，零门槛）
 
@@ -35,6 +41,16 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 
 - [`docs/handbook.md`](docs/handbook.md)：完整学习手册，示意图已嵌入正文
 - [`docs/distillation.md`](docs/distillation.md)：高密度认知蒸馏，适合速查，也可以喂给 AI 当知识库
+
+### 4. 加入你自己的 SMC 认知
+
+学的课程、书不同，口径难免有出入。你可以把自己的笔记、蒸馏文件放进来，**同一概念 AI 会以你的口径为准**，第一次用到时标注"这里按你的口径……项目默认说法是……"；你没写的部分照用项目内容。
+
+- **任意 AI**：笔记开头加一行 `<!-- my-smc -->`，和 `SMC-AI-Tutor.md` 一起上传
+- **Claude Skill**：放进 [`skills/smc-learning/my-notes/`](skills/smc-learning/my-notes/)，开场自动读取
+- **合并成一个文件**：按 [`_template.md`](skills/smc-learning/my-notes/_template.md) 的编号写，运行 `python3 tools/build.py`，生成 `prompt/SMC-AI-Tutor.custom.md`
+
+`my-notes/` 里你自己的文件默认不会提交到 Git，避免误公开。
 
 ---
 
@@ -71,6 +87,8 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 
 另有 **49 个常见疑问与回答**、15 道综合测验、误区清单、十一步分析清单和复盘模板。
 
+**关于【作者实战经验】**：内容里标有这个标记的部分（如 CISD、拒绝针强弱、心态层误区），是作者在自己交易中遇到具体情况后总结的经验，**不是 SMC 的通用定义**，样本有限。AI 讲到这些内容时会主动说明，请谨慎理解，先在自己的图上验证。
+
 ## 示意图
 
 | | |
@@ -89,6 +107,7 @@ smc-ai-tutor/
 ├── prompt/SMC-AI-Tutor.md      # 单文件 AI 指令（任意 AI 可用，自动生成）
 ├── skills/smc-learning/        # Claude Skill（内容源文件）
 │   ├── SKILL.md
+│   ├── my-notes/               # 你自己的 SMC 认知（默认不提交）
 │   ├── references/             # 01 认知框架 … 05 画图规范
 │   └── assets/diagrams/        # SVG 示意图
 ├── docs/
@@ -101,7 +120,7 @@ smc-ai-tutor/
 **内容只改 `skills/smc-learning/references/`**，然后重新生成：
 
 ```bash
-python3 tools/build.py                          # 生成 prompt/ 和 docs/handbook.md
+python3 tools/build.py                          # 生成 prompt/ 和 docs/handbook.md（有 my-notes 时额外生成 custom 版）
 python3 tools/gen_diagrams.py                   # 重新生成 SVG 示意图
 python3 tools/ob_poster.py                      # 重新生成 OB 一图看懂
 python3 tools/render.py diagrams/svg diagrams/png   # SVG 转 PNG（需要 playwright）
@@ -121,7 +140,8 @@ SMC 各流派对部分概念（如 OB 取实体还是整根、CISD 的定义）�
 
 - 本项目**仅用于学习交流**，不构成任何投资建议，不荐股、不喊单、不带单。
 - 交易有风险，**任何方法都不能保证盈利**。请根据自身风险承受能力独立决策，盈亏自负。
-- AI 的回答可能出错。请把它当作学习辅助，不要当作交易信号。
+- AI 的回答可能出错。请把它当作学习辅助，不要当作交易信号，更不要用它代替自己的判断。
+- 标有【作者实战经验】的内容是个人经验总结，不代表普遍规律。
 
 ## 许可证
 

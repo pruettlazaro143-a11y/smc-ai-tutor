@@ -43,6 +43,53 @@ for a, b in [('| 00 |', '| — |'), ('| 01 |', '| 4.1 |'), ('| 02 |', '| 4.2 |')
 open('prompt/SMC-AI-Tutor.md', 'w', encoding='utf-8').write(u)
 
 
+# ---------- 1b. 合并用户自定义认知（有 my-notes 时） ----------
+import glob, os
+
+ANCHORS = {  # 编号 → 01-认知框架 中对应的标题开头
+    '结构': '## 2. 市场结构', 'BOS': '### 2.3 ', 'CHOCH': '### 2.3 ', 'MSS': '### 2.3 ',
+    '流动性': '### 3.1 ', '诱导': '### 3.2 ', 'IDM': '### 3.2 ', '清扫': '### 3.4 ',
+    'FVG': '## 4. ', 'CISD': '### 4.4 ', 'OB': '## 5. ', 'POI': '## 5. ',
+    '区间': '## 6. ', '触发': '## 7. ', '拒绝针': '### 7.3 ', '多周期': '## 8. ',
+    '流程': '## 9. ', '止损目标': '## 10. ', '心态': '## 11. ',
+}
+notes = [f for f in sorted(glob.glob('skills/smc-learning/my-notes/*.md'))
+         if os.path.basename(f) not in ('README.md', '_template.md')]
+if notes:
+    blocks = []  # (编号, 来源文件, 内容)
+    for f in notes:
+        txt = re.sub(r'<!--.*?-->', '', read(f), flags=re.S)
+        parts_ = re.split(r'^## \[([^\]]+)\][^\n]*\n', txt, flags=re.M)
+        if len(parts_) == 1:  # 没按模板写：整份作为"其他"
+            blocks.append(('其他', f, txt.strip()))
+        for i in range(1, len(parts_), 2):
+            blocks.append((parts_[i].strip(), f, parts_[i + 1].strip()))
+
+    def quote(id_, src, body):
+        lines = [f'> **【用户口径 · {id_}】**（来自 `{os.path.basename(src)}`。优先使用；第一次用到时注明与项目默认口径的差异）', '>']
+        lines += ['> ' + ln if ln else '>' for ln in body.split('\n')]
+        return '\n'.join(lines) + '\n\n'
+
+    c = u
+    others = []
+    for id_, src, body in blocks:
+        if not body:
+            continue
+        anchor = ANCHORS.get(id_.upper(), ANCHORS.get(id_))
+        pos = c.find('\n' + anchor) if anchor else -1
+        if pos == -1:
+            others.append((id_, src, body))
+        else:
+            c = c[:pos + 1] + quote(id_, src, body) + c[pos + 1:]
+    ids = '、'.join(dict.fromkeys(b[0] for b in blocks if b[2]))
+    head = f'\n\n---\n\n# 00 · 学员自定义认知（已合并）\n\n本文件已合并学员自己的 SMC 认知，覆盖的概念：{ids}。对应章节前的"【用户口径】"块优先于项目默认内容，按"用户自定义认知"规则使用。\n\n'
+    head += ''.join(quote(*o) for o in others)
+    i = c.index('\n\n---\n\n')  # 插在通用指令头之后
+    c = c[:i] + head + c[i:]
+    open('prompt/SMC-AI-Tutor.custom.md', 'w', encoding='utf-8').write(c)
+    print('merged', len(blocks), 'user blocks →', 'prompt/SMC-AI-Tutor.custom.md')
+
+
 # ---------- 2. 学习手册 ----------
 def embed_images(t):
     out = []

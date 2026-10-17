@@ -8,13 +8,19 @@ A complete Smart Money Concepts (SMC) curriculum packaged as **instructions any 
 
 ![Order block diagram](diagrams/png/06-订单区OB.png)
 
+## What it is, and what it isn't
+
+This is a **study aid**. It helps you connect SMC concepts and understand the logic behind some market behavior: why price so often "sweeps" an obvious high or low before moving, or why a breakout snaps right back.
+
+It **cannot replace your own depth of thinking or independent judgment**. The AI can explain, draw and quiz, but it only sees what you show it, and it makes mistakes. Real skill comes from marking up charts yourself, testing, reviewing and correcting, over and over.
+
 > For education only. Not investment advice. See the [disclaimer](#disclaimer).
 
 > **Language note:** the source material is written in Chinese. The AI tutor can still teach in English. Just say "Please teach in English" after you send "开始" (start).
 
 ---
 
-## Three ways to use it
+## Four ways to use it
 
 ### 1. Any AI assistant (recommended)
 
@@ -37,6 +43,16 @@ The tutor first asks about your level, your market, and how you want to learn, t
 
 - [`docs/handbook.md`](docs/handbook.md): the full handbook, with diagrams embedded
 - [`docs/distillation.md`](docs/distillation.md): a dense summary for quick reference, or to give an AI as a knowledge base
+
+### 4. Bring your own SMC notes
+
+Courses and books disagree on details. You can add your own notes or summaries. **For any concept you cover, the tutor follows your definition**, and the first time it does, it notes "using your definition here; the project default is …". Anything you don't cover falls back to the project content.
+
+- **Any AI**: start your notes with the line `<!-- my-smc -->` and upload them together with `SMC-AI-Tutor.md`
+- **Claude Skill**: put them in [`skills/smc-learning/my-notes/`](skills/smc-learning/my-notes/), where the tutor loads them at the start of each session
+- **Merge into one file**: follow the section IDs in [`_template.md`](skills/smc-learning/my-notes/_template.md), run `python3 tools/build.py`, and get `prompt/SMC-AI-Tutor.custom.md`
+
+Your own files in `my-notes/` are git-ignored by default, so they won't be published by accident.
 
 ---
 
@@ -71,6 +87,8 @@ Four modes: **guided course / Q&A / quiz / chart review**.
 
 Plus **49 frequently asked questions**, a 15-question final quiz, a list of common mistakes, an 11-step analysis checklist and a review template.
 
+**About the 【作者实战经验】 (author's experience) tag:** content with this tag, such as CISD, rejection-wick strength and the mindset mistakes, is the author's own lesson from personal trading. It is **not a standard SMC definition** and rests on a limited sample. The tutor says so whenever it uses this content. Read it with caution and test it on your own charts.
+
 All diagrams in [`diagrams/`](diagrams/) are generated from synthetic price data, not real market charts.
 
 ## Editing and rebuilding
@@ -94,7 +112,8 @@ SMC schools disagree on some details, for example whether an OB covers the whole
 
 - For learning only. This project gives no investment advice, trade signals or managed trading.
 - Trading carries risk, and **no method guarantees profit**. Make your own decisions within your own risk tolerance.
-- AI answers can be wrong. Treat the tutor as a study aid, not a signal service.
+- AI answers can be wrong. Treat the tutor as a study aid, not a signal service, and never as a substitute for your own judgment.
+- Content tagged 【作者实战经验】 reflects one trader's experience, not a general rule.
 
 ## License
 
