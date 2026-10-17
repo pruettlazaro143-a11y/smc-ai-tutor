@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" width="640" height="380" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif">
+<rect width="640" height="380" fill="#0f1218"/>
+<text x="28" y="36" font-size="20" font-weight="600" fill="#e6eaf0">B10 旗形限制 Flag Limit（看跌）</text>
+<text x="28" y="58" font-size="13" fill="#8a94a6">高位横盘成旗 → 下跌吞没前低 → 起跌基底作为供应区</text>
+<rect x="28" y="74" width="584" height="270" rx="6" fill="#141922" stroke="#2b3442"/>
+<rect x="208.8" y="164.0" width="344.7" height="25.0" fill="#ef5350" fill-opacity="0.16" stroke="#ef5350" stroke-opacity="0.8" stroke-dasharray="4 3"/>
+<text x="549.5" y="159.0" font-size="12" text-anchor="end" fill="#ef5350">Flag Limit</text>
+<rect x="131.0" y="149.0" width="111.2" height="45.0" fill="none" stroke="#8a94a6" stroke-opacity="0.7"/>
+<line x1="64.2" y1="239.0" x2="286.6" y2="239.0" stroke="#f5c542" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="290.6" y="243.0" font-size="12" fill="#f5c542">前低</text>
+<polyline points="42.0,309.0 86.5,214.0 108.7,239.0 142.1,159.0 164.3,184.0 186.6,159.0 208.8,184.0 231.0,164.0 297.8,284.0 331.1,234.0 353.4,259.0 375.6,229.0 397.8,254.0 442.3,174.0 553.5,324.0" fill="none" stroke="#cfd8dc" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="553.5,324.0 543.8,318.9 551.5,313.2" fill="#cfd8dc"/>
+<rect x="180.1" y="126.0" width="18.5" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="186.6" y="139.0" font-size="12.5" text-anchor="middle" fill="#8a94a6" font-weight="600">旗</text>
+<rect x="280.8" y="291.0" width="56.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="297.8" y="304.0" font-size="12.5" text-anchor="middle" fill="#f5c542" font-weight="600">吞没前低</text>
+<rect x="321.1" y="206.0" width="20.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="331.1" y="219.0" font-size="12.5" text-anchor="middle" fill="#8a94a6" font-weight="600">R1</text>
+<rect x="365.6" y="201.0" width="20.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="375.6" y="214.0" font-size="12.5" text-anchor="middle" fill="#8a94a6" font-weight="600">R2</text>
+<text x="628" y="368" font-size="11" text-anchor="end" fill="#8a94a6">示意图，非真实行情</text>
+</svg>

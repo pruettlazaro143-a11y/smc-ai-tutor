@@ -41,6 +41,7 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 
 - [`docs/handbook.md`](docs/handbook.md)：完整学习手册，示意图已嵌入正文
 - [`docs/distillation.md`](docs/distillation.md)：高密度认知蒸馏，适合速查，也可以喂给 AI 当知识库
+- [`docs/entry-models.md`](docs/entry-models.md)：**进阶概念与入场模型图鉴**，24 张图解，不用 AI 也能直接看
 
 ### 4. 加入你自己的 SMC 认知
 
@@ -84,8 +85,9 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 | L8 | 触发与入场 | 扫 → 位移 → CHoCH → 回踩 → 确认 |
 | L9 | 多周期与完整流程 | 大周期定方向，小周期找触发，把一切串起来 |
 | L10 | 风控、执行与复盘 | 止损、目标、八要素计划、复盘 |
+| L11 | 进阶：ICT 补充概念与入场模型 | Breaker、OTE、PO3、SMT，以及 QM / 假突破等 20 个入场模型在 SMC 里对应什么 |
 
-另有 **49 个常见疑问与回答**、15 道综合测验、误区清单、十一步分析清单和复盘模板。
+另有 **55 个常见疑问与回答**、20 道综合测验、误区清单、十一步分析清单和复盘模板。
 
 **关于【作者实战经验】**：内容里标有这个标记的部分（如 CISD、拒绝针强弱、心态层误区），是作者在自己交易中遇到具体情况后总结的经验，**不是 SMC 的通用定义**，样本有限。AI 讲到这些内容时会主动说明，请谨慎理解，先在自己的图上验证。
 
@@ -96,7 +98,11 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 | ![市场结构](diagrams/png/01-市场结构.png) | ![流动性清扫](diagrams/png/03-流动性清扫.png) |
 | ![FVG](diagrams/png/05-FVG三根K线.png) | ![完整入场节奏](diagrams/png/08-完整入场节奏.png) |
 
-全部 12 张见 [`diagrams/`](diagrams/)。所有示意图都是程序生成的虚构走势，不是真实行情。
+基础概念 12 张见 [`diagrams/svg`](diagrams/svg/)，进阶概念与入场模型 24 张见 [`diagrams/models`](diagrams/models/)。
+
+| | |
+|---|---|
+| ![QM](diagrams/models/png/B01-QM基础形态.png) | ![Breaker](diagrams/models/png/A1-Breaker破坏块.png) |所有示意图都是程序生成的虚构走势，不是真实行情。
 
 ---
 
@@ -112,6 +118,7 @@ smc-ai-tutor/
 │   └── assets/diagrams/        # SVG 示意图
 ├── docs/
 │   ├── handbook.md             # 学习手册（自动生成）
+│   ├── entry-models.md         # 进阶概念与入场模型图鉴（自动生成）
 │   └── distillation.md         # 认知蒸馏
 ├── diagrams/svg | png          # 示意图
 └── tools/                      # 生成脚本
@@ -123,6 +130,8 @@ smc-ai-tutor/
 python3 tools/build.py                          # 生成 prompt/ 和 docs/handbook.md（有 my-notes 时额外生成 custom 版）
 python3 tools/gen_diagrams.py                   # 重新生成 SVG 示意图
 python3 tools/ob_poster.py                      # 重新生成 OB 一图看懂
+python3 tools/gen_models.py                     # 重新生成进阶与入场模型图
+python3 tools/render.py diagrams/models/svg diagrams/models/png
 python3 tools/render.py diagrams/svg diagrams/png   # SVG 转 PNG（需要 playwright）
 ```
 
@@ -135,6 +144,12 @@ python3 tools/render.py diagrams/svg diagrams/png   # SVG 转 PNG（需要 playw
 - 请用自己的话写，**不要粘贴付费课程、书籍的原文或截图**
 
 SMC 各流派对部分概念（如 OB 取实体还是整根、CISD 的定义）说法不一。本项目在文中写明了自己的口径，有不同意见欢迎讨论。
+
+## 内容来源
+
+- 基础框架整理自公开的 SMC / ICT 概念，以及作者自己的学习笔记和实战复盘
+- 标有【作者实战经验】的部分是作者的个人总结
+- 进阶部分的入场模型清单参考了网络上流传的 QM / 供需入场模型备忘单，全部用自己的话重写、示意图全部重新绘制
 
 ## 免责声明
 

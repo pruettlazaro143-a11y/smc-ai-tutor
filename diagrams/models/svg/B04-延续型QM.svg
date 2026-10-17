@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" width="640" height="380" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif">
+<rect width="640" height="380" fill="#0f1218"/>
+<text x="28" y="36" font-size="20" font-weight="600" fill="#e6eaf0">B4 延续型 QM（看跌）</text>
+<text x="28" y="58" font-size="13" fill="#8a94a6">在已有下跌趋势的回调里形成小 QM，然后顺势继续下跌</text>
+<rect x="28" y="74" width="584" height="270" rx="6" fill="#141922" stroke="#2b3442"/>
+<rect x="231.0" y="139.0" width="322.5" height="20.0" fill="#ef5350" fill-opacity="0.16" stroke="#ef5350" stroke-opacity="0.8" stroke-dasharray="4 3"/>
+<line x1="164.3" y1="159.0" x2="553.5" y2="159.0" stroke="#f5c542" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="557.5" y="163.0" font-size="12" fill="#f5c542">QML</text>
+<polyline points="42.0,99.0 119.8,204.0 164.3,159.0 197.7,194.0 231.0,139.0 286.6,234.0 342.2,164.0 409.0,259.0 442.3,234.0 542.4,324.0" fill="none" stroke="#cfd8dc" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="542.4,324.0 531.8,320.9 538.2,313.8" fill="#cfd8dc"/>
+<rect x="75.4" y="121.0" width="56.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="75.4" y="134.0" font-size="12.5" text-anchor="start" fill="#8a94a6" font-weight="600">下跌趋势</text>
+<rect x="157.8" y="131.0" width="13.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="164.3" y="144.0" font-size="12.5" text-anchor="middle" fill="#e6eaf0" font-weight="600">H</text>
+<rect x="191.2" y="201.0" width="13.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="197.7" y="214.0" font-size="12.5" text-anchor="middle" fill="#e6eaf0" font-weight="600">L</text>
+<rect x="221.0" y="111.0" width="20.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="231.0" y="124.0" font-size="12.5" text-anchor="middle" fill="#e6eaf0" font-weight="600">HH</text>
+<rect x="276.6" y="241.0" width="20.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="286.6" y="254.0" font-size="12.5" text-anchor="middle" fill="#e6eaf0" font-weight="600">LL</text>
+<text x="628" y="368" font-size="11" text-anchor="end" fill="#8a94a6">示意图，非真实行情</text>
+</svg>

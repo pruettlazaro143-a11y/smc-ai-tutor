@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" width="640" height="380" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif">
+<rect width="640" height="380" fill="#0f1218"/>
+<text x="28" y="36" font-size="20" font-weight="600" fill="#e6eaf0">B16 双重支撑阻力 Double SSR</text>
+<text x="28" y="58" font-size="13" fill="#8a94a6">两层水平位都发生过支撑阻力互换，回测时同时受两层压力</text>
+<rect x="28" y="74" width="584" height="270" rx="6" fill="#141922" stroke="#2b3442"/>
+<rect x="219.9" y="159.0" width="333.6" height="25.0" fill="#ef5350" fill-opacity="0.16" stroke="#ef5350" stroke-opacity="0.8" stroke-dasharray="4 3"/>
+<line x1="64.2" y1="184.0" x2="553.5" y2="184.0" stroke="#f5c542" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="557.5" y="188.0" font-size="12" fill="#f5c542">上层</text>
+<line x1="64.2" y1="224.0" x2="553.5" y2="224.0" stroke="#f5c542" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="557.5" y="228.0" font-size="12" fill="#f5c542">下层</text>
+<polyline points="42.0,309.0 86.5,184.0 108.7,224.0 131.0,184.0 153.2,224.0 175.4,184.0 197.7,224.0 219.9,159.0 275.5,274.0 308.9,244.0 331.1,264.0 386.7,169.0 497.9,324.0" fill="none" stroke="#cfd8dc" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="497.9,324.0 488.3,318.7 496.0,313.2" fill="#cfd8dc"/>
+<rect x="102.2" y="231.0" width="13.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="108.7" y="244.0" font-size="12.5" text-anchor="middle" fill="#e6eaf0" font-weight="600">S</text>
+<rect x="146.7" y="231.0" width="13.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="153.2" y="244.0" font-size="12.5" text-anchor="middle" fill="#e6eaf0" font-weight="600">S</text>
+<rect x="80.0" y="156.0" width="13.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="86.5" y="169.0" font-size="12.5" text-anchor="middle" fill="#e6eaf0" font-weight="600">S</text>
+<rect x="124.5" y="156.0" width="13.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="131.0" y="169.0" font-size="12.5" text-anchor="middle" fill="#e6eaf0" font-weight="600">S</text>
+<text x="628" y="368" font-size="11" text-anchor="end" fill="#8a94a6">示意图，非真实行情</text>
+</svg>

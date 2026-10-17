@@ -43,6 +43,7 @@ The tutor first asks about your level, your market, and how you want to learn, t
 
 - [`docs/handbook.md`](docs/handbook.md): the full handbook, with diagrams embedded
 - [`docs/distillation.md`](docs/distillation.md): a dense summary for quick reference, or to give an AI as a knowledge base
+- [`docs/entry-models.md`](docs/entry-models.md): **advanced concepts and entry models**, with 24 diagrams; readable without any AI
 
 ### 4. Bring your own SMC notes
 
@@ -84,8 +85,9 @@ Four modes: **guided course / Q&A / quiz / chart review**.
 | L8 | Triggers and entry sequence |
 | L9 | Multi-timeframe analysis and the full workflow |
 | L10 | Risk, execution and review (8-point trade plan) |
+| L11 | Advanced: extra ICT concepts (Breaker, OTE, PO3, SMT) and 20 QM / supply-demand entry models, translated into SMC terms |
 
-Plus **49 frequently asked questions**, a 15-question final quiz, a list of common mistakes, an 11-step analysis checklist and a review template.
+Plus **55 frequently asked questions**, a 20-question final quiz, a list of common mistakes, an 11-step analysis checklist and a review template.
 
 **About the 【作者实战经验】 (author's experience) tag:** content with this tag, such as CISD, rejection-wick strength and the mindset mistakes, is the author's own lesson from personal trading. It is **not a standard SMC definition** and rests on a limited sample. The tutor says so whenever it uses this content. Read it with caution and test it on your own charts.
 
@@ -99,6 +101,8 @@ Edit content **only** in `skills/smc-learning/references/`, then rebuild:
 python3 tools/build.py                              # rebuilds prompt/ and docs/handbook.md
 python3 tools/gen_diagrams.py                       # regenerates SVG diagrams
 python3 tools/ob_poster.py                          # regenerates the OB one-pager
+python3 tools/gen_models.py                         # regenerates the advanced / entry-model diagrams
+python3 tools/render.py diagrams/models/svg diagrams/models/png
 python3 tools/render.py diagrams/svg diagrams/png   # SVG → PNG (requires playwright)
 ```
 
@@ -107,6 +111,12 @@ python3 tools/render.py diagrams/svg diagrams/png   # SVG → PNG (requires play
 Issues and PRs are welcome for wrong definitions, unclear explanations or mislabeled diagrams. Please explain your reasoning, and write in your own words. **Do not paste text or screenshots from paid courses or books.**
 
 SMC schools disagree on some details, for example whether an OB covers the whole candle or only the body, or how CISD is defined. This project states its own conventions explicitly. Discussion is welcome.
+
+## Sources
+
+- The core framework is compiled from public SMC / ICT concepts plus the author's own study notes and trade reviews
+- Sections tagged 【作者实战经验】 are the author's personal lessons
+- The list of entry models in the advanced section was informed by a QM / supply-demand cheat sheet circulating online; all text was rewritten and every diagram redrawn
 
 ## Disclaimer
 

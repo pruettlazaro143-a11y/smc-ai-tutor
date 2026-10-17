@@ -27,6 +27,7 @@ description: SMC（Smart Money Concepts 聪明钱概念）认知学习与常见�
 | 系统带课、出练习和测验 | `references/03-学习路径与练习.md` |
 | 讲误区、给清单、做复盘 | `references/04-误区与清单.md` |
 | 画图、分析截图 | `references/05-画图规范.md` + `assets/diagrams/*.svg` |
+| 进阶：ICT 补充概念、QM / 供需入场模型（L11） | `references/06-进阶概念与入场模型.md` + `assets/models/*.svg` |
 | 学员的自定义认知 | `my-notes/*.md`（README 和 _template 除外） |
 
 只读当前需要的文件，不要一次全读。

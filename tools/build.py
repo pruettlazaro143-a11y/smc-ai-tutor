@@ -26,7 +26,7 @@ def to_ascii_ref(t):
 
 
 parts = [read('tools/universal_header.md')]
-for f in ['01-认知框架.md', '02-常见疑问与回答.md', '03-学习路径与练习.md', '04-误区与清单.md']:
+for f in ['01-认知框架.md', '02-常见疑问与回答.md', '03-学习路径与练习.md', '04-误区与清单.md', '06-进阶概念与入场模型.md']:
     parts.append(to_ascii_ref(read(R + f)))
 t = read(R + '05-画图规范.md')
 t = t[t.index('## 三、现画 SVG 的规范'):]
@@ -52,6 +52,7 @@ ANCHORS = {  # 编号 → 01-认知框架 中对应的标题开头
     'FVG': '## 4. ', 'CISD': '### 4.4 ', 'OB': '## 5. ', 'POI': '## 5. ',
     '区间': '## 6. ', '触发': '## 7. ', '拒绝针': '### 7.3 ', '多周期': '## 8. ',
     '流程': '## 9. ', '止损目标': '## 10. ', '心态': '## 11. ',
+    'ICT': '## A. ICT', '进阶': '## A. ICT', 'QM': '## B. QM', '入场模型': '## B. QM',
 }
 notes = [f for f in sorted(glob.glob('skills/smc-learning/my-notes/*.md'))
          if os.path.basename(f) not in ('README.md', '_template.md')]
@@ -124,6 +125,32 @@ p3 = re.sub(r'\n以下题目可用于"测验模式"[^\n]*\n', '\n学完全部课
 
 p4 = read(R + '04-误区与清单.md').replace('# 04 · 常见误区与执行清单', '# 第四部分　常见误区与执行清单')
 
-hb = '\n\n'.join([read('tools/handbook_front.md'), embed_images(p1), embed_images(p2), embed_images(p3), p4])
+
+
+def embed_models(t, prefix):
+    names = sorted(os.listdir('diagrams/models/png'))
+    out = []
+    for ln in t.split('\n'):
+        out.append(ln)
+        m = re.match(r'### ([AB])(\d+)\.', ln)
+        if m:
+            key = m.group(1) + (m.group(2).zfill(2) if m.group(1) == 'B' else m.group(2))
+            hit = [n for n in names if n.startswith(key + '-')]
+            if hit:
+                out += ['', f'![{hit[0][:-4]}]({prefix}{hit[0]})']
+    return '\n'.join(out)
+
+
+p6 = read(R + '06-进阶概念与入场模型.md').replace('# 06 · 进阶概念与入场模型', '# 第五部分　进阶概念与入场模型')
+p6 = re.sub(r'\n> 讲解时注意：[^\n]*\n', '\n', p6)
+hb = '\n\n'.join([read('tools/handbook_front.md'), embed_images(p1), embed_images(p2), embed_images(p3), p4,
+                   embed_models(p6, '../diagrams/models/png/')])
+
+em = read(R + '06-进阶概念与入场模型.md').replace('# 06 · 进阶概念与入场模型', '# SMC 进阶概念与入场模型图鉴')
+em = em.replace('> 本文件是进阶内容，学完 L0–L10 再学。分两部分：',
+                '> 本文件由 `tools/build.py` 自动生成，可直接阅读，不需要 AI。建议先掌握 SMC 基础（结构、流动性、FVG、OB、区间、触发）再看。\n>\n> 分两部分：')
+em = re.sub(r'\n> 讲解时注意：[^\n]*\n', '\n', em)
+em += '\n\n---\n\n仅供学习交流，不构成任何投资建议。所有示意图为程序生成的虚构走势，非真实行情。\n'
+open('docs/entry-models.md', 'w', encoding='utf-8').write(embed_models(em, '../diagrams/models/png/'))
 open('docs/handbook.md', 'w', encoding='utf-8').write(hb)
-print('built prompt/SMC-AI-Tutor.md and docs/handbook.md')
+print('built prompt/SMC-AI-Tutor.md, docs/handbook.md, docs/entry-models.md')

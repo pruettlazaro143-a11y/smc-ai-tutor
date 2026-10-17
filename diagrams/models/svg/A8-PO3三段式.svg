@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" width="640" height="380" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif">
+<rect width="640" height="380" fill="#0f1218"/>
+<text x="28" y="36" font-size="20" font-weight="600" fill="#e6eaf0">A8 PO3 / AMD（看涨日）</text>
+<text x="28" y="58" font-size="13" fill="#8a94a6">开盘附近横盘 → 向下扫流动性 → 朝真正方向走出主波动</text>
+<rect x="28" y="74" width="584" height="270" rx="6" fill="#141922" stroke="#2b3442"/>
+<line x1="42.0" y1="199.0" x2="553.5" y2="199.0" stroke="#cfd8dc" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="557.5" y="203.0" font-size="12" fill="#cfd8dc">开盘价</text>
+<line x1="42.0" y1="259.0" x2="231.0" y2="259.0" stroke="#f5c542" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="235.0" y="263.0" font-size="12" fill="#f5c542">前低</text>
+<polyline points="42.0,199.0 75.4,189.0 97.6,204.0 119.8,191.5 142.1,206.5 164.3,194.0 186.6,209.0 231.0,284.0 264.4,259.0 297.8,269.0 375.6,184.0 409.0,199.0 531.3,109.0" fill="none" stroke="#cfd8dc" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="531.3,109.0 526.1,118.7 520.5,111.0" fill="#cfd8dc"/>
+<rect x="97.3" y="156.0" width="56.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="114.3" y="169.0" font-size="12.5" text-anchor="middle" fill="#8a94a6" font-weight="600">A 吸筹</text>
+<rect x="196.5" y="296.0" width="118.5" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="231.0" y="309.0" font-size="12.5" text-anchor="middle" fill="#f5c542" font-weight="600">M 操纵（扫前低）</text>
+<rect x="436.4" y="121.0" width="56.0" height="17" rx="3" fill="#0f1218" fill-opacity="0"/>
+<text x="453.4" y="134.0" font-size="12.5" text-anchor="middle" fill="#26a69a" font-weight="600">D 派发</text>
+<text x="628" y="368" font-size="11" text-anchor="end" fill="#8a94a6">示意图，非真实行情</text>
+</svg>
