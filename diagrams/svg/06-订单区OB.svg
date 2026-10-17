@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif">
+<rect width="900" height="500" fill="#0f1218"/>
+<text x="28" y="40" font-size="22" font-weight="700" fill="#e6eaf0">订单区 OB：位移前最后一根反向 K 线的实体</text>
+<text x="28" y="66" font-size="14" fill="#8a94a6">OB 三个硬条件：扫过流动性 + 留下失衡(FVG) + 打出结构；区域取实体，影线只作缓冲</text>
+<rect x="24" y="86" width="852" height="384" fill="#141922" stroke="#2b3442" rx="6"/>
+<line x1="24" y1="162.8" x2="876" y2="162.8" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="239.6" x2="876" y2="239.6" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="316.4" x2="876" y2="316.4" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="393.2" x2="876" y2="393.2" stroke="#1f2632" stroke-width="1"/>
+<rect x="425.9" y="374.1" width="418.0" height="25.5" fill="#b47cff" fill-opacity="0.2" stroke="#b47cff" stroke-opacity="0.7" stroke-width="1"/>
+<rect x="425.9" y="306.1" width="160.8" height="63.1" fill="#4f8cff" fill-opacity="0.18" stroke="#4f8cff" stroke-opacity="0.7" stroke-width="1"/>
+<line x1="56.2" y1="157.2" x2="56.2" y2="199.9" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="46.2" y="161.6" width="19.9" height="28.3" fill="#ef5350"/>
+<line x1="88.3" y1="180.4" x2="88.3" y2="241.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="78.3" y="189.9" width="19.9" height="39.7" fill="#ef5350"/>
+<line x1="120.5" y1="223.6" x2="120.5" y2="275.1" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="110.5" y="229.6" width="19.9" height="39.7" fill="#ef5350"/>
+<line x1="152.6" y1="259.0" x2="152.6" y2="318.5" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="142.6" y="269.3" width="19.9" height="39.7" fill="#ef5350"/>
+<line x1="184.8" y1="302.7" x2="184.8" y2="377.0" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="174.8" y="309.0" width="19.9" height="39.7" fill="#ef5350"/>
+<line x1="216.9" y1="327.5" x2="216.9" y2="355.7" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="206.9" y="337.3" width="19.9" height="11.3" fill="#26a69a"/>
+<line x1="249.1" y1="286.9" x2="249.1" y2="341.8" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="239.1" y="297.6" width="19.9" height="39.7" fill="#26a69a"/>
+<line x1="281.2" y1="252.3" x2="281.2" y2="303.1" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="271.2" y="274.9" width="19.9" height="22.7" fill="#26a69a"/>
+<line x1="313.4" y1="263.1" x2="313.4" y2="307.2" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="303.4" y="274.9" width="19.9" height="25.5" fill="#ef5350"/>
+<line x1="345.5" y1="294.6" x2="345.5" y2="342.6" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="335.5" y="300.4" width="19.9" height="31.2" fill="#ef5350"/>
+<line x1="377.7" y1="322.3" x2="377.7" y2="359.1" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="367.7" y="331.6" width="19.9" height="22.7" fill="#ef5350"/>
+<line x1="409.8" y1="345.7" x2="409.8" y2="383.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="399.8" y="354.3" width="19.9" height="19.8" fill="#ef5350"/>
+<line x1="442.0" y1="369.2" x2="442.0" y2="428.0" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="432.0" y="374.1" width="19.9" height="25.5" fill="#ef5350"/>
+<line x1="474.1" y1="310.8" x2="474.1" y2="402.5" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="464.1" y="320.3" width="19.9" height="79.4" fill="#26a69a"/>
+<line x1="506.3" y1="225.0" x2="506.3" y2="306.1" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="496.3" y="229.6" width="19.9" height="90.7" fill="#26a69a"/>
+<line x1="538.4" y1="200.4" x2="538.4" y2="233.8" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="528.4" y="206.9" width="19.9" height="22.7" fill="#26a69a"/>
+<line x1="570.6" y1="201.6" x2="570.6" y2="247.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="560.6" y="206.9" width="19.9" height="28.3" fill="#ef5350"/>
+<line x1="602.7" y1="228.1" x2="602.7" y2="287.6" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="592.8" y="235.3" width="19.9" height="39.7" fill="#ef5350"/>
+<line x1="634.9" y1="267.4" x2="634.9" y2="323.7" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="624.9" y="274.9" width="19.9" height="39.7" fill="#ef5350"/>
+<line x1="667.0" y1="303.1" x2="667.0" y2="388.3" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="657.1" y="314.6" width="19.9" height="34.0" fill="#ef5350"/>
+<line x1="699.2" y1="299.1" x2="699.2" y2="353.1" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="689.2" y="309.0" width="19.9" height="39.7" fill="#26a69a"/>
+<line x1="731.3" y1="249.0" x2="731.3" y2="318.3" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="721.4" y="257.9" width="19.9" height="51.0" fill="#26a69a"/>
+<line x1="763.5" y1="207.5" x2="763.5" y2="262.2" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="753.5" y="212.6" width="19.9" height="45.4" fill="#26a69a"/>
+<line x1="795.6" y1="161.3" x2="795.6" y2="220.8" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="785.7" y="172.9" width="19.9" height="39.7" fill="#26a69a"/>
+<line x1="827.8" y1="128.0" x2="827.8" y2="180.5" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="817.8" y="133.2" width="19.9" height="39.7" fill="#26a69a"/>
+<line x1="184.8" y1="377.0" x2="442.0" y2="377.0" stroke="#f5c542" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="180.8" y="381.0" width="34.0" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="184.8" y="394.0" font-size="13" text-anchor="start" fill="#f5c542" font-weight="600">前低</text>
+<rect x="425.9" y="404.7" width="199.6" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="429.9" y="417.7" font-size="13" text-anchor="start" fill="#b47cff" font-weight="600">看涨 OB：取最后一根阴线的实体</text>
+<line x1="425.9" y1="369.2" x2="843.8" y2="369.2" stroke="#b47cff" stroke-width="1" stroke-dasharray="2 3" stroke-opacity="0.7"/>
+<line x1="425.9" y1="428.0" x2="843.8" y2="428.0" stroke="#b47cff" stroke-width="1" stroke-dasharray="2 3" stroke-opacity="0.7"/>
+<rect x="658.9" y="434.0" width="172.9" height="18.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="827.8" y="446.0" font-size="12" text-anchor="end" fill="#8a94a6" font-weight="600">虚线 = 影线极端，作缓冲参考</text>
+<text x="431.9" y="342.7" font-size="13" text-anchor="start" fill="#4f8cff" font-weight="600">FVG</text>
+<line x1="281.2" y1="252.3" x2="538.4" y2="252.3" stroke="#26a69a" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="277.2" y="232.3" width="86.0" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="281.2" y="245.3" font-size="13" text-anchor="start" fill="#26a69a" font-weight="600">位移打破结构</text>
+<rect x="580.2" y="272.1" width="173.6" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="667.0" y="285.1" font-size="13" text-anchor="middle" fill="#e6eaf0" font-weight="600">首次回到 OB：先看反应再进</text>
+<text x="880" y="486" font-size="11" text-anchor="end" fill="#8a94a6">SMC 认知学习 · 示意图，非真实行情</text>
+</svg>

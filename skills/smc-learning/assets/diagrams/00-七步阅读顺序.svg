@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif">
+<rect width="900" height="400" fill="#0f1218"/>
+<text x="28" y="40" font-size="22" font-weight="700" fill="#e6eaf0">SMC 七步阅读顺序</text>
+<text x="28" y="66" font-size="14" fill="#8a94a6">每一步回答一个问题，少一步，判断就少一层依据</text>
+<rect x="28" y="104" width="112" height="150" rx="10" fill="#141922" stroke="#cfd8dc" stroke-width="2"/>
+<circle cx="84.0" cy="138" r="16" fill="#cfd8dc"/>
+<text x="84.0" y="144" font-size="16" font-weight="700" text-anchor="middle" fill="#0f1218">1</text>
+<text x="84.0" y="186" font-size="19" font-weight="700" text-anchor="middle" fill="#e6eaf0">结构</text>
+<text x="84.0" y="214" font-size="13" text-anchor="middle" fill="#8a94a6">涨、跌</text>
+<text x="84.0" y="233" font-size="13" text-anchor="middle" fill="#8a94a6">还是震荡？</text>
+<polygon points="141,173.0 151,179.0 141,185.0" fill="#8a94a6"/>
+<rect x="152" y="104" width="112" height="150" rx="10" fill="#141922" stroke="#9aa4b2" stroke-width="2"/>
+<circle cx="208.0" cy="138" r="16" fill="#9aa4b2"/>
+<text x="208.0" y="144" font-size="16" font-weight="700" text-anchor="middle" fill="#0f1218">2</text>
+<text x="208.0" y="186" font-size="19" font-weight="700" text-anchor="middle" fill="#e6eaf0">位置</text>
+<text x="208.0" y="214" font-size="13" text-anchor="middle" fill="#8a94a6">现在是贵区</text>
+<text x="208.0" y="233" font-size="13" text-anchor="middle" fill="#8a94a6">还是便宜区？</text>
+<polygon points="265,173.0 275,179.0 265,185.0" fill="#8a94a6"/>
+<rect x="276" y="104" width="112" height="150" rx="10" fill="#141922" stroke="#f5c542" stroke-width="2"/>
+<circle cx="332.0" cy="138" r="16" fill="#f5c542"/>
+<text x="332.0" y="144" font-size="16" font-weight="700" text-anchor="middle" fill="#0f1218">3</text>
+<text x="332.0" y="186" font-size="19" font-weight="700" text-anchor="middle" fill="#e6eaf0">流动性</text>
+<text x="332.0" y="214" font-size="13" text-anchor="middle" fill="#8a94a6">下一步</text>
+<text x="332.0" y="233" font-size="13" text-anchor="middle" fill="#8a94a6">去扫哪里？</text>
+<polygon points="389,173.0 399,179.0 389,185.0" fill="#8a94a6"/>
+<rect x="400" y="104" width="112" height="150" rx="10" fill="#141922" stroke="#ff9f43" stroke-width="2"/>
+<circle cx="456.0" cy="138" r="16" fill="#ff9f43"/>
+<text x="456.0" y="144" font-size="16" font-weight="700" text-anchor="middle" fill="#0f1218">4</text>
+<text x="456.0" y="186" font-size="19" font-weight="700" text-anchor="middle" fill="#e6eaf0">位移</text>
+<text x="456.0" y="214" font-size="13" text-anchor="middle" fill="#8a94a6">推动有没有</text>
+<text x="456.0" y="233" font-size="13" text-anchor="middle" fill="#8a94a6">真力量？</text>
+<polygon points="513,173.0 523,179.0 513,185.0" fill="#8a94a6"/>
+<rect x="524" y="104" width="112" height="150" rx="10" fill="#141922" stroke="#b47cff" stroke-width="2"/>
+<circle cx="580.0" cy="138" r="16" fill="#b47cff"/>
+<text x="580.0" y="144" font-size="16" font-weight="700" text-anchor="middle" fill="#0f1218">5</text>
+<text x="580.0" y="186" font-size="19" font-weight="700" text-anchor="middle" fill="#e6eaf0">订单区</text>
+<text x="580.0" y="214" font-size="13" text-anchor="middle" fill="#8a94a6">在哪里</text>
+<text x="580.0" y="233" font-size="13" text-anchor="middle" fill="#8a94a6">等反应？</text>
+<polygon points="637,173.0 647,179.0 637,185.0" fill="#8a94a6"/>
+<rect x="648" y="104" width="112" height="150" rx="10" fill="#141922" stroke="#4f8cff" stroke-width="2"/>
+<circle cx="704.0" cy="138" r="16" fill="#4f8cff"/>
+<text x="704.0" y="144" font-size="16" font-weight="700" text-anchor="middle" fill="#0f1218">6</text>
+<text x="704.0" y="186" font-size="19" font-weight="700" text-anchor="middle" fill="#e6eaf0">触发</text>
+<text x="704.0" y="214" font-size="13" text-anchor="middle" fill="#8a94a6">什么时候</text>
+<text x="704.0" y="233" font-size="13" text-anchor="middle" fill="#8a94a6">扣扳机？</text>
+<polygon points="761,173.0 771,179.0 761,185.0" fill="#8a94a6"/>
+<rect x="772" y="104" width="112" height="150" rx="10" fill="#141922" stroke="#26a69a" stroke-width="2"/>
+<circle cx="828.0" cy="138" r="16" fill="#26a69a"/>
+<text x="828.0" y="144" font-size="16" font-weight="700" text-anchor="middle" fill="#0f1218">7</text>
+<text x="828.0" y="186" font-size="19" font-weight="700" text-anchor="middle" fill="#e6eaf0">执行</text>
+<text x="828.0" y="214" font-size="13" text-anchor="middle" fill="#8a94a6">入场、止损</text>
+<text x="828.0" y="233" font-size="13" text-anchor="middle" fill="#8a94a6">和目标</text>
+<text x="450" y="306" font-size="16" text-anchor="middle" fill="#e6eaf0">方向（结构） → 立场（位置） → 时机（触发）</text>
+<text x="450" y="336" font-size="14" text-anchor="middle" fill="#8a94a6">不猜底 · 不猜顶 · 不提前：等扫 · 等位移 · 等结构 · 等回踩 · 等触发</text>
+<text x="880" y="386" font-size="11" text-anchor="end" fill="#8a94a6">SMC 认知学习 · 示意图，非真实行情</text>
+</svg>

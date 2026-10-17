@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif">
+<rect width="900" height="520" fill="#0f1218"/>
+<text x="28" y="40" font-size="22" font-weight="700" fill="#e6eaf0">BOS / CHoCH / MSS</text>
+<text x="28" y="66" font-size="14" fill="#8a94a6">BOS = 原方向延续；CHoCH = 第一个转向信号；MSS = CHoCH 后反方向再出 BOS，反转确认</text>
+<rect x="24" y="86" width="852" height="404" fill="#141922" stroke="#2b3442" rx="6"/>
+<line x1="24" y1="166.8" x2="876" y2="166.8" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="247.6" x2="876" y2="247.6" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="328.4" x2="876" y2="328.4" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="409.2" x2="876" y2="409.2" stroke="#1f2632" stroke-width="1"/>
+<line x1="44.0" y1="130.2" x2="44.0" y2="151.9" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="37.8" y="137.1" width="12.4" height="6.5" fill="#ef5350"/>
+<line x1="64.1" y1="137.1" x2="64.1" y2="171.3" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="57.9" y="143.6" width="12.4" height="22.8" fill="#ef5350"/>
+<line x1="84.1" y1="155.0" x2="84.1" y2="196.7" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="77.9" y="166.4" width="12.4" height="19.0" fill="#ef5350"/>
+<line x1="104.2" y1="175.5" x2="104.2" y2="207.0" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="98.0" y="185.4" width="12.4" height="12.8" fill="#ef5350"/>
+<line x1="124.2" y1="193.0" x2="124.2" y2="235.5" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="118.0" y="198.2" width="12.4" height="32.8" fill="#ef5350"/>
+<line x1="144.3" y1="226.0" x2="144.3" y2="254.7" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="138.1" y="231.0" width="12.4" height="20.6" fill="#ef5350"/>
+<line x1="164.3" y1="242.3" x2="164.3" y2="291.6" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="158.1" y="251.6" width="12.4" height="21.8" fill="#ef5350"/>
+<line x1="184.4" y1="242.6" x2="184.4" y2="279.3" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="178.2" y="252.6" width="12.4" height="20.8" fill="#26a69a"/>
+<line x1="204.4" y1="231.3" x2="204.4" y2="262.6" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="198.2" y="242.2" width="12.4" height="10.4" fill="#26a69a"/>
+<line x1="224.5" y1="198.4" x2="224.5" y2="246.6" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="218.3" y="216.6" width="12.4" height="25.6" fill="#26a69a"/>
+<line x1="244.5" y1="206.1" x2="244.5" y2="243.3" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="238.3" y="216.6" width="12.4" height="20.0" fill="#ef5350"/>
+<line x1="264.6" y1="225.5" x2="264.6" y2="260.2" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="258.4" y="236.6" width="12.4" height="17.6" fill="#ef5350"/>
+<line x1="284.6" y1="251.2" x2="284.6" y2="278.9" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="278.4" y="254.2" width="12.4" height="16.6" fill="#ef5350"/>
+<line x1="304.7" y1="261.4" x2="304.7" y2="311.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="298.4" y="270.8" width="12.4" height="36.2" fill="#ef5350"/>
+<line x1="324.7" y1="303.8" x2="324.7" y2="327.9" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="318.5" y="307.0" width="12.4" height="15.5" fill="#ef5350"/>
+<line x1="344.8" y1="311.5" x2="344.8" y2="356.5" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="338.5" y="322.5" width="12.4" height="15.8" fill="#ef5350"/>
+<line x1="364.8" y1="324.6" x2="364.8" y2="343.0" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="358.6" y="328.1" width="12.4" height="10.3" fill="#26a69a"/>
+<line x1="384.8" y1="290.6" x2="384.8" y2="331.1" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="378.6" y="293.9" width="12.4" height="34.2" fill="#26a69a"/>
+<line x1="404.9" y1="263.4" x2="404.9" y2="297.9" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="398.7" y="281.5" width="12.4" height="12.4" fill="#26a69a"/>
+<line x1="424.9" y1="274.1" x2="424.9" y2="307.0" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="418.7" y="281.5" width="12.4" height="19.1" fill="#ef5350"/>
+<line x1="445.0" y1="296.5" x2="445.0" y2="351.7" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="438.8" y="300.6" width="12.4" height="42.1" fill="#ef5350"/>
+<line x1="465.0" y1="337.8" x2="465.0" y2="350.9" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="458.8" y="341.4" width="12.4" height="1.3" fill="#26a69a"/>
+<line x1="485.1" y1="338.0" x2="485.1" y2="372.5" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="478.9" y="341.4" width="12.4" height="24.8" fill="#ef5350"/>
+<line x1="505.1" y1="361.9" x2="505.1" y2="403.9" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="498.9" y="366.3" width="12.4" height="32.8" fill="#ef5350"/>
+<line x1="525.2" y1="388.0" x2="525.2" y2="445.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="519.0" y="399.1" width="12.4" height="28.5" fill="#ef5350"/>
+<line x1="545.2" y1="382.2" x2="545.2" y2="438.0" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="539.0" y="387.3" width="12.4" height="40.3" fill="#26a69a"/>
+<line x1="565.3" y1="365.6" x2="565.3" y2="393.3" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="559.1" y="369.9" width="12.4" height="17.4" fill="#26a69a"/>
+<line x1="585.3" y1="329.8" x2="585.3" y2="378.1" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="579.1" y="339.9" width="12.4" height="30.0" fill="#26a69a"/>
+<line x1="605.4" y1="280.3" x2="605.4" y2="351.2" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="599.2" y="283.7" width="12.4" height="56.2" fill="#26a69a"/>
+<line x1="625.4" y1="230.9" x2="625.4" y2="288.4" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="619.2" y="249.1" width="12.4" height="34.6" fill="#26a69a"/>
+<line x1="645.5" y1="239.8" x2="645.5" y2="290.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="639.2" y="249.1" width="12.4" height="36.4" fill="#ef5350"/>
+<line x1="665.5" y1="280.4" x2="665.5" y2="309.3" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="659.3" y="285.4" width="12.4" height="20.8" fill="#ef5350"/>
+<line x1="685.6" y1="303.0" x2="685.6" y2="336.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="679.3" y="306.2" width="12.4" height="22.9" fill="#ef5350"/>
+<line x1="705.6" y1="324.6" x2="705.6" y2="364.7" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="699.4" y="329.2" width="12.4" height="17.3" fill="#ef5350"/>
+<line x1="725.6" y1="329.2" x2="725.6" y2="353.0" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="719.4" y="334.9" width="12.4" height="11.5" fill="#26a69a"/>
+<line x1="745.7" y1="287.8" x2="745.7" y2="341.7" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="739.5" y="298.8" width="12.4" height="36.2" fill="#26a69a"/>
+<line x1="765.7" y1="267.5" x2="765.7" y2="308.9" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="759.5" y="275.1" width="12.4" height="23.7" fill="#26a69a"/>
+<line x1="785.8" y1="235.7" x2="785.8" y2="278.9" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="779.6" y="239.7" width="12.4" height="35.3" fill="#26a69a"/>
+<line x1="805.8" y1="213.7" x2="805.8" y2="249.5" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="799.6" y="224.2" width="12.4" height="15.5" fill="#26a69a"/>
+<line x1="825.9" y1="191.9" x2="825.9" y2="228.3" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="819.7" y="196.6" width="12.4" height="27.7" fill="#26a69a"/>
+<line x1="845.9" y1="167.0" x2="845.9" y2="207.4" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="839.7" y="176.0" width="12.4" height="20.5" fill="#26a69a"/>
+<line x1="344.8" y1="356.5" x2="485.1" y2="356.5" stroke="#ef5350" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="340.8" y="360.5" width="194.2" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="344.8" y="373.5" font-size="13" text-anchor="start" fill="#ef5350" font-weight="600">BOS 下跌延续（收盘跌破前低）</text>
+<rect x="370.1" y="236.4" width="69.6" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="404.9" y="249.4" font-size="13" text-anchor="middle" fill="#ff9f43" font-weight="600">LH 守门点</text>
+<line x1="404.9" y1="263.4" x2="625.4" y2="263.4" stroke="#ff9f43" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="511.2" y="243.4" width="118.2" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="625.4" y="256.4" font-size="13" text-anchor="end" fill="#ff9f43" font-weight="600">CHoCH 第一次转向</text>
+<rect x="694.1" y="377.7" width="23.1" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="705.6" y="390.7" font-size="13" text-anchor="middle" fill="#26a69a" font-weight="600">HL</text>
+<line x1="625.4" y1="230.9" x2="845.9" y2="230.9" stroke="#26a69a" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="668.0" y="210.9" width="181.9" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="845.9" y="223.9" font-size="13" text-anchor="end" fill="#26a69a" font-weight="600">BOS 新方向 → MSS 确认反转</text>
+<rect x="513.6" y="458.8" width="23.1" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="525.2" y="471.8" font-size="13" text-anchor="middle" fill="#ef5350" font-weight="600">LL</text>
+<text x="880" y="506" font-size="11" text-anchor="end" fill="#8a94a6">SMC 认知学习 · 示意图，非真实行情</text>
+</svg>

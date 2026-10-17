@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif">
+<rect width="900" height="500" fill="#0f1218"/>
+<text x="28" y="40" font-size="22" font-weight="700" fill="#e6eaf0">流动性清扫：等低下方的止损池</text>
+<text x="28" y="66" font-size="14" fill="#8a94a6">越明显的等高等低，越容易被扫；刺穿后迅速收回 = 清扫，不是突破</text>
+<rect x="24" y="86" width="852" height="384" fill="#141922" stroke="#2b3442" rx="6"/>
+<line x1="24" y1="162.8" x2="876" y2="162.8" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="239.6" x2="876" y2="239.6" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="316.4" x2="876" y2="316.4" stroke="#1f2632" stroke-width="1"/>
+<line x1="24" y1="393.2" x2="876" y2="393.2" stroke="#1f2632" stroke-width="1"/>
+<rect x="182.8" y="377.6" width="462.1" height="45.9" fill="#f5c542" fill-opacity="0.1" stroke="#f5c542" stroke-opacity="0.7" stroke-width="1"/>
+<line x1="52.9" y1="168.6" x2="52.9" y2="198.2" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="43.9" y="172.5" width="17.9" height="17.9" fill="#ef5350"/>
+<line x1="81.8" y1="183.1" x2="81.8" y2="232.5" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="72.8" y="190.4" width="17.9" height="35.9" fill="#ef5350"/>
+<line x1="110.6" y1="222.0" x2="110.6" y2="270.7" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="101.7" y="226.3" width="17.9" height="35.9" fill="#ef5350"/>
+<line x1="139.5" y1="253.5" x2="139.5" y2="304.5" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="130.6" y="262.2" width="17.9" height="35.9" fill="#ef5350"/>
+<line x1="168.4" y1="291.6" x2="168.4" y2="333.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="159.5" y="298.0" width="17.9" height="31.4" fill="#ef5350"/>
+<line x1="197.3" y1="326.7" x2="197.3" y2="374.2" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="188.3" y="329.4" width="17.9" height="24.7" fill="#ef5350"/>
+<line x1="226.2" y1="328.4" x2="226.2" y2="361.1" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="217.2" y="333.9" width="17.9" height="20.2" fill="#26a69a"/>
+<line x1="255.1" y1="299.3" x2="255.1" y2="342.4" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="246.1" y="302.5" width="17.9" height="31.4" fill="#26a69a"/>
+<line x1="283.9" y1="266.7" x2="283.9" y2="306.9" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="275.0" y="271.1" width="17.9" height="31.4" fill="#26a69a"/>
+<line x1="312.8" y1="250.2" x2="312.8" y2="281.2" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="303.9" y="253.2" width="17.9" height="17.9" fill="#26a69a"/>
+<line x1="341.7" y1="245.0" x2="341.7" y2="280.3" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="332.7" y="253.2" width="17.9" height="17.9" fill="#ef5350"/>
+<line x1="370.6" y1="263.9" x2="370.6" y2="303.2" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="361.6" y="271.1" width="17.9" height="29.1" fill="#ef5350"/>
+<line x1="399.5" y1="295.1" x2="399.5" y2="333.5" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="390.5" y="300.3" width="17.9" height="26.9" fill="#ef5350"/>
+<line x1="428.3" y1="323.6" x2="428.3" y2="374.2" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="419.4" y="327.2" width="17.9" height="24.7" fill="#ef5350"/>
+<line x1="457.2" y1="319.7" x2="457.2" y2="357.2" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="448.3" y="329.4" width="17.9" height="22.4" fill="#26a69a"/>
+<line x1="486.1" y1="294.2" x2="486.1" y2="338.1" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="477.1" y="298.0" width="17.9" height="31.4" fill="#26a69a"/>
+<line x1="515.0" y1="274.2" x2="515.0" y2="307.6" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="506.0" y="277.8" width="17.9" height="20.2" fill="#26a69a"/>
+<line x1="543.9" y1="271.8" x2="543.9" y2="300.3" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="534.9" y="277.8" width="17.9" height="15.7" fill="#ef5350"/>
+<line x1="572.7" y1="288.3" x2="572.7" y2="320.0" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="563.8" y="293.5" width="17.9" height="20.2" fill="#ef5350"/>
+<line x1="601.6" y1="309.6" x2="601.6" y2="341.3" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="592.7" y="313.7" width="17.9" height="24.7" fill="#ef5350"/>
+<line x1="630.5" y1="329.3" x2="630.5" y2="428.0" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="621.6" y="338.4" width="17.9" height="6.7" fill="#ef5350"/>
+<line x1="659.4" y1="289.1" x2="659.4" y2="353.5" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="650.4" y="293.5" width="17.9" height="51.5" fill="#26a69a"/>
+<line x1="688.3" y1="240.0" x2="688.3" y2="303.4" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="679.3" y="244.2" width="17.9" height="49.3" fill="#26a69a"/>
+<line x1="717.2" y1="234.9" x2="717.2" y2="265.9" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="708.2" y="244.2" width="17.9" height="13.4" fill="#ef5350"/>
+<line x1="746.0" y1="209.0" x2="746.0" y2="264.7" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="737.1" y="217.3" width="17.9" height="40.3" fill="#26a69a"/>
+<line x1="774.9" y1="173.4" x2="774.9" y2="220.9" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="766.0" y="181.5" width="17.9" height="35.9" fill="#26a69a"/>
+<line x1="803.8" y1="157.3" x2="803.8" y2="190.3" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="794.8" y="163.6" width="17.9" height="17.9" fill="#26a69a"/>
+<line x1="832.7" y1="128.0" x2="832.7" y2="173.1" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="823.7" y="132.2" width="17.9" height="31.4" fill="#26a69a"/>
+<line x1="197.3" y1="374.2" x2="630.5" y2="374.2" stroke="#f5c542" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="193.3" y="354.2" width="116.9" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="197.3" y="367.2" font-size="13" text-anchor="start" fill="#f5c542" font-weight="600">等低 Equal Lows</text>
+<rect x="182.8" y="428.5" width="233.2" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="186.8" y="441.5" font-size="13" text-anchor="start" fill="#f5c542" font-weight="600">SSL 卖方流动性：多头止损聚集在这里</text>
+<rect x="172.7" y="371.2" width="49.1" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="197.3" y="384.2" font-size="13" text-anchor="middle" fill="#8a94a6" font-weight="600">低点 1</text>
+<rect x="403.8" y="371.2" width="49.1" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="428.3" y="384.2" font-size="13" text-anchor="middle" fill="#8a94a6" font-weight="600">低点 2</text>
+<rect x="640.5" y="408.3" width="112.0" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="644.5" y="421.3" font-size="13" text-anchor="start" fill="#ff9f43" font-weight="600">扫损：刺穿后收回</text>
+<rect x="676.1" y="87.8" width="160.6" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="832.7" y="100.8" font-size="13" text-anchor="end" fill="#26a69a" font-weight="600">扫完 + 位移，才是真机会</text>
+<text x="880" y="486" font-size="11" text-anchor="end" fill="#8a94a6">SMC 认知学习 · 示意图，非真实行情</text>
+</svg>
