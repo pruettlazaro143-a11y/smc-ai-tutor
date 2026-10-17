@@ -110,6 +110,7 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 
 ```
 smc-ai-tutor/
+├── SOURCES.md                  # 出处对照
 ├── prompt/SMC-AI-Tutor.md      # 单文件 AI 指令（任意 AI 可用，自动生成）
 ├── skills/smc-learning/        # Claude Skill（内容源文件）
 │   ├── SKILL.md
@@ -145,11 +146,17 @@ python3 tools/render.py diagrams/svg diagrams/png   # SVG 转 PNG（需要 playw
 
 SMC 各流派对部分概念（如 OB 取实体还是整根、CISD 的定义）说法不一。本项目在文中写明了自己的口径，有不同意见欢迎讨论。
 
-## 内容来源
+## 出处
 
-- 基础框架整理自公开的 SMC / ICT 概念，以及作者自己的学习笔记和实战复盘
-- 标有【作者实战经验】的部分是作者的个人总结
-- 进阶部分的入场模型清单参考了网络上流传的 QM / 供需入场模型备忘单，全部用自己的话重写、示意图全部重新绘制
+内容由作者学习、整理和实战复盘而来，文字全部用自己的话重写，示意图全部由脚本生成。主要来源：
+
+- **街哥 SMC 系统教程**（街哥是 X 上知名的 SMC 交易员）
+- **Frank Miller《Smart Money Concepts: Unlocking the Path to High Probability Trading》**（推荐购买正版）
+- **ICT**（Inner Circle Trader，Michael J. Huddleston）的公开教学概念
+- **《ICT 机构价格行为备忘单》**（TRADER_ZHAO 整理）：进阶入场模型的清单
+- **作者实战复盘**：标有【作者实战经验】的部分
+
+正文每个小节用 `> 出处：…` 标明来源。完整对照见 [SOURCES.md](SOURCES.md)。
 
 ## 免责声明
 

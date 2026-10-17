@@ -11,6 +11,8 @@
 
 ## A. ICT 补充概念
 
+> 出处：ICT（Inner Circle Trader，Michael J. Huddleston）公开教学中的概念，结合公开资料用自己的话整理
+
 ### A1. 破坏块（Breaker Block）
 
 ![A1-Breaker破坏块](../diagrams/models/png/A1-Breaker破坏块.png)
@@ -117,6 +119,8 @@ ICT 体系认为，不同交易时段的波动特征不同。以下用**纽约�
 ---
 
 ## B. QM / 供需入场模型图鉴
+
+> 出处：模型清单参考网络流传的《ICT 机构价格行为备忘单》（TRADER_ZHAO 整理），文字全部重写、示意图全部重画；"在 SMC 里对应什么"为作者的解读
 
 ### B0. 先建立对应关系
 
