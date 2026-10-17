@@ -324,8 +324,8 @@ def mk(start, items, seed=7, wick=(0.12, 0.45)):
     for it in items:
         c, h, l = (it, None, None) if not isinstance(it, tuple) else it
         o = prev
-        hh = max(o, c) + rnd.uniform(*wick) if h is None else h
-        ll = min(o, c) - rnd.uniform(*wick) if l is None else l
+        hh = max(o, c) + rnd.uniform(*wick) if h is None else max(h, o, c)
+        ll = min(o, c) - rnd.uniform(*wick) if l is None else min(l, o, c)
         out.append([o, hh, ll, c])
         prev = c
     return out
@@ -425,7 +425,7 @@ def d05():
            [106.2, 107.4, 104.2, 107.0]]   # C
     L = ch.panel(abc, 24, 86, 330, 510, pad=1.2, label="① 只看三根")
     a_hi, c_lo = L.H(0), L.L(2)
-    L.zone(0, 2, c_lo, a_hi, C["fvg"], None, opacity=0.22)
+    L.zone(1, 1, c_lo, a_hi, C["fvg"], None, opacity=0.3)
     L.hline(a_hi, 0, 2, C["fvg"], "A 最高点 = 下沿", lpos="start", above=False, dash="4 3")
     L.hline(c_lo, 0, 2, C["fvg"], "C 最低点 = 上沿", lpos="start", above=True, dash="4 3")
     L.tag(L.x(0) - 4, L.y((a_hi + c_lo) / 2) + 5, "FVG", C["fvg"], anchor="middle", fs=15)
@@ -442,8 +442,8 @@ def d05():
     a_hi, c_lo = R.H(3), R.L(5)
     assert c_lo > a_hi, (a_hi, c_lo)
     ce = (a_hi + c_lo) / 2
-    R.zone(3, 12, c_lo, a_hi, C["fvg"], None, opacity=0.2)
-    R.hline(ce, 3, 12, C["fvg"], "50% 中线", lpos="right", dash="2 3", width=1)
+    R.zone(4, 12, c_lo, a_hi, C["fvg"], None, opacity=0.2)
+    R.hline(ce, 4, 12, C["fvg"], "50% 中线", lpos="right", dash="2 3", width=1)
     R.mark(3, "l", "A", C["text"])
     R.mark(4, "l", "B", C["warn"])
     R.mark(5, "h", "C", C["text"])
@@ -463,9 +463,10 @@ def d06():
     p.hline(p.L(4), 4, 12, C["liq"], "前低", lpos="start", above=False)
     p.ob(12, p.n - 1, "看涨 OB：取最后一根阴线的实体", C["ob"])
     p.tag(p.x(p.n - 1), p.y(p.L(12)) + 18, "虚线 = 影线极端，作缓冲参考", C["muted"], anchor="end", fs=12)
-    a_hi, c_lo = p.H(12), p.L(14)
-    if c_lo > a_hi:
-        p.zone(12, 16, c_lo, a_hi, C["fvg"], "FVG", opacity=0.18, where="under", lpos="in")
+    a_hi, c_lo = p.H(12), p.L(14)  # A = 12（OB 那根）, B = 13, C = 14
+    assert c_lo > a_hi, (a_hi, c_lo)
+    p.zone(13, 17, c_lo, a_hi, C["fvg"], None, opacity=0.18, where="under")
+    p.tag(p.x(15.5), p.y((a_hi + c_lo) / 2) + 6, "FVG", C["fvg"], anchor="middle", box=False)
     k = p.first_close_above(p.H(7), 13)
     p.hline(p.H(7), 7, k + 1, C["tp"], "位移打破结构", lpos="start")
     p.mark(19, "h", "首次回到 OB：先看反应再进", C["text"], off=18)
@@ -515,7 +516,7 @@ def d08():
     p.hline(lh, 14, k + 1, C["text"], "3 CHoCH", lpos="start")
     a_hi, c_lo = p.H(17), p.L(19)
     assert c_lo > a_hi
-    p.zone(17, 24, c_lo, a_hi, C["fvg"], None, opacity=0.18)
+    p.zone(18, 24, c_lo, a_hi, C["fvg"], None, opacity=0.18)
     p.badge(22, p.L(22) - 1.0, "4", C["fvg"])
     p.tag(p.x(22) + 16, p.y(p.L(22) - 1.0) + 5, "回踩 FVG", C["fvg"])
     entry = p.Cl(23)
