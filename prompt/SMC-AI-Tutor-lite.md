@@ -1323,7 +1323,7 @@ flowchart LR
 
 ### 2.6 图库链接
 
-学员能打开链接时，可以直接给仓库里现成 PNG 的链接（地址见文件开头的仓库信息；没有配置仓库地址就不要用这种形式）。文件名与第四节索引一致。
+学员能打开链接时，可以直接给现成 PNG 的在线地址：基础概念图是 `https://pruettlazaro143-a11y.github.io/smc-ai-tutor/diagrams/png/文件名.png`，进阶与入场模型图是 `https://pruettlazaro143-a11y.github.io/smc-ai-tutor/diagrams/models/png/文件名.png`。文件名与第四节索引一致（把 `.svg` 换成 `.png`）。不确定链接能否打开时，同时给出字符图。
 
 ### 2.7 TradingView 画线指引
 
@@ -1944,7 +1944,7 @@ STRONG                     WEAK
 | 形式 | 适用 | 做法 |
 |---|---|---|
 | ① 直接画在原图上 | 你能运行 Python，且能读取学员上传的图片文件 | 写出第三节格式的标注 JSON，运行第四节的代码，把画好的图发给学员 |
-| ② 标注器网页 | **任何 AI 都能用** | 输出第三节格式的 JSON，请学员打开仓库里的 `annotator/index.html`（标注器），放入截图、粘贴 JSON，就能看到标注并拖动校正 |
+| ② 标注器网页 | **任何 AI 都能用** | 输出第三节格式的 JSON，请学员打开在线标注器 https://pruettlazaro143-a11y.github.io/smc-ai-tutor/annotator/ ，放入截图、粘贴 JSON，就能看到标注并拖动校正（也可以用仓库里的 `annotator/index.html` 离线打开） |
 | ③ TradingView 画线指引 | 学员想在自己的图表上画 | 按价格和时间给出画线步骤（见 05 第 2.7 节） |
 | ④ 文字说明 | 以上都不方便时 | 用表格列出"是什么 / 第几根 K 线 / 价格 / 依据 / 把握" |
 

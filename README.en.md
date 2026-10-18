@@ -73,7 +73,7 @@ Process content (the entry sequence, the 11-step checklist) can also be shown as
 Send a chart screenshot and the tutor follows a fixed procedure. It reads the chart, lists candidate key points with their location, reasoning and confidence, and checks each one against a checklist. **Anything that fails a check is not drawn**, and uncertain items are drawn dashed with a "?". Output options:
 
 - **Drawn on your image**: AIs that can run code use the code in [`tools/annotate.py`](tools/annotate.py)
-- **Annotator page**: any AI can output an annotation JSON. Open [`annotator/index.html`](annotator/index.html), drop in your screenshot, paste the JSON, **drag anything that's off**, and export a PNG. Everything runs locally in your browser; the image is never uploaded.
+- **Annotator page**: any AI can output an annotation JSON. Open the [online annotator](https://pruettlazaro143-a11y.github.io/smc-ai-tutor/annotator/) (or [`annotator/index.html`](annotator/index.html) offline), drop in your screenshot, paste the JSON, **drag anything that's off**, and export a PNG. Everything runs locally in your browser; the image is never uploaded.
 - **TradingView drawing steps** by price and time
 - **A text table**
 

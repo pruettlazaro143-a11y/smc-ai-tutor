@@ -72,7 +72,7 @@ AI 会一次问你五个问题：**基础、市场、想怎么学、想用哪种
 AI 会按固定流程来：先读图、列出候选关键点（位置、依据、把握程度），再逐项核对，**不满足条件的不标**，拿不准的标成虚线加"?"。标注有四种输出：
 
 - **直接画在原图上**：能运行代码的 AI 用 [`tools/annotate.py`](tools/annotate.py) 的代码画好发给你
-- **标注器网页**：任何 AI 都能输出一段标注 JSON，用 [`annotator/index.html`](annotator/index.html) 打开截图、粘贴 JSON，就能看到标注，**位置不准可以直接拖动修正**，再导出 PNG（全部在浏览器本地完成，图片不上传）
+- **标注器网页**：任何 AI 都能输出一段标注 JSON，用[在线标注器](https://pruettlazaro143-a11y.github.io/smc-ai-tutor/annotator/)（或离线打开 [`annotator/index.html`](annotator/index.html)）放入截图、粘贴 JSON，就能看到标注，**位置不准可以直接拖动修正**，再导出 PNG（全部在浏览器本地完成，图片不上传）
 - **TradingView 画线指引**：按价格和时间告诉你在哪画线、画框
 - **文字表格**
 
