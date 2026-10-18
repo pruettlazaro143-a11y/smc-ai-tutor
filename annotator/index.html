@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMC 标注器 · Annotator</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface2:#eef0f3; --text:#1d2330; --muted:#5b6475; --border:#d9dde4;
+  --accent:#5b4bd6; --accent-text:#ffffff; --danger:#c62828; --ok:#1b7f5a;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1218; --surface:#161b24; --surface2:#1d2430; --text:#e6eaf0; --muted:#97a1b3; --border:#2b3442;
+    --accent:#8f84ff; --accent-text:#0f1218; --danger:#ff6b6b; --ok:#4cc9a0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1218; --surface:#161b24; --surface2:#1d2430; --text:#e6eaf0; --muted:#97a1b3; --border:#2b3442;
+  --accent:#8f84ff; --accent-text:#0f1218; --danger:#ff6b6b; --ok:#4cc9a0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif}
+header{padding:20px 16px 8px;max-width:1280px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0}
+main{max-width:1280px;margin:0 auto;padding:8px 16px 32px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px}
+@media (max-width:900px){main{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
+#stage{position:relative;min-height:280px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:10px;overflow:hidden}
+#stage.drag{outline:2px dashed var(--accent)}
+canvas{max-width:100%;height:auto;display:block;touch-action:none}
+#empty{color:var(--muted);text-align:center;padding:40px 12px}
+textarea{width:100%;min-height:300px;font:12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px;resize:vertical}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+button,.btn{appearance:none;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer}
+button.primary{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+button:hover{filter:brightness(1.05)}
+input[type=file]{display:none}
+#msg{font-size:13px;white-space:pre-wrap;min-height:1.2em}
+#msg.err{color:var(--danger)} #msg.ok{color:var(--ok)}
+.help{font-size:13px;color:var(--muted)}
+.help li{margin:2px 0}
+label.chk{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>SMC 标注器 <span style="font-weight:400;color:var(--muted)">· Annotator</span></h1>
+  <p class="sub">把 AI 给出的标注 JSON 画到你的 K 线截图上；位置不准就直接拖动修正。全部在你的浏览器里完成，图片不会上传。<br>
+  Draw the AI's annotation JSON on your chart screenshot, then drag anything that's off. Everything stays in your browser.</p>
+</header>
+<main>
+  <section class="card">
+    <div id="stage"><div id="empty">① 拖入、粘贴或<button id="pick" type="button">选择截图</button><br><span class="help">Drop, paste, or pick a screenshot</span></div><canvas id="cv" hidden></canvas></div>
+    <input type="file" id="file" accept="image/*">
+    <div class="row">
+      <button id="exportBtn" type="button">导出 PNG · Export</button>
+      <label class="chk"><input type="checkbox" id="showHandles" checked> 显示拖动点 · Handles</label>
+    </div>
+    <div id="msg"></div>
+  </section>
+  <aside class="card">
+    <strong>② 粘贴 AI 给的标注 JSON · Paste JSON</strong>
+    <textarea id="json" spellcheck="false"></textarea>
+    <div class="row">
+      <button class="primary" id="drawBtn" type="button">画出来 · Draw</button>
+      <button id="copyBtn" type="button">复制修正后的 JSON · Copy</button>
+      <button id="sampleBtn" type="button">看示例 · Demo</button>
+    </div>
+    <ul class="help">
+      <li>拖动水平线上下移动；拖动区域整体移动，拖上下边缘改高度；拖动标记点移动。</li>
+      <li>低把握（confidence: low）的标注画成虚线并带“?”，请重点核对。</li>
+      <li>格式说明见仓库 <code>references/08-截图标注规范.md</code>。</li>
+      <li>仅供学习，不构成交易建议。Study only, not trading advice.</li>
+    </ul>
+  </aside>
+</main>
+<script>
+(function(){
+const COLORS={structure:'#cfd8dc',liquidity:'#f5c542',fvg:'#4f8cff',ob:'#b47cff',premium:'#ef5350',discount:'#26a69a',entry:'#4f8cff',sl:'#ef5350',tp:'#26a69a',note:'#ff9f43'};
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),ta=document.getElementById('json'),msg=document.getElementById('msg');
+let img=null,spec=null,drag=null,hover=null;
+const SAMPLE=/*SAMPLE*/{"version": 1, "note": "示例：虚构走势，只用来演示标注格式。", "calibration": {"price_a": 118.0, "y_a": 0.1625, "price_b": 108.0, "y_b": 0.9125}, "items": [{"type": "hline", "price": 110.6, "x1": 0.2377, "x2": 0.5281, "kind": "liquidity", "label": "等低 SSL", "label_en": "Equal lows (SSL)", "confidence": "high", "why": "第 8、14 根的低点同为 110.6，中间有明显反弹"}, {"type": "marker", "x": 0.5135, "price": 108.9, "text": "扫等低，收回", "text_en": "sweep", "kind": "liquidity", "place": "below", "confidence": "high", "why": "下影线刺穿 110.6 到 108.9，实体收在 110.9"}, {"type": "hline", "price": 114.4, "x1": 0.3248, "x2": 0.6152, "kind": "structure", "label": "CHoCH：收盘突破 LH", "label_en": "CHoCH: close above LH", "confidence": "high", "why": "第 20 根收盘 116.3，高于最后一个 LH 114.4"}, {"type": "box", "x1": 0.5281, "x2": 0.891, "price_top": 110.9, "price_bottom": 110.2, "kind": "ob", "label": "看涨 OB（只取实体）", "label_en": "Bullish OB (body)", "confidence": "high", "why": "扫等低后、位移前最后一根阴线，实体 110.9–110.2"}, {"type": "box", "x1": 0.5571, "x2": 0.891, "price_top": 113.1, "price_bottom": 111.1, "kind": "fvg", "label": "FVG", "confidence": "high", "fvg_check": {"a_high": 111.1, "c_low": 113.1}, "why": "A（第 18 根）最高 111.1，C（第 20 根）最低 113.1，中间没有重叠"}, {"type": "marker", "x": 0.7168, "price": 110.4, "text": "首次回到 OB", "text_en": "first return", "kind": "note", "place": "below", "confidence": "high", "why": "第 24 根低点 110.4 进入 OB 实体"}, {"type": "hline", "price": 118.4, "x1": 0.049, "x2": 0.891, "kind": "tp", "label": "对侧流动性：前高 BSL", "label_en": "Opposite liquidity: prior high (BSL)", "confidence": "medium", "why": "左侧前高 118.4 尚未被扫"}]}/*END*/;
+function say(t,cls){msg.textContent=t;msg.className=cls||''}
+function priceToY(it,yk,pk){
+  if(yk in it) return +it[yk]*cv.height;
+  if(pk in it){const c=spec.calibration||{};
+    if(!['price_a','y_a','price_b','y_b'].every(k=>k in c)) throw new Error('"'+pk+'" 需要 calibration（price_a, y_a, price_b, y_b）');
+    if(+c.price_a===+c.price_b) throw new Error('calibration 的两个价格不能相同');
+    return (+c.y_a+(+it[pk]-c.price_a)*(c.y_b-c.y_a)/(c.price_b-c.price_a))*cv.height;}
+  throw new Error('缺少 '+yk+' 或 '+pk);
+}
+function setY(it,yk,pk,py){
+  if(pk in it && !(yk in it)){const c=spec.calibration;const f=py/cv.height;it[pk]=+(c.price_a+(f-c.y_a)*(c.price_b-c.price_a)/(c.y_b-c.y_a)).toFixed(6);}
+  else it[yk]=+(Math.min(1,Math.max(0,py/cv.height))).toFixed(4);
+}
+function validate(s){
+  const errs=[];
+  if(!s||!Array.isArray(s.items)) return ['JSON 里需要 items 数组'];
+  s.items.forEach((it,k)=>{
+    const n='第 '+(k+1)+' 项';
+    if(!['hline','box','line','arrow','marker','label'].includes(it.type)) errs.push(n+'：未知类型 '+it.type);
+    if(it.type==='box'&&it.price_top!=null&&it.price_bottom!=null&&+it.price_top<=+it.price_bottom) errs.push(n+'：price_top 必须高于 price_bottom');
+    const f=it.fvg_check; if(f){
+      if('a_high' in f && +f.c_low<=+f.a_high) errs.push(n+'：C 的最低点不高于 A 的最高点，不是多头 FVG');
+      if('a_low' in f && +f.c_high>=+f.a_low) errs.push(n+'：C 的最高点不低于 A 的最低点，不是空头 FVG');}
+    ['x','x1','x2','y','y1','y2'].forEach(key=>{if(key in it&&!(+it[key]>=0&&+it[key]<=1)) errs.push(n+'：'+key+' 超出 0–1');});
+  });
+  return errs;
+}
+function label(t,x,y,col,align,base){
+  if(!t) return; const fs=Math.max(13,Math.round(cv.width/70));
+  ctx.font='600 '+fs+'px -apple-system,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif';
+  ctx.textAlign=align||'left'; ctx.textBaseline=base||'top';
+  const w=ctx.measureText(t).width; let bx=x; if(ctx.textAlign==='right')bx=x-w; if(ctx.textAlign==='center')bx=x-w/2;
+  let by=y; if(ctx.textBaseline==='bottom')by=y-fs; if(ctx.textBaseline==='middle')by=y-fs/2;
+  ctx.fillStyle='rgba(15,18,24,.82)'; ctx.fillRect(bx-4,by-3,w+8,fs+6);
+  ctx.fillStyle=col; ctx.fillText(t,x,y);
+}
+function txt(it,key){let s=it[key]||it.text||it.label||''; if(it.confidence==='low'&&s) s+=' ?'; return s;}
+function geom(it){
+  const W=cv.width;
+  if(it.type==='hline') return {y:priceToY(it,'y','price'),x1:(it.x1??0)*W,x2:(it.x2??1)*W};
+  if(it.type==='box'){const a=priceToY(it,'y1','price_top'),b=priceToY(it,'y2','price_bottom');return {x1:it.x1*W,x2:(it.x2??1)*W,top:Math.min(a,b),bot:Math.max(a,b)};}
+  if(it.type==='line'||it.type==='arrow') return {x1:it.x1*W,x2:it.x2*W,y1:priceToY(it,'y1','price1'),y2:priceToY(it,'y2','price2')};
+  return {x:it.x*W,y:priceToY(it,'y','price')};
+}
+function render(){
+  if(!img) return; ctx.drawImage(img,0,0); if(!spec) return;
+  const lw=Math.max(2,Math.round(cv.width/600)), showH=document.getElementById('showHandles').checked;
+  spec.items.forEach((it,k)=>{
+    const col=COLORS[it.kind]||COLORS.note, g=geom(it), low=it.confidence==='low';
+    ctx.lineWidth=lw; ctx.strokeStyle=col; ctx.setLineDash(low?[10,7]:[]);
+    if(it.type==='hline'){ctx.setLineDash(low?[10,7]:[12,6]);ctx.beginPath();ctx.moveTo(g.x1,g.y);ctx.lineTo(g.x2,g.y);ctx.stroke();ctx.setLineDash([]);label(txt(it,'label'),g.x2-6,g.y-4,col,'right','bottom');
+      if(showH){ctx.fillStyle=col;ctx.fillRect(g.x1-5,g.y-5,10,10);}}
+    else if(it.type==='box'){ctx.fillStyle=col+'40';ctx.fillRect(g.x1,g.top,g.x2-g.x1,g.bot-g.top);ctx.strokeRect(g.x1,g.top,g.x2-g.x1,g.bot-g.top);ctx.setLineDash([]);label(txt(it,'label'),g.x1+6,g.bot+6,col,'left','top');
+      if(showH){ctx.fillStyle=col;[[g.x1,g.top],[g.x1,g.bot]].forEach(p=>ctx.fillRect(p[0]-5,p[1]-5,10,10));}}
+    else if(it.type==='line'||it.type==='arrow'){ctx.beginPath();ctx.moveTo(g.x1,g.y1);ctx.lineTo(g.x2,g.y2);ctx.stroke();ctx.setLineDash([]);
+      if(it.type==='arrow'){const a=Math.atan2(g.y2-g.y1,g.x2-g.x1),L=14+lw*2;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(g.x2,g.y2);ctx.lineTo(g.x2-L*Math.cos(a-.45),g.y2-L*Math.sin(a-.45));ctx.lineTo(g.x2-L*Math.cos(a+.45),g.y2-L*Math.sin(a+.45));ctx.fill();}
+      label(txt(it,'label'),(g.x1+g.x2)/2,Math.min(g.y1,g.y2)-6,col,'center','bottom');
+      if(showH){ctx.fillStyle=col;[[g.x1,g.y1],[g.x2,g.y2]].forEach(p=>ctx.fillRect(p[0]-5,p[1]-5,10,10));}}
+    else if(it.type==='marker'){const r=Math.max(8,cv.width/140);ctx.beginPath();ctx.arc(g.x,g.y,r,0,7);ctx.stroke();ctx.setLineDash([]);
+      const below=(it.place||'below')==='below';label(txt(it,'text'),g.x,below?g.y+r+4:g.y-r-4,col,'center',below?'top':'bottom');}
+    else if(it.type==='label'){ctx.setLineDash([]);label(txt(it,'text'),g.x,g.y,col,'center','middle');}
+  });
+  ctx.setLineDash([]);
+  label('学习性分析，不构成交易建议 · 标注位置为估计',cv.width-8,cv.height-8,'#8a94a6','right','bottom');
+}
+function parse(){
+  try{const s=JSON.parse(ta.value);const errs=validate(s);if(errs.length){say('标注没有通过检查：\n'+errs.join('\n'),'err');return false;}
+    spec=s;spec.items.forEach(it=>geom(it));render();
+    const lows=spec.items.filter(i=>i.confidence==='low').length;
+    say('已画出 '+spec.items.length+' 项'+(lows?'，其中 '+lows+' 项把握较低（虚线 + ?），请重点核对':'')+'。','ok');return true;}
+  catch(e){say('JSON 有误：'+e.message,'err');return false;}
+}
+function loadFile(f){if(!f||!f.type.startsWith('image/'))return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{img=im;cv.width=im.naturalWidth;cv.height=im.naturalHeight;cv.hidden=false;document.getElementById('empty').hidden=true;if(ta.value.trim())parse();else render();};im.src=r.result;};r.readAsDataURL(f);}
+const stage=document.getElementById('stage');
+document.getElementById('pick').onclick=()=>document.getElementById('file').click();
+document.getElementById('file').onchange=e=>loadFile(e.target.files[0]);
+stage.addEventListener('dragover',e=>{e.preventDefault();stage.classList.add('drag');});
+stage.addEventListener('dragleave',()=>stage.classList.remove('drag'));
+stage.addEventListener('drop',e=>{e.preventDefault();stage.classList.remove('drag');loadFile(e.dataTransfer.files[0]);});
+window.addEventListener('paste',e=>{for(const it of e.clipboardData.items){if(it.type.startsWith('image/')){loadFile(it.getAsFile());e.preventDefault();return;}}});
+document.getElementById('drawBtn').onclick=()=>{if(!img){say('先放入截图','err');return;}parse();};
+document.getElementById('sampleBtn').onclick=()=>{ta.value=JSON.stringify(SAMPLE,null,2);
+  const im=new Image();im.onload=()=>{img=im;cv.width=im.naturalWidth;cv.height=im.naturalHeight;cv.hidden=false;document.getElementById('empty').hidden=true;parse();};
+  im.onerror=()=>{if(img)parse();else say('示例 JSON 已填入。示例截图 example-chart.png 需要和本页面放在同一目录。','err');};
+  im.src='example-chart.png';};
+document.getElementById('showHandles').onchange=render;
+document.getElementById('copyBtn').onclick=async()=>{if(!spec){say('还没有可复制的标注','err');return;}const t=JSON.stringify(spec,null,2);ta.value=t;try{await navigator.clipboard.writeText(t);say('已复制修正后的 JSON，可以发回给 AI 继续分析。','ok');}catch(e){say('已更新左侧文本框，请手动复制。','ok');}};
+document.getElementById('exportBtn').onclick=()=>{if(!img){say('先放入截图','err');return;}const s=document.getElementById('showHandles');const was=s.checked;s.checked=false;render();const a=document.createElement('a');a.download='smc-annotated.png';a.href=cv.toDataURL('image/png');a.click();s.checked=was;render();};
+function pos(e){const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height,s:cv.width/r.width};}
+function hit(p){if(!spec)return null;const tol=10*p.s;
+  for(let k=spec.items.length-1;k>=0;k--){const it=spec.items[k];let g;try{g=geom(it);}catch(e){continue;}
+    if(it.type==='hline'&&Math.abs(p.y-g.y)<tol&&p.x>=g.x1-tol&&p.x<=g.x2+tol)return{k,part:'y'};
+    if(it.type==='box'){if(Math.abs(p.y-g.top)<tol&&p.x>=g.x1&&p.x<=g.x2)return{k,part:'top'};if(Math.abs(p.y-g.bot)<tol&&p.x>=g.x1&&p.x<=g.x2)return{k,part:'bot'};if(p.x>=g.x1&&p.x<=g.x2&&p.y>=g.top&&p.y<=g.bot)return{k,part:'move'};}
+    if((it.type==='line'||it.type==='arrow')){if(Math.hypot(p.x-g.x1,p.y-g.y1)<tol*1.5)return{k,part:'p1'};if(Math.hypot(p.x-g.x2,p.y-g.y2)<tol*1.5)return{k,part:'p2'};}
+    if((it.type==='marker'||it.type==='label')&&Math.hypot(p.x-g.x,p.y-g.y)<tol*2)return{k,part:'pt'};}
+  return null;}
+cv.addEventListener('pointerdown',e=>{const p=pos(e),h=hit(p);if(!h)return;const it=spec.items[h.k];drag={...h,start:p,g:geom(it),orig:JSON.parse(JSON.stringify(it))};cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',e=>{const p=pos(e);if(!drag){const h=hit(p);cv.style.cursor=h?(h.part==='move'||h.part==='pt'||h.part.startsWith('p')?'move':'ns-resize'):'default';return;}
+  const it=spec.items[drag.k],dy=p.y-drag.start.y,dx=(p.x-drag.start.x)/cv.width,g=drag.g;
+  try{
+  if(drag.part==='y')setY(it,'y','price',g.y+dy);
+  else if(drag.part==='top')setY(it,'y1','price_top',g.top+dy);
+  else if(drag.part==='bot')setY(it,'y2','price_bottom',g.bot+dy);
+  else if(drag.part==='move'){setY(it,'y1','price_top',g.top+dy);setY(it,'y2','price_bottom',g.bot+dy);it.x1=+Math.min(1,Math.max(0,drag.orig.x1+dx)).toFixed(4);if('x2' in drag.orig)it.x2=+Math.min(1,Math.max(0,drag.orig.x2+dx)).toFixed(4);}
+  else if(drag.part==='p1'){setY(it,'y1','price1',g.y1+dy);it.x1=+Math.min(1,Math.max(0,drag.orig.x1+dx)).toFixed(4);}
+  else if(drag.part==='p2'){setY(it,'y2','price2',g.y2+dy);it.x2=+Math.min(1,Math.max(0,drag.orig.x2+dx)).toFixed(4);}
+  else if(drag.part==='pt'){setY(it,'y','price',g.y+dy);it.x=+Math.min(1,Math.max(0,drag.orig.x+dx)).toFixed(4);}
+  it.adjusted=true;render();}catch(err){say(err.message,'err');}});
+cv.addEventListener('pointerup',()=>{if(drag){drag=null;say('已修正位置。修完点“复制修正后的 JSON”发回给 AI，或直接导出 PNG。','ok');}});
+})();
+</script>
+</body>
+</html>

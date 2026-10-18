@@ -107,14 +107,14 @@
 <rect x="726.2" y="270.7" width="9.5" height="41.6" fill="#26a69a"/>
 <line x1="746.2" y1="211.7" x2="746.2" y2="283.1" stroke="#26a69a" stroke-width="1.3"/>
 <rect x="741.4" y="235.5" width="9.5" height="35.2" fill="#26a69a"/>
-<line x1="761.5" y1="230.6" x2="761.5" y2="270.8" stroke="#ef5350" stroke-width="1.3"/>
-<rect x="756.7" y="235.5" width="9.5" height="20.8" fill="#ef5350"/>
-<line x1="776.7" y1="243.1" x2="776.7" y2="291.4" stroke="#ef5350" stroke-width="1.3"/>
-<rect x="772.0" y="256.3" width="9.5" height="11.2" fill="#ef5350"/>
-<line x1="792.0" y1="234.9" x2="792.0" y2="281.9" stroke="#26a69a" stroke-width="1.3"/>
-<rect x="787.3" y="243.4" width="9.5" height="24.1" fill="#26a69a"/>
-<line x1="807.3" y1="210.9" x2="807.3" y2="249.4" stroke="#26a69a" stroke-width="1.3"/>
-<rect x="802.5" y="223.6" width="9.5" height="19.8" fill="#26a69a"/>
+<line x1="761.5" y1="231.3" x2="761.5" y2="250.5" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="756.7" y="235.5" width="9.5" height="10.7" fill="#ef5350"/>
+<line x1="776.7" y1="239.8" x2="776.7" y2="255.8" stroke="#ef5350" stroke-width="1.3"/>
+<rect x="772.0" y="246.2" width="9.5" height="2.1" fill="#ef5350"/>
+<line x1="792.0" y1="224.9" x2="792.0" y2="252.6" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="787.3" y="229.1" width="9.5" height="19.2" fill="#26a69a"/>
+<line x1="807.3" y1="210.8" x2="807.3" y2="237.7" stroke="#26a69a" stroke-width="1.3"/>
+<rect x="802.5" y="223.6" width="9.5" height="5.5" fill="#26a69a"/>
 <line x1="822.5" y1="185.4" x2="822.5" y2="236.8" stroke="#26a69a" stroke-width="1.3"/>
 <rect x="817.8" y="196.6" width="9.5" height="27.0" fill="#26a69a"/>
 <line x1="837.8" y1="156.9" x2="837.8" y2="210.4" stroke="#26a69a" stroke-width="1.3"/>
@@ -126,7 +126,7 @@
 <text x="532.4" y="271.3" font-size="13" text-anchor="start" fill="#f5c542" font-weight="600">前高</text>
 <rect x="703.2" y="184.7" width="86.0" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
 <text x="746.2" y="197.7" font-size="13" text-anchor="middle" fill="#26a69a" font-weight="600">实体收盘站上</text>
-<rect x="746.7" y="304.4" width="60.0" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
-<text x="776.7" y="317.4" font-size="13" text-anchor="middle" fill="#26a69a" font-weight="600">回踩不破</text>
+<rect x="746.7" y="268.8" width="60.0" height="19.0" rx="3" fill="#0f1218" fill-opacity="0.85"/>
+<text x="776.7" y="281.8" font-size="13" text-anchor="middle" fill="#26a69a" font-weight="600">回踩不破</text>
 <text x="880" y="486" font-size="11" text-anchor="end" fill="#8a94a6">SMC 认知学习 · 示意图，非真实行情</text>
 </svg>

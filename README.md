@@ -2,9 +2,13 @@
 
 [English](README.en.md) ｜ 中文
 
-把一整套 SMC（Smart Money Concepts，聪明钱概念）知识做成 **AI 能直接执行的教学指令**。上传给任意 AI 助手，它就会变成你的一对一 SMC 教练：按课程带学、随时答疑、出题检验、画 K 线示意图讲解、带你复盘图表。
+> **把一整套 SMC 知识做成 AI 能直接执行的教学指令。上传给任意 AI 助手，它就会变成你的一对一 SMC 教练。**
+> **A complete Smart Money Concepts curriculum packaged as instructions any AI assistant can run: upload one file and get a one-on-one SMC tutor.**
+>
+> 按课程带学 · 随时答疑 · 出题检验 · 画图讲解 · 截图标注 · 记住你自己的认知
+> Guided lessons · Q&A · quizzes · diagrams · screenshot annotation · your own notes as memory
 
-**看懂流动性猎杀，不再做被扫的那一个。**
+**看懂流动性猎杀，不再做被扫的那一个。 · Learn to read liquidity hunts — and stop being the liquidity.**
 
 ![订单区 OB 示意图](diagrams/png/06-订单区OB.png)
 
@@ -18,55 +22,77 @@
 
 ---
 
-## 四种用法
+## 快速开始
 
-### 1. 任意 AI 助手（推荐，零门槛）
+### 方式一：任意 AI 助手（推荐）
 
-适用于 ChatGPT、Claude、DeepSeek、豆包、Kimi、Gemini 等。
+适用于 ChatGPT、Claude、Gemini、DeepSeek、豆包、Kimi 等。
 
 1. 下载 [`prompt/SMC-AI-Tutor.md`](prompt/SMC-AI-Tutor.md)
 2. 新开一个对话，把文件作为附件上传（或全文粘贴）
-3. 发送 **"开始"**
+3. 发送 **"开始"**（英文发 "start"，AI 会用英文教）
 
-AI 会先问你三个问题（基础、市场、想怎么学），然后进入对应模式。
+AI 会一次问你五个问题：**基础、市场、想怎么学、想用哪种方式看图、要不要启用认知记忆区**，然后进入对应模式。
 
-### 2. Claude Skill（Claude Code / Claude 应用）
+> AI 读不全大文件、或者回答明显没按指令走时，换用精简版 [`prompt/SMC-AI-Tutor-lite.md`](prompt/SMC-AI-Tutor-lite.md)（去掉了进阶模型的字符图和标注代码，其他内容相同）。
 
-[`skills/smc-learning/`](skills/smc-learning/) 是标准的 Skill 目录，按需读取参考文件，比单文件更省上下文。
+### 方式二：Claude Skill（Claude Code / Claude 应用）
+
+[`skills/smc-learning/`](skills/smc-learning/) 是标准的 Skill 目录，按需读取参考文件，比单文件更省上下文，还自带全部 SVG 示意图。
 
 - **Claude Code**：把 `skills/smc-learning` 复制到 `~/.claude/skills/`，之后直接问 SMC 相关问题即可触发
 - **Claude 应用**：把 `skills/smc-learning` 文件夹压缩成 zip，在技能设置里上传
 
-### 3. 自己读
+### 方式三：不用 AI，自己读
 
 - [`docs/handbook.md`](docs/handbook.md)：完整学习手册，示意图已嵌入正文
+- [`docs/entry-models.md`](docs/entry-models.md)：进阶概念与入场模型图鉴，24 张图解
 - [`docs/distillation.md`](docs/distillation.md)：高密度认知蒸馏，适合速查，也可以喂给 AI 当知识库
-- [`docs/entry-models.md`](docs/entry-models.md)：**进阶概念与入场模型图鉴**，24 张图解，不用 AI 也能直接看
-
-### 4. 加入你自己的 SMC 认知
-
-学的课程、书不同，口径难免有出入。你可以把自己的笔记、蒸馏文件放进来，**同一概念 AI 会以你的口径为准**，第一次用到时标注"这里按你的口径……项目默认说法是……"；你没写的部分照用项目内容。
-
-- **任意 AI**：笔记开头加一行 `<!-- my-smc -->`，和 `SMC-AI-Tutor.md` 一起上传
-- **Claude Skill**：放进 [`skills/smc-learning/my-notes/`](skills/smc-learning/my-notes/)，开场自动读取
-- **合并成一个文件**：按 [`_template.md`](skills/smc-learning/my-notes/_template.md) 的编号写，运行 `python3 tools/build.py`，生成 `prompt/SMC-AI-Tutor.custom.md`
-
-`my-notes/` 里你自己的文件默认不会提交到 Git，避免误公开。
 
 ---
 
-## AI 怎么讲一个概念
+## 主要功能
 
-每个概念都按同一个节奏：
+### 1. 主流 AI 都能看到图
 
-1. **一句话结论**
-2. **生活比喻**
-3. **配图**：能渲染图形的环境用 SVG 示意图，只能显示文字的环境自动换成字符图
-4. **可检查的规则**
-5. **常见误区**
-6. **小练习 + 3 道过关题**：答对 2 题再进下一课
+开场时 AI 先判断自己所在环境能做到什么，只给你列出**真的能用**的展示方式：
 
-四种模式：**系统学习 / 答疑 / 测验 / 看图复盘**。
+| 展示方式 | 适合的环境 |
+|---|---|
+| 图形示意图（SVG / HTML） | 有画布、Artifact、Canvas 等可视化功能的 AI |
+| Python 画图 | 能运行代码的 AI |
+| 字符图 | 任何 AI，纯文字也能看 |
+| 纯文字 + 表格 | 想快速核对时 |
+| TradingView 画线指引 | 想在自己的图表上动手画时 |
+
+流程类内容（入场节奏、十一步清单）在支持的环境里还可以用 Mermaid 流程图。
+
+### 2. 截图标注：发一张 K 线截图，AI 帮你标出结构
+
+AI 会按固定流程来：先读图、列出候选关键点（位置、依据、把握程度），再逐项核对，**不满足条件的不标**，拿不准的标成虚线加"?"。标注有四种输出：
+
+- **直接画在原图上**：能运行代码的 AI 用 [`tools/annotate.py`](tools/annotate.py) 的代码画好发给你
+- **标注器网页**：任何 AI 都能输出一段标注 JSON，用 [`annotator/index.html`](annotator/index.html) 打开截图、粘贴 JSON，就能看到标注，**位置不准可以直接拖动修正**，再导出 PNG（全部在浏览器本地完成，图片不上传）
+- **TradingView 画线指引**：按价格和时间告诉你在哪画线、画框
+- **文字表格**
+
+> AI 从截图里读位置是估计，可能偏几根 K 线或一点价格。标注器的拖动校正就是为这个准备的。
+
+打开标注器点"看示例"，可以看到下面这张演示（虚构走势）：
+
+![截图标注示例](docs/annotation-example.png)
+
+### 3. 认知记忆区：加入你自己的 SMC 理解
+
+学的课程、书不同，口径难免有出入。开场时选择启用，你可以：
+
+- **直接上传**自己的笔记或蒸馏文件（开头加一行 `<!-- my-smc -->`）
+- **边学边记**：跟 AI 说"记下：我的 OB 取整根 K 线"，它会确认后记入
+- **随时导出**：说"导出我的认知"，得到一份 `my-smc.md`，下次和指令一起上传
+
+同一概念 **AI 会以你的口径为准**，第一次用到时标注"这里按你的口径……教程默认说法是……"；你没写的部分照用教程内容；你的口径有明显风险（比如不设止损）时，AI 会说明理由，但不强改。
+
+Claude Skill 用户把笔记放进 [`skills/smc-learning/my-notes/`](skills/smc-learning/my-notes/)，开场自动读取；在 Claude Code 里 AI 还能经你同意直接写进这个文件夹。想合并成一个文件，按 [`_template.md`](skills/smc-learning/my-notes/_template.md) 的编号写好，运行 `python3 tools/build.py` 即可。`my-notes/` 里你自己的文件默认不会提交到 Git。
 
 ---
 
@@ -89,7 +115,16 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 
 另有 **55 个常见疑问与回答**、20 道综合测验、误区清单、十一步分析清单和复盘模板。
 
-**关于【作者实战经验】**：内容里标有这个标记的部分（如 CISD、拒绝针强弱、心态层误区），是作者在自己交易中遇到具体情况后总结的经验，**不是 SMC 的通用定义**，样本有限。AI 讲到这些内容时会主动说明，请谨慎理解，先在自己的图上验证。
+**关于口径**：MSS、CISD、诱导是否为 BOS 的必要条件、OB 取实体还是整根等，各流派说法不同。教材写明了本项目采用的口径，也写明了别处的常见说法。
+
+**关于【作者实战经验】**：标有这个标记的部分（如 CISD、拒绝针强弱、心态层误区），是作者在自己交易中遇到具体情况后总结的经验，**不是 SMC 的通用定义**，样本有限。AI 讲到这些内容时会主动说明，请谨慎理解，先在自己的图上验证。
+
+## 准确性是怎么保证的
+
+- **示意图由数据生成**：每张 K 线图都先写好每根 K 线的开高低收，标注从数据计算出来，生成前跑一遍逻辑断言（例如 FVG 必须满足 C 的最低点高于 A 的最高点、清扫必须影线越过且实体收回、OB 必须是位移前最后一根反向 K 线）。任何一条不满足，脚本直接报错，不会出图。
+- **字符图同源**：字符图库由同一套数据生成，并检查"该高的点在更高的行"，保证文字版和图形版说的是一回事。
+- **标注前核对清单**：AI 在画任何图、标任何截图之前，都要逐项过一遍核对清单；标注器和标注代码也会拒绝明显矛盾的标注。
+- 发现错误欢迎提 Issue，见[参与贡献](#参与贡献)。
 
 ## 示意图
 
@@ -97,12 +132,9 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 |---|---|
 | ![市场结构](diagrams/png/01-市场结构.png) | ![流动性清扫](diagrams/png/03-流动性清扫.png) |
 | ![FVG](diagrams/png/05-FVG三根K线.png) | ![完整入场节奏](diagrams/png/08-完整入场节奏.png) |
+| ![QM](diagrams/models/png/B01-QM基础形态.png) | ![Breaker](diagrams/models/png/A1-Breaker破坏块.png) |
 
-基础概念 12 张见 [`diagrams/svg`](diagrams/svg/)，进阶概念与入场模型 24 张见 [`diagrams/models`](diagrams/models/)。
-
-| | |
-|---|---|
-| ![QM](diagrams/models/png/B01-QM基础形态.png) | ![Breaker](diagrams/models/png/A1-Breaker破坏块.png) |所有示意图都是程序生成的虚构走势，不是真实行情。
+基础概念 12 张见 [`diagrams/svg`](diagrams/svg/)，进阶概念与入场模型 24 张见 [`diagrams/models`](diagrams/models/)。所有示意图都是程序生成的虚构走势，不是真实行情。
 
 ---
 
@@ -110,30 +142,32 @@ AI 会先问你三个问题（基础、市场、想怎么学），然后进入�
 
 ```
 smc-ai-tutor/
-├── SOURCES.md                  # 出处对照
-├── prompt/SMC-AI-Tutor.md      # 单文件 AI 指令（任意 AI 可用，自动生成）
-├── skills/smc-learning/        # Claude Skill（内容源文件）
-│   ├── SKILL.md
-│   ├── my-notes/               # 你自己的 SMC 认知（默认不提交）
-│   ├── references/             # 01 认知框架 … 05 画图规范
-│   └── assets/diagrams/        # SVG 示意图
-├── docs/
-│   ├── handbook.md             # 学习手册（自动生成）
-│   ├── entry-models.md         # 进阶概念与入场模型图鉴（自动生成）
-│   └── distillation.md         # 认知蒸馏
-├── diagrams/svg | png          # 示意图
-└── tools/                      # 生成脚本
+├── prompt/
+│   ├── SMC-AI-Tutor.md         # 单文件 AI 指令（任意 AI 可用，自动生成）
+│   └── SMC-AI-Tutor-lite.md    # 精简版（自动生成）
+├── skills/smc-learning/        # Claude Skill
+│   ├── SKILL.md                # 教练指令（自动生成）
+│   ├── references/             # 01 认知框架 … 08 截图标注规范（内容源文件）
+│   ├── assets/                 # SVG 示意图
+│   └── my-notes/               # 你自己的 SMC 认知（默认不提交）
+├── annotator/index.html        # 截图标注器（浏览器本地运行）
+├── docs/                       # 手册、图鉴、认知蒸馏
+├── diagrams/                   # 全部示意图 SVG / PNG
+├── tools/                      # 生成与校验脚本
+└── SOURCES.md                  # 出处对照
 ```
 
-**内容只改 `skills/smc-learning/references/`**，然后重新生成：
+**内容只改 `skills/smc-learning/references/`（01–06、08）和 `tools/tutor_core.md`（教练指令）**，然后重新生成：
 
 ```bash
-python3 tools/build.py                          # 生成 prompt/ 和 docs/handbook.md（有 my-notes 时额外生成 custom 版）
-python3 tools/gen_diagrams.py                   # 重新生成 SVG 示意图
-python3 tools/ob_poster.py                      # 重新生成 OB 一图看懂
-python3 tools/gen_models.py                     # 重新生成进阶与入场模型图
-python3 tools/render.py diagrams/models/svg diagrams/models/png
+python3 tools/gen_diagrams.py                       # 基础示意图（带逻辑断言）
+python3 tools/ob_poster.py                          # OB 一图看懂
+python3 tools/gen_models.py                         # 进阶与入场模型图（带逻辑断言）
+python3 tools/gen_ascii.py                          # 字符图库 07（带逻辑断言）
+python3 tools/gen_example.py                        # 标注器示例图与示例 JSON（虚构数据）
+python3 tools/build.py                              # SKILL.md、prompt/、docs/
 python3 tools/render.py diagrams/svg diagrams/png   # SVG 转 PNG（需要 playwright）
+python3 tools/render.py diagrams/models/svg diagrams/models/png
 ```
 
 ## 参与贡献
@@ -143,8 +177,6 @@ python3 tools/render.py diagrams/svg diagrams/png   # SVG 转 PNG（需要 playw
 - 改的是哪个概念、原来怎么写、建议怎么改
 - 理由（逻辑推导或公开资料来源）
 - 请用自己的话写，**不要粘贴付费课程、书籍的原文或截图**
-
-SMC 各流派对部分概念（如 OB 取实体还是整根、CISD 的定义）说法不一。本项目在文中写明了自己的口径，有不同意见欢迎讨论。
 
 ## 出处
 
@@ -162,7 +194,7 @@ SMC 各流派对部分概念（如 OB 取实体还是整根、CISD 的定义）�
 
 - 本项目**仅用于学习交流**，不构成任何投资建议，不荐股、不喊单、不带单。
 - 交易有风险，**任何方法都不能保证盈利**。请根据自身风险承受能力独立决策，盈亏自负。
-- AI 的回答可能出错。请把它当作学习辅助，不要当作交易信号，更不要用它代替自己的判断。
+- AI 的回答和截图标注可能出错。请把它当作学习辅助，不要当作交易信号，更不要用它代替自己的判断。
 - 标有【作者实战经验】的内容是个人经验总结，不代表普遍规律。
 
 ## 许可证

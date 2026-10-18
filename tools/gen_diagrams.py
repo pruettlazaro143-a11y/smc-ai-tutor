@@ -105,6 +105,7 @@ class Chart:
 class Panel:
     def __init__(self, chart, candles, x0, y0, x1, y1, pad=None, label=None):
         self.ch, self.cs = chart, candles
+        valid_candles(candles, label or "panel")
         self.x0, self.y0, self.x1, self.y1 = x0, y0, x1, y1
         self.label = label
         lo = min(c[2] for c in candles)
@@ -280,6 +281,25 @@ class Panel:
         return out
 
 
+def check(cond, msg):
+    """Hard assertion used to keep every annotation consistent with the candle data."""
+    if not cond:
+        raise AssertionError("diagram check failed: " + msg)
+
+
+def valid_candles(cs, name):
+    for i, (o, h, l, c) in enumerate(cs):
+        check(h >= max(o, c) - 1e-9 and l <= min(o, c) + 1e-9, f"{name}: candle {i} high/low does not contain body")
+
+
+def is_swing_high(p, i, k=2):
+    return all(p.H(i) >= p.H(j) for j in range(max(0, i - k), min(p.n, i + k + 1)))
+
+
+def is_swing_low(p, i, k=2):
+    return all(p.L(i) <= p.L(j) for j in range(max(0, i - k), min(p.n, i + k + 1)))
+
+
 def legend(chart, items, x, y):
     for k, (col, s) in enumerate(items):
         yy = y + k * 22
@@ -340,6 +360,18 @@ def d01():
     b = ch.panel(dn, 456, 86, 876, 470, label="下跌结构")
     pts = [(0, "l", None)]
     seq = [(6, "h", "HH"), (10, "l", "HL"), (16, "h", "HH"), (20, "l", "HL"), (26, "h", "HH"), (30, "l", "HL")]
+    for i in (6, 16, 26):
+        check(is_swing_high(a, i), f"d01 up: {i} not swing high")
+    for i in (10, 20, 30):
+        check(is_swing_low(a, i), f"d01 up: {i} not swing low")
+    check(a.H(6) < a.H(16) < a.H(26), "d01 up: highs not rising")
+    check(a.L(0) < a.L(10) < a.L(20) < a.L(30), "d01 up: lows not rising")
+    for i in (6, 16, 26):
+        check(is_swing_low(b, i), f"d01 down: {i} not swing low")
+    for i in (10, 20, 30):
+        check(is_swing_high(b, i), f"d01 down: {i} not swing high")
+    check(b.L(6) > b.L(16) > b.L(26), "d01 down: lows not falling")
+    check(b.H(0) > b.H(10) > b.H(20) > b.H(30), "d01 down: highs not falling")
     prev = (0, a.L(0))
     for i, w, lab in seq:
         p = a.H(i) if w == "h" else a.L(i)
@@ -365,14 +397,21 @@ def d02():
     i_ll, ll = p.argmin_l(13, 17)
     k = p.first_close_below(ll, i_ll + 2)
     p.hline(ll, i_ll, k, C["bear"], "BOS 下跌延续（收盘跌破前低）", lpos="start", above=False)
-    p.mark(18, "h", "LH 守门点", C["warn"])
+    check(k <= 24 and p.Cl(k) < ll, "d02: down BOS candle")
     i_lh, lh = p.argmax_h(17, 19)
-    k2 = p.first_close_above(lh, 25)
+    check(i_lh == 18 and is_swing_high(p, 18), "d02: LH label not on the swing high")
+    check(p.H(18) < p.H(9), "d02: 18 is not a lower high")
+    p.mark(18, "h", "LH 守门点", C["warn"])
+    k2 = p.first_close_above(lh, 19)
+    check(k2 >= 25, "d02: CHoCH happened earlier than drawn")
+    check(p.argmin_l(22, 26)[0] == 24 and is_swing_low(p, 24), "d02: LL label not on the low")
     p.hline(lh, i_lh, k2, C["warn"], "CHoCH 第一次转向", lpos="end")
     i_h, hh = p.argmax_h(27, 31)
     i_hl, hl = p.argmin_l(31, 35)
     p.mark(i_hl, "l", "HL", C["tp"])
     k3 = p.first_close_above(hh, i_hl)
+    check(i_hl > k2 and hl > p.L(24), "d02: HL must form after CHoCH and above the LL")
+    check(all(p.Cl(j) <= hh for j in range(i_h + 1, k3)), "d02: new-direction BOS drawn late")
     p.hline(hh, i_h, k3 + 2, C["tp"], "BOS 新方向 → MSS 确认反转", lpos="end")
     p.mark(24, "l", "LL", C["bear"])
     ch.save("02-BOS-CHoCH-MSS.svg")
@@ -386,6 +425,9 @@ def d03():
                   (105.3, None, 101.6), 107.6, 109.8, 109.2, 111.0, 112.6, 113.4, 114.8], seed=21)
     p = ch.panel(cs, 24, 86, 876, 470)
     lvl = 104.0
+    check(abs(p.L(5) - lvl) < 1e-9 and abs(p.L(13) - lvl) < 1e-9, "d03: equal lows")
+    check(all(p.L(j) > lvl for j in range(0, 20) if j not in (5, 13)), "d03: another candle broke the equal lows")
+    check(p.L(20) < lvl and p.Cl(20) > lvl, "d03: sweep candle must pierce and close back above")
     p.hline(lvl, 5, 20, C["liq"], "等低 Equal Lows", lpos="start", above=True)
     p.zone(5, 20, lvl - 0.15, lvl - 2.2, C["liq"], "SSL 卖方流动性：多头止损聚集在这里", opacity=0.10, lpos="bl")
     p.mark(5, "l", "低点 1", C["muted"], off=-2)
@@ -406,6 +448,13 @@ def d04():
     p = ch.panel(cs, 24, 86, 876, 530)
     top = p.H(6)
     idm = p.L(8)
+    check(is_swing_high(p, 6) and is_swing_low(p, 8), "d04: top / IDM swing points")
+    check(all(p.H(j) < top for j in range(7, 14)), "d04: no break of the top before the sweep")
+    check(all(p.L(j) > idm for j in range(9, 12)), "d04: IDM swept too early")
+    check(p.L(12) < idm, "d04: candle 12 must sweep IDM")
+    check(p.Cl(13) < p.O(13) and p.Cl(14) > p.O(14), "d04: OB must be the last bearish candle before displacement")
+    kb = p.first_close_above(top, 9)
+    check(kb == 15, f"d04: BOS candle expected 15, got {kb}")
     p.zone(7, 8, p.H(7), idm, C["bear"], None, opacity=0.14)
     p.tag(p.x(7) - p.step * 0.5, p.y(top) - 10, "诱导区 ↓ 会被吃掉，不做", C["bear"])
     p.hline(idm, 8, 12, C["liq"], "IDM 诱导点", lpos="start", above=False)
@@ -425,6 +474,7 @@ def d05():
            [106.2, 107.4, 104.2, 107.0]]   # C
     L = ch.panel(abc, 24, 86, 330, 510, pad=1.2, label="① 只看三根")
     a_hi, c_lo = L.H(0), L.L(2)
+    check(c_lo > a_hi, "d05 left: no FVG")
     L.zone(1, 1, c_lo, a_hi, C["fvg"], None, opacity=0.3)
     L.hline(a_hi, 0, 2, C["fvg"], "A 最高点 = 下沿", lpos="start", above=False, dash="4 3")
     L.hline(c_lo, 0, 2, C["fvg"], "C 最低点 = 上沿", lpos="start", above=True, dash="4 3")
@@ -456,10 +506,18 @@ def d05():
 def d06():
     ch = Chart("订单区 OB：位移前最后一根反向 K 线的实体", "OB 三个硬条件：扫过流动性 + 留下失衡(FVG) + 打出结构；区域取实体，影线只作缓冲", 900, 500)
     cs = mk(113, [112.0, 110.6, 109.2, 107.8, (106.4, None, 105.4), 106.8, 108.2, (109.0, 109.8, None),   # 0-7
-                  108.1, 107.0, 106.2, (105.5, None, None), (104.6, None, 103.6),                        # 8-12 OB idx12 sweeps 105.4
+                  108.1, 107.0, 106.2, (105.5, None, 105.45), (104.6, None, 103.6),                        # 8-12 OB idx12 sweeps 105.4
                   (107.4, None, 104.5), (110.6, None, 107.9), 111.4,                                       # 13-15 displacement
                   110.4, 109.0, 107.6, (106.4, None, 105.0), 107.8, 109.6, 111.2, 112.6, 114.0], seed=14)
     p = ch.panel(cs, 24, 86, 876, 470)
+    check(is_swing_low(p, 4), "d06: prior low")
+    check(all(p.L(j) > p.L(4) for j in range(5, 12)), "d06: prior low broken before OB")
+    check(p.L(12) < p.L(4), "d06: OB candle must sweep the prior low")
+    check(p.Cl(12) < p.O(12) and p.Cl(13) > p.O(13), "d06: OB = last bearish candle before displacement")
+    ob_top, ob_bot = max(p.O(12), p.Cl(12)), min(p.O(12), p.Cl(12))
+    first_ret = next(j for j in range(15, p.n) if p.L(j) <= ob_top)  # after the displacement candles
+    check(first_ret == 19, f"d06: first return to OB expected at 19, got {first_ret}")
+    check(p.L(19) >= ob_bot - 0.6, "d06: first return should not blow through the OB")
     p.hline(p.L(4), 4, 12, C["liq"], "前低", lpos="start", above=False)
     p.ob(12, p.n - 1, "看涨 OB：取最后一根阴线的实体", C["ob"])
     p.tag(p.x(p.n - 1), p.y(p.L(12)) + 18, "虚线 = 影线极端，作缓冲参考", C["muted"], anchor="end", fs=12)
@@ -468,6 +526,8 @@ def d06():
     p.zone(13, 17, c_lo, a_hi, C["fvg"], None, opacity=0.18, where="under")
     p.tag(p.x(15.5), p.y((a_hi + c_lo) / 2) + 6, "FVG", C["fvg"], anchor="middle", box=False)
     k = p.first_close_above(p.H(7), 13)
+    check(is_swing_high(p, 7) and all(p.H(j) < p.H(7) for j in range(8, 13)), "d06: structure high")
+    check(k in (13, 14, 15), "d06: displacement must break structure")
     p.hline(p.H(7), 7, k + 1, C["tp"], "位移打破结构", lpos="start")
     p.mark(19, "h", "首次回到 OB：先看反应再进", C["text"], off=18)
     ch.save("06-订单区OB.svg")
@@ -490,6 +550,8 @@ def d07():
     p.hline(hi, i_hi, end, C["muted"], "波段高点 100%", lpos="end", dash="2 3")
     p.hline(lo, i_lo, end, C["muted"], "波段低点 0%", lpos="end", dash="2 3", above=False)
     i_r, _ = p.argmin_l(24, 28)
+    check(p.L(i_r) < eq, "d07: the 'back to discount' low must be below 50%")
+    check(lo < eq < hi, "d07: range")
     p.mark(i_r, "l", "回到便宜区再找多", C["tp"])
     ch.save("07-Premium-Discount.svg")
 
@@ -506,19 +568,28 @@ def d08():
             seed=41)
     p = ch.panel(cs, 24, 86, 876, 530)
     ssl = p.L(12)
+    check(is_swing_low(p, 12), "d08: SSL swing low")
+    check(all(p.L(j) > ssl for j in range(13, 17)), "d08: SSL broken before sweep")
+    check(p.L(17) < ssl and p.Cl(17) > ssl, "d08: sweep candle must pierce SSL and close back above")
     p.hline(ssl, 12, 18, C["liq"], "前低 SSL", lpos="start", above=False)
     p.badge(17, p.L(17) - 1.2, "1", C["liq"])
     p.tag(p.x(17) + 16, p.y(p.L(17) - 1.2) + 5, "扫流动性", C["liq"])
     p.badge(18, p.L(18) - 1.0, "2", C["warn"])
     p.tag(p.x(18) + 16, p.y(p.L(18) - 1.0) + 5, "位移", C["warn"])
     lh = p.H(14)
-    k = p.first_close_above(lh, 17)
+    check(is_swing_high(p, 14), "d08: LH must be a swing high")
+    k = p.first_close_above(lh, 15)
+    check(k == 18, f"d08: CHoCH candle expected 18, got {k}")
     p.hline(lh, 14, k + 1, C["text"], "3 CHoCH", lpos="start")
     a_hi, c_lo = p.H(17), p.L(19)
     assert c_lo > a_hi
     p.zone(18, 24, c_lo, a_hi, C["fvg"], None, opacity=0.18)
     p.badge(22, p.L(22) - 1.0, "4", C["fvg"])
     p.tag(p.x(22) + 16, p.y(p.L(22) - 1.0) + 5, "回踩 FVG", C["fvg"])
+    first_touch = next(j for j in range(20, p.n) if p.L(j) <= c_lo)
+    check(first_touch in (21, 22), f"d08: first FVG retrace at {first_touch}")
+    check(p.Cl(23) > p.O(23), "d08: trigger candle must be bullish")
+    check(all(p.L(j) > a_hi for j in range(20, 24)), "d08: retrace must not fill the whole FVG")
     entry = p.Cl(23)
     sl = p.L(17) - 0.4
     tp = p.H(1)
@@ -537,16 +608,27 @@ def d09():
     left[17] = [109.4, 112.3, 109.1, 109.6]
     left[18][0] = 109.6
     right = gen_path([(0, 104), (5, 110.4), (9, 106.5), (14, 110.3), (16, 108.8), (18, 112.4), (20, 110.9), (25, 117)], seed=52, noise=0.2)
+    # retest that holds above the broken high (candles 19-22 set explicitly)
+    right[19] = [112.4, 112.6, 111.7, 111.9]
+    right[20] = [111.9, 112.2, 111.45, 111.8]
+    right[21] = [111.8, 112.9, 111.6, 112.7]
+    right[22] = [112.7, 113.56, 112.3, 112.96]
     a = ch.panel(left, 24, 86, 444, 470, label="清扫 Sweep")
     b = ch.panel(right, 456, 86, 876, 470, label="真突破 Breakout")
     lv = max(a.H(5), a.H(14))
+    check(all(a.Cl(j) < lv for j in range(0, a.n)), "d09 left: no close above the high in a sweep")
+    check(a.H(17) > lv and a.Cl(17) < lv, "d09 left: sweep candle")
+    check(all(a.H(j) <= lv for j in range(0, 17)), "d09 left: high pierced before the sweep candle")
     a.hline(lv, 4, 20, C["liq"], "前高", lpos="start")
     a.mark(17, "h", "上影刺穿，收盘回到下方", C["warn"])
     lv2 = max(b.H(5), b.H(14))
     b.hline(lv2, 4, 22, C["liq"], "前高", lpos="start", above=False)
     k = b.first_close_above(lv2, 15)
+    check(all(b.H(j) <= lv2 for j in range(0, 15)), "d09 right: level pierced early")
     b.mark(k, "h", "实体收盘站上", C["tp"])
     i_rt, _ = b.argmin_l(19, 21)
+    check(b.L(i_rt) > lv2 - 0.35 and all(b.Cl(j) > lv2 for j in range(k, b.n)), "d09 right: retest must hold the level (no close back below)")
+    check(i_rt > k, "d09 right: retest after breakout")
     b.mark(i_rt, "l", "回踩不破", C["tp"])
     ch.save("09-清扫vs真突破.svg")
 
@@ -566,6 +648,12 @@ def d10():
         [104.4, 105.2, 103.6, 104.7],  # hesitant
         [104.7, 105.0, 102.9, 103.3], [103.3, 103.6, 100.2, 100.6],
     ]
+    pin, eng = strong[3], strong[4]
+    check(pin[2] < min(r[2] for r in strong[:3]), "d10: pin must make the low")
+    check((min(pin[0], pin[3]) - pin[2]) > 3 * abs(pin[0] - pin[3]), "d10: strong pin = long wick, small body")
+    check(eng[3] > eng[0] and eng[0] <= min(pin[0], pin[3]) and eng[3] >= max(pin[0], pin[3]), "d10: 2nd candle body engulfs the pin body")
+    wpin, w2 = weak[3], weak[4]
+    check(abs(w2[3] - w2[0]) < abs(wpin[0] - wpin[3]), "d10: weak 2nd candle is smaller than the pin body")
     a = ch.panel(strong, 24, 86, 444, 450, label="强：立刻吞没")
     b = ch.panel(weak, 456, 86, 876, 450, label="弱：犹豫不前")
     a.mark(3, "l", "长下影 + 短实体", C["text"])
@@ -578,4 +666,10 @@ def d10():
 
 for fn in (d00, d01, d02, d03, d04, d05, d06, d07, d08, d09, d10):
     fn()
+if OUT == "diagrams/svg":  # keep the Skill's copy in sync
+    import shutil
+    os.makedirs("skills/smc-learning/assets/diagrams", exist_ok=True)
+    for f in os.listdir(OUT):
+        if f[:2].isdigit() and not f.startswith("11-"):
+            shutil.copy(os.path.join(OUT, f), os.path.join("skills/smc-learning/assets/diagrams", f))
 print("done", sorted(os.listdir(OUT)))
