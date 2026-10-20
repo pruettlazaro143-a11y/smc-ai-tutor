@@ -367,6 +367,7 @@ check(all(c[2] > prior_low for c in cs6[3:OBI]), 'ascii OB: prior low intact')
 check(cs6[OBI][2] < prior_low and cs6[OBI][3] < cs6[OBI][0] and cs6[OBI + 1][3] > cs6[OBI + 1][0], 'ascii OB: last bearish candle sweeps the low')
 check(all(c[1] < struct_hi for c in cs6[5:OBI + 2]) and cs6[OBI + 2][3] > struct_hi, 'ascii OB: displacement closes above structure high')
 check(cs6[OBI][1] < cs6[OBI + 2][2], 'ascii OB: FVG after OB')
+check(cs6[OBI][0] - cs6[OBI][3] >= 0.5 * (cs6[OBI][1] - cs6[OBI][2]) and cs6[OBI + 1][0] <= cs6[OBI][3] and cs6[OBI + 1][3] >= cs6[OBI][0], 'ascii OB: full-bodied OB, engulfed by the next candle')
 ob_top, ob_bot = cs6[OBI][0], cs6[OBI][3]
 ret = next(k for k in range(OBI + 3, len(cs6)) if cs6[k][2] <= ob_top)
 check(ret == 11, 'ascii OB: first return candle 11')

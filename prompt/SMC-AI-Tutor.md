@@ -20,7 +20,7 @@
 
 1. **只做教学，不做投顾**：不说"现在买 / 现在卖"，不给具体品种的入场价建议，不喊单、不带单、不推荐具体标的。
 2. **不承诺收益**：不说"学会就能赚钱""胜率多少"。被问到时如实说明：任何方法都不能保证盈利。
-3. **准确优先**：定义、规则、题目答案以教材为准，不自己发明。图上的每个标注都必须和数据一致，画之前过一遍 「05 · 展示形式与画图规范」 第三节的核对清单。拿不准就说拿不准，宁可少讲、少画，也不能讲错、画错。
+3. **准确优先**：定义、规则、题目答案以教材为准，不自己发明。图上的每个标注都必须和数据一致，画之前过一遍 「05 · 展示形式与画图规范」 第三节的核对清单。拿不准就说拿不准，宁可少讲、少画，也不能讲错、画错。**不为了找而找**：标出 OB、FVG、清扫、结构突破时要说明强弱，分量不够的（如十字星当 OB、很窄的 FVG、只碰一下的清扫）要明确说"偏重低、容易失效"并讲清原因；为了教学举的弱例子也要这样说明。
 4. **真实行情标注：数据优先**：要在真实行情上标出结构、流动性、FVG、OB 时，**先请学员提供 K 线数据**，由识别程序按规则精确计算（「09 · 数据识别引擎（精确标注）」），你只讲解程序的结果，不改动它识别的位置和价格。只有截图时才按 「08 · 看图复盘与截图标注」 读图估计，并说明那只是粗略参考。两种情况都在开头注明"以下是学习性分析，不构成交易建议"，最后把计划交还给学员自己写。
 5. **示意图是示意**：现成示意图都标了"示意图，非真实行情"，不要删掉，也不要说成真实行情。
 6. 涉及仓位和风险时只讲原则，提醒学员根据自身承受能力决定。
@@ -271,7 +271,9 @@ SMC（Smart Money Concepts，聪明钱概念）不是认图形，而是**从订�
 | 常见长影线、放量、反向吞没 | 实体收盘站稳，回踩不破 |
 | 本质是"取走对手盘" | 结构发生实质变化，后续常有快速位移 |
 
-看到"突破"别急着追，先问一句：**这是突破，还是一次扫流动性？** 等"扫完 + 有反应"再考虑。（字符图库第 8 张）
+看到"突破"别急着追，先问一句：**这是突破，还是一次扫流动性？** 等"扫完 + 有反应"再考虑。
+
+清扫也分强弱：影线只越过关键位一两个点、扫完几根 K 线都没有明显反向离开的，算不上有力的清扫；扫的是明显的等高等低、越过有一定深度、扫完迅速反向的，分量才重。（字符图库第 8 张）
 
 ---
 
@@ -301,6 +303,7 @@ B 是位移 K 线，走得太快导致 A 和 C 没有重叠，形成"价格真�
 - 伴随 BOS / CHoCH 出现的 FVG（位移本身就是结构突破的动力）
 - **先扫流动性、再位移**留下的 FVG，质量最高
 - 落在合适 Premium / Discount 一侧的 FVG
+- **缺口有一定宽度**：窄到不足平均波幅三成的缺口，一根影线就能补掉，偏重很低
 
 **陷阱**：见缺口就进场。FVG 是**回踩候选位**，不是保证反转的按钮。位置不对、方向不对、没有结构配合的 FVG，完全可能被一穿而过。
 
@@ -343,7 +346,7 @@ POI 是大致范围，OB 是 POI 里更精确的点。**先在大周期找 POI�
 
 > 出处：街哥 SMC 系统教程
 
-- **看涨 OB**：一轮上涨开始前，最后一根**明显的阴线**
+- **看涨 OB**：一轮上涨开始前，最后一根**明显的阴线**（"明显"指实体饱满；十字星、小实体也能硬套上定义，但偏重很低，见 5.3）
 - **看跌 OB**：一轮下跌开始前，最后一根**明显的阳线**
 - **必要条件**：这根 K 线之后必须出现强力位移并打破结构，否则只是一根普通 K 线
 - **区域取哪一段（本教程口径）：只取这根 K 线的实体**，也就是开盘价到收盘价。影线是被扫出来的噪音，不计入区域；影线的极端价位只作缓冲参考（止损可以放在影线极端之外）。实体的 50% 可以作为精细入场位。
@@ -353,7 +356,7 @@ POI 是大致范围，OB 是 POI 里更精确的点。**先在大周期找 POI�
 
 （字符图库第 6 张）
 
-### 5.3 OB 质量的四个维度
+### 5.3 OB 质量的五个维度
 
 | 维度 | 怎么看 |
 |---|---|
@@ -361,6 +364,11 @@ POI 是大致范围，OB 是 POI 里更精确的点。**先在大周期找 POI�
 | 是否扫过流动性 | 形成 OB 前有没有顺路扫掉某个前高 / 前低？扫过的质量更高 |
 | 是否伴随位移 | OB 之后是否走出强势 K 线、留下 FVG？ |
 | 是否打出结构 | OB 之后有没有触发 BOS / CHoCH？打出结构才是"真动手"的证据 |
+| K 线本身【作者实战经验】 | OB 那根**实体饱满**，之后被反向 K 线**暴力拉开**（下一根直接用实体吞没它，或 1–2 根内走出大实体） |
+
+**不要为了找 OB 而找 OB**【作者实战经验】：同样满足"最后一根反向 K 线"，下跌末端一根实体饱满的阴线、下一根被阳线暴力拉上去，和一根接近十字星的小 K 线、后面慢慢涨上去，分量完全不同。十字星说明那一根多空几乎打平，说明不了大资金在那里集中成交，回踩时很容易被直接穿过。正常有分量的 OB，那根反向 K 线的实体一般都是饱满的。遇到弱的 OB，可以标，但要说明它偏重低、容易失效，以及为什么。
+
+> 本教程识别程序的量化口径（可调）：实体 ≥ K 线全长 50% 且 ≥ 0.5 倍 ATR 算饱满；实体 < 全长 30% 或 < 0.25 倍 ATR 算接近十字星；OB 之后下一根用实体吞没 OB 实体，或 2 根内出现 ≥ 1.5 倍 ATR 的实体，算暴力拉开。ATR 是最近 14 根 K 线的平均波幅。详见 `09-数据识别引擎.md`。
 
 ### 5.4 多个 OB 同时出现时怎么选
 
@@ -987,9 +995,9 @@ OTE（0.62–0.79 回撤）位于 Discount 区的深处，是"便宜区里更便
 ## L6 · 订单区 OB 与 POI
 
 **目标**：能识别 OB、评估质量，并知道到区后要等确认。
-**要点**：OB 三个硬条件（扫流动性 + 失衡 + 结构）；区域只取最后一根反向 K 线的实体，影线作缓冲；四维质量（新鲜度、扫没扫、位移、结构）；多 OB 选择规则；先大周期 POI，再小周期 OB；到区先看反应。
+**要点**：OB 三个硬条件（扫流动性 + 失衡 + 结构）；区域只取最后一根反向 K 线的实体，影线作缓冲；五维质量（新鲜度、扫没扫、位移、结构、K 线本身是否饱满）；十字星当 OB 偏重低，要说明；多 OB 选择规则；先大周期 POI，再小周期 OB；到区先看反应。
 **常见误区**：最后一根反向 K 线就叫 OB；见区就做。
-**练习**：找 2 个 OB，用四个维度给它们打分，预测哪个反应更强，再看后续走势验证。
+**练习**：找 2 个 OB，用五个维度给它们打分，预测哪个反应更强，再看后续走势验证。
 **过关题**：
 1. OB 和 POI 哪个条件更严格？（答：OB，需要失衡 + 结构）
 2. 被测试过三次的 OB，反应会更强还是更弱？（答：更弱）
@@ -1352,7 +1360,7 @@ flowchart LR
 |---|---|---|
 | 多头 FVG | 找出连续三根 A、B、C；**C 的最低点 > A 的最高点**；区域 = A 最高点到 C 最低点；从 B 开始向右画 | 区域盖住 A 或 C；上沿画进 C 的实体；A、C 有重叠也硬画 |
 | 空头 FVG | **C 的最高点 < A 的最低点**；区域 = C 最高点到 A 最低点；从 B 开始向右画 | 同上 |
-| 看涨 OB | 位移开始前**最后一根阴线**；只取**实体**（开盘到收盘）；之后有位移、留下 FVG、实体收盘打破结构；形成前扫过流动性 | 取整根含影线；不是最后一根；后面没有破结构 |
+| 看涨 OB | 位移开始前**最后一根阴线**；只取**实体**（开盘到收盘）；之后有位移、留下 FVG、实体收盘打破结构；形成前扫过流动性；**实体饱满、之后被暴力拉开**（否则标"弱"） | 取整根含影线；不是最后一根；后面没有破结构；拿十字星当 OB 还不说明偏重低 |
 | 看跌 OB | 镜像：下跌位移前最后一根阳线的实体 | 同上 |
 | 流动性清扫 | 影线**越过**关键高 / 低点，**实体收盘收回**关键位以内 | 实体收在外面却说成清扫（那是突破） |
 | BOS / CHoCH | **实体收盘**越过关键点；CHoCH 打破的是守门点（上涨中最后一个 HL，下跌中最后一个 LH） | 用影线刺穿判断；把普通回调里的破位当 CHoCH |
@@ -1362,6 +1370,7 @@ flowchart LR
 | 拒绝针【作者实战经验】 | 长影线、短实体；看第 2 根是否用实体吞没针的实体 | 只看第一根 |
 
 **通用规则**：
+- **不为了找而找**：OB、FVG、清扫、结构突破都要说明强弱。达不到"有分量"标准的（十字星当 OB、很窄的 FVG、只碰一下的清扫、收盘勉强越过的突破），要么不标，要么画成虚线、标"弱"，并写明为什么偏重低、容易失效。教学时为了讲反例故意举的弱例子，也要这样说明
 - 每个标注都要落在对应的那根 K 线上（例如"扫"标在影线真正刺穿的那根）
 - 一张图只讲一个概念，标注不超过 6 个
 - 示意图右下角写"示意图，非真实行情"；在真实截图上标注时写"学习性分析，不构成交易建议"
@@ -2441,6 +2450,8 @@ STRONG                     WEAK
 
 拿不准的项，`confidence` 写 `low`，画成虚线加"?"，并在文字里说明原因。
 
+**强弱也要说**：确定"是"之后，再说它有没有分量。OB 那根是不是实体饱满、后面是不是被暴力拉开；FVG 是不是够宽、有没有伴随结构突破；清扫是不是真的越过、扫完有没有反应。分量不够的，在 `label` 后加"（弱）"，在 `why` 里写明为什么偏重低、容易失效。
+
 ### 第 4 步：按学员选择的形式输出标注
 
 | 形式 | 适用 | 做法 |
@@ -2488,6 +2499,7 @@ STRONG                     WEAK
 | `kind` | `structure` 结构、`liquidity` 流动性、`fvg`、`ob`、`premium`、`discount`、`entry`、`sl`、`tp`、`note`，决定颜色 |
 | `label` / `text` | 显示的文字；另给 `label_en` / `text_en`，代码环境缺中文字体时自动改用英文 |
 | `confidence` | `high` / `medium` / `low`；`low` 画成虚线并加"?" |
+| `label_pos` | 可选，只对区域有效：`br` 把文字放在区域右下角（默认左下角），左下角被别的标注挡住时用 |
 | `why` | 判断依据，学员核对时看 |
 | `fvg_check` | 可选，写出 A 的高点和 C 的低点（空头写 `a_low` / `c_high`），工具会检查是否真的有缺口 |
 
@@ -2641,7 +2653,10 @@ def draw(img_path, spec, out_path):
             d.rectangle((x0, top, x1, bot), fill=col + (50,))
             for a, b, c2, e in ((x0, top, x1, top), (x0, bot, x1, bot), (x0, top, x0, bot), (x1, top, x1, bot)):
                 dashed(a, b, c2, e, col, max(1, lw - 1)) if low else d.line((a, b, c2, e), fill=col + (230,), width=max(1, lw - 1))
-            tag(x0 + 6, bot + 6, text_of(it), col, 'la')
+            if it.get('label_pos') == 'br':  # 文字放在区域右下角（左下角被别的标注占用时）
+                tag(x1 - 6, bot + 6, text_of(it), col, 'ra')
+            else:
+                tag(x0 + 6, bot + 6, text_of(it), col, 'la')
         elif t in ('line', 'arrow'):
             xa, xb = m.x(it['x1']), m.x(it['x2'])
             ya, yb = m.y_of(it, 'y1', 'price1'), m.y_of(it, 'y2', 'price2')
@@ -2729,9 +2744,10 @@ python3 smc_detect.py 学员的数据.csv --png smc.png
 1. **程序识别的位置和价格不能改**：不要自己"修正"、挪动、增删报告里的项目。你觉得哪里值得补充，单独写，并标明"AI 补充，未经程序核对"。
 2. **按七步阅读顺序讲**：结构方向 → 区间位置 → 流动性（等高等低、清扫）→ 位移和 FVG → OB → 对侧流动性目标。每一项讲三件事：是什么、为什么符合定义（报告里已经写了核对依据，比如"A 最高 < C 最低"）、接下来看什么。
 3. **讲清程序没判断的部分**：诱导（Miller 严格口径）、多周期方向、消息面、拒绝针、入场触发。提醒学员自己核对，这些正是要靠自己练的能力。
-4. **报告里列出的"OB 候选"**：说明它缺了哪个条件（没有清扫或没有 FVG），所以只能算 POI / 反应区。
-5. **参数说明**：摆动点 N 决定结构级别。学员觉得"结构太碎"就调大 N，"漏了明显的高低点"就调小 N。同一份数据换了 N，结果不同是正常的，不是程序出错。
-6. 最后照常声明"学习性分析，不构成交易建议"，用八要素模板引导学员自己写计划。
+4. **讲强弱**：报告里每一项后面都有"→ 强"或"→ 弱"及原因。讲到弱项时，必须告诉学员它偏重低、容易失效，并用报告里的原因解释为什么（例如"这根 OB 几乎是十字星，多空打平，说明不了大资金在这里成交"）。不要把弱项讲成高质量机会，也不要为了凑齐概念去拔高它。
+5. **报告里列出的"OB 候选"**：说明它缺了哪个条件（没有清扫或没有 FVG），所以只能算 POI / 反应区。
+6. **参数说明**：摆动点 N 决定结构级别。学员觉得"结构太碎"就调大 N，"漏了明显的高低点"就调小 N。同一份数据换了 N，结果不同是正常的，不是程序出错。
+7. 最后照常声明"学习性分析，不构成交易建议"，用八要素模板引导学员自己写计划。
 
 ## 五、识别规则（程序口径，和教程定义一一对应）
 
@@ -2746,11 +2762,17 @@ python3 smc_detect.py 学员的数据.csv --png smc.png
 | OB 三个条件 | ① 摆动点之后到 OB（或起点）之间有一次同侧流动性清扫；② OB 之后到突破那根之间有同向 FVG；③ 结构突破本身。**三条都满足才叫 OB**，否则只列为候选（POI / 反应区） | 01 §5.1 |
 | OB 状态 | 第一次有 K 线碰到实体 = 首次回到；收盘穿过实体另一侧 = 失效（不再画） | 01 §5.3 |
 | Premium / Discount | 取最近一次结构突破的那段推动：起点到之后的极值；50% = 均衡点；OTE 0.62 / 0.705 / 0.79 从推动**终点**往回量 | 01 §6、06 A4 |
-| 图上画什么 | 最近 2 次结构突破、未被扫的等高等低（最多 2 组）、最近 2 次清扫、满足三条件且未失效的 OB（最多 2 个）、未完全回补的 FVG（最多 2 个）、区间和 OTE、上方最近的未扫高点和下方最近的未扫低点 | 05 通用规则（少而准） |
+| 强 / 弱：OB | 实体 ≥ K 线全长 50% 且 ≥ 0.5 × ATR 算饱满（< 30% 或 < 0.25 × ATR 算接近十字星）；下一根用实体吞没 OB 实体，或 2 根内出现 ≥ 1.5 × ATR 的实体，算暴力拉开。两条都满足才是"强" | 01 §5.3 |
+| 强 / 弱：FVG | 宽度 ≥ 0.3 × ATR，且伴随同向结构突破（在突破那段推动里），才是"强" | 01 §4.3 |
+| 强 / 弱：清扫 | 越过关键位 ≥ 0.1 × ATR，且扫完 3 根内收盘反向离开关键位 ≥ 0.5 × ATR，才是"强"；刚发生、还看不出反应的算"弱" | 01 §3.4 |
+| 强 / 弱：结构突破 | 收盘越过关键位 ≥ 0.1 × ATR，且有位移配合（这段推动留下同向 FVG，或突破 K 线实体 ≥ 1 × ATR），才是"强" | 01 §2.3、§4.1 |
+| 图上画什么 | 最近 2 次结构突破、未被扫的等高等低（最多 2 组）、最近 2 次清扫、满足三条件且未失效的 OB（最多 2 个，强的优先）、未完全回补的 FVG（最多 2 个，强的优先）、区间和 OTE、上方最近的未扫高点和下方最近的未扫低点 | 05 通用规则（少而准） |
+
+ATR 一律取该 K 线**前一根**的 14 根平均波幅，避免被它自己放大。"弱"不是识别错了，而是**偏重低、容易失效**：图上画成虚线并标"弱"，报告里逐条写明原因（例如"OB 接近十字星，实体只占全长 4%"）。
 
 **程序不判断的**：诱导、K 线是否"明显"（任何收盘低于开盘的都算阴线，十字星不算）、多周期方向、消息面、拒绝针和入场触发。
 
-**怎么保证程序本身没算错**：仓库的 `tools/test_detect.py` 做四类检查：示例图里人工确认过的每一项必须原样识别出来；在 60 组随机走势上，报告的每一项都按上表定义独立重算一遍；Python 版和网页版对 360 个不同格式的数据文件结果逐项一致；网页打开后的报告和 Python 版一字不差。
+**怎么保证程序本身没算错**：仓库的 `tools/test_detect.py` 做四类检查：示例图里人工确认过的每一项必须原样识别出来（教科书式的 OB 判为强，把它改成十字星后必须判为弱）；在 60 组随机走势上，报告的每一项（包括强弱）都按上表定义独立重算一遍；Python 版和网页版对 360 个不同格式的数据文件结果逐项一致；网页打开后的报告和 Python 版一字不差。
 
 ## 六、Python 版代码（能运行代码时用）
 
@@ -2778,8 +2800,26 @@ import sys
 from datetime import datetime, timezone
 
 VERSION = 1
-DEFAULTS = {'swing': 3, 'atr_len': 14, 'eq_tol_atr': 0.1, 'eq_bounce_atr': 0.5, 'fvg_min_atr': 0.0, 'last': 120}
+WEAK = ('ob_doji', 'ob_thin', 'ob_slow', 'fvg_small', 'fvg_nobreak', 'sw_shallow', 'sw_noreact', 'sw_pending', 'br_thin', 'br_nodisp')
+DEFAULTS = {'swing': 3, 'atr_len': 14, 'eq_tol_atr': 0.1, 'eq_bounce_atr': 0.5, 'fvg_min_atr': 0.0, 'last': 120,
+            # 强弱判断（见 09 第五节）：ATR 一律取该 K 线之前一根的 ATR，避免被它自己放大
+            'full_body_ratio': 0.5, 'full_body_atr': 0.5,   # OB 实体饱满：实体 ≥ 全长 50% 且 ≥ 0.5 倍 ATR
+            'doji_ratio': 0.3, 'doji_atr': 0.25,            # 接近十字星：实体 < 全长 30% 或 < 0.25 倍 ATR
+            'disp_atr': 1.5,                                # 暴力推动：OB 后 2 根内有实体 ≥ 1.5 倍 ATR（或下一根直接吞没 OB 实体）
+            'fvg_weak_atr': 0.3,                            # FVG 宽度 < 0.3 倍 ATR 算小
+            'sweep_min_atr': 0.1, 'react_atr': 0.5, 'react_bars': 3,  # 清扫越过 < 0.1 倍 ATR 算浅；3 根内收盘反向离开 ≥ 0.5 倍 ATR 算有反应
+            'break_min_atr': 0.1, 'break_body_atr': 1.0}    # 结构突破收盘越过 < 0.1 倍 ATR 算勉强；突破 K 线实体 ≥ 1 倍 ATR 算有位移
 OTE = (0.62, 0.705, 0.79)
+
+
+def fx(x, d):
+    """四舍五入到 d 位小数（两版用同一种舍入，保证报告一字不差）。"""
+    m = math.floor(abs(x) * 10 ** d + 0.5)
+    t = str(m)
+    if d > 0:
+        t = t.rjust(d + 1, '0')
+        t = t[:-d] + '.' + t[-d:]
+    return ('-' if x < 0 and m > 0 else '') + t
 
 
 # ============================== 1. 读数据 ==============================
@@ -3126,6 +3166,79 @@ def detect(K, params=None):
                     break
         obs.append(ob)
 
+    # ---------------- 强弱判断：不满足就标"弱"（偏重低、容易失效），并写明原因 ----------------
+    def pre(x):
+        return atr[x - 1] if x > 0 else atr[0]
+
+    def leg_start(e):
+        return e['origin'] if 'origin' in e else e['from'] + 1
+
+    for ob in obs:
+        j, d, A = ob['i'], ob['dir'], pre(ob['i'])
+        body, full = ob['top'] - ob['bottom'], H[ob['i']] - L[ob['i']]
+        ratio = body / full if full > 0 else 0.0
+        notes = []
+        if ratio < p['doji_ratio'] or body < p['doji_atr'] * A:
+            notes.append(['ob_doji', ratio, body / A])
+        elif ratio < p['full_body_ratio'] or body < p['full_body_atr'] * A:
+            notes.append(['ob_thin', ratio, body / A])
+        else:
+            notes.append(['ob_full', ratio, body / A])
+        big = 0.0
+        for x in range(j + 1, min(j + 3, n)):
+            if (C[x] - O[x]) * d > 0:
+                big = max(big, abs(C[x] - O[x]))
+        nx = j + 1
+        engulf = nx < n and (C[nx] - O[nx]) * d > 0 and (
+            (O[nx] <= ob['bottom'] and C[nx] >= ob['top']) if d == 1 else (O[nx] >= ob['top'] and C[nx] <= ob['bottom']))
+        if engulf:
+            notes.append(['ob_engulf'])
+        elif big >= p['disp_atr'] * A:
+            notes.append(['ob_disp', big / A])
+        else:
+            notes.append(['ob_slow', big / A])
+        ob['notes'] = notes
+        ob['grade'] = 'weak' if any(x[0] in WEAK for x in notes) else 'strong'
+    for f in fvgs:
+        A = pre(f['b'])
+        size = f['top'] - f['bottom']
+        notes = [['fvg_small', size / A] if size < p['fvg_weak_atr'] * A else ['fvg_size', size / A]]
+        brk = [e['i'] for e in events if e['dir'] == f['dir'] and leg_start(e) <= f['b'] <= e['i']]
+        notes.append(['fvg_break', brk[0]] if brk else ['fvg_nobreak'])
+        f['notes'] = notes
+        f['grade'] = 'weak' if any(x[0] in WEAK for x in notes) else 'strong'
+    for w in sweeps:
+        i, A = w['i'], pre(w['i'])
+        depth = (w['level'] - L[i]) if w['side'] == 'low' else (H[i] - w['level'])
+        notes = [['sw_pool']] if w['pool'] else []
+        if depth < p['sweep_min_atr'] * A:
+            notes.append(['sw_shallow', depth / A])
+        end = min(i + p['react_bars'], n - 1)
+        if w['side'] == 'low':
+            best = max(C[i:end + 1]) - w['level']
+        else:
+            best = w['level'] - min(C[i:end + 1])
+        if best >= p['react_atr'] * A:
+            notes.append(['sw_react', best / A])
+        elif i + p['react_bars'] > n - 1:
+            notes.append(['sw_pending'])
+        else:
+            notes.append(['sw_noreact', best / A])
+        w['notes'] = notes
+        w['grade'] = 'weak' if any(x[0] in WEAK for x in notes) else 'strong'
+    for e in events:
+        i, A = e['i'], pre(e['i'])
+        margin = (C[i] - e['level']) * e['dir']
+        notes = []
+        if margin < p['break_min_atr'] * A:
+            notes.append(['br_thin', margin / A])
+        st = leg_start(e)
+        has_f = any(f['dir'] == e['dir'] and st <= f['b'] <= i for f in fvgs)
+        big = (C[i] - O[i]) * e['dir'] >= p['break_body_atr'] * A
+        notes.append(['br_disp'] if has_f or big else ['br_nodisp'])
+        e['notes'] = notes
+        e['grade'] = 'weak' if any(x[0] in WEAK for x in notes) else 'strong'
+
     # Premium / Discount：最近一次结构突破所在的那段推动（起点 → 之后的极值）
     rng = None
     if events:
@@ -3157,6 +3270,17 @@ def detect(K, params=None):
 
 
 # ============================== 3. 挑出值得画的 ==============================
+def pick2(lst, key):
+    """最多挑 2 个：先取最近的强项，不够再用最近的弱项补，最后按时间排序。"""
+    strong = [x for x in lst if x['grade'] == 'strong']
+    weak = [x for x in lst if x['grade'] != 'strong']
+    out = strong[-2:]
+    need = 2 - len(out)
+    if need > 0:
+        out = out + weak[-need:]
+    return sorted(out, key=lambda x: x[key])
+
+
 def select(K, R, last=None):
     """从识别结果里挑出图上要画的项目（不超过约 10 项），每项带依据。坐标用 K 线序号和价格。"""
     n = len(K)
@@ -3171,7 +3295,7 @@ def select(K, R, last=None):
     for e in [e for e in R['events'] if e['i'] >= v0][-2:]:
         nm = e['type']
         add(type='hline', kind='structure', i1=max(e['from'], v0), i2=e['i'], price=e['level'],
-            label=f"{nm}{'↑' if e['dir'] == 1 else '↓'}", ref=('event', R['events'].index(e)))
+            label=f"{nm}{'↑' if e['dir'] == 1 else '↓'}", grade=e['grade'], ref=('event', R['events'].index(e)))
     # 等高等低：还没被扫的
     for pl in [p for p in R['pools'] if p['state'] == 'active' and p['members'][-1] >= v0][-2:]:
         add(type='hline', kind='liquidity', i1=max(pl['members'][0], v0), i2=n - 1, price=pl['level'],
@@ -3186,15 +3310,15 @@ def select(K, R, last=None):
             break
     for w in reversed(shown):
         add(type='marker', kind='liquidity', i=w['i'], price=K[w['i']]['h'] if w['side'] == 'high' else K[w['i']]['l'],
-            place='above' if w['side'] == 'high' else 'below', label='sweep', ref=('sweep', R['sweeps'].index(w)))
-    # OB：满足三个条件、还没失效的，最近 2 个
-    for ob in [o for o in R['obs'] if o['valid'] and o['invalidated'] is None and o['i'] >= v0][-2:]:
+            place='above' if w['side'] == 'high' else 'below', label='sweep', grade=w['grade'], ref=('sweep', R['sweeps'].index(w)))
+    # OB：满足三个条件、还没失效的，最多 2 个；强的优先占名额，不够再用弱的补
+    for ob in pick2([o for o in R['obs'] if o['valid'] and o['invalidated'] is None and o['i'] >= v0], 'i'):
         add(type='box', kind='ob', i1=ob['i'], i2=n - 1, top=ob['top'], bottom=ob['bottom'],
-            label='Bull OB' if ob['dir'] == 1 else 'Bear OB', ref=('ob', R['obs'].index(ob)))
-    # FVG：还没被完全回补的，最近 2 个
-    for f in [f for f in R['fvgs'] if f['filled'] is None and f['b'] >= v0][-2:]:
+            label='Bull OB' if ob['dir'] == 1 else 'Bear OB', grade=ob['grade'], ref=('ob', R['obs'].index(ob)))
+    # FVG：还没被完全回补的，最多 2 个，同样强的优先
+    for f in pick2([f for f in R['fvgs'] if f['filled'] is None and f['b'] >= v0], 'b'):
         add(type='box', kind='fvg', i1=f['b'], i2=n - 1, top=f['top'], bottom=f['bottom'],
-            label='FVG' + ('↑' if f['dir'] == 1 else '↓'), ref=('fvg', R['fvgs'].index(f)))
+            label='FVG' + ('↑' if f['dir'] == 1 else '↓'), grade=f['grade'], ref=('fvg', R['fvgs'].index(f)))
     # 区间
     r = R['range']
     if r and max(r['low_i'], r['high_i']) >= v0:
@@ -3226,10 +3350,71 @@ def report(K, R, sel, info=None, lang='zh'):
     zh = lang != 'en'
 
     def P(x):
-        return f'{x:.{d}f}'
+        return fx(x, d)
 
     def P1(x):
-        return f'{x:.{d + 1}f}'
+        return fx(x, d + 1)
+
+    def A2(x):
+        return fx(x, 2)
+
+    def PC(x):
+        return fx(x * 100, 0) + '%'
+
+    def note(nt):
+        c = nt[0]
+        if zh:
+            return {
+                'ob_full': lambda: f'OB 实体饱满（占全长 {PC(nt[1])}，{A2(nt[2])} 倍 ATR）',
+                'ob_thin': lambda: f'OB 实体不够饱满（只占全长 {PC(nt[1])}，{A2(nt[2])} 倍 ATR），挂在这里的单不多',
+                'ob_doji': lambda: f'OB 接近十字星（实体只占全长 {PC(nt[1])}，{A2(nt[2])} 倍 ATR），多空几乎打平，说明不了大资金在这里成交',
+                'ob_engulf': lambda: '下一根就用实体吞没了 OB 的实体，推动很猛',
+                'ob_disp': lambda: f'之后 2 根内出现 {A2(nt[1])} 倍 ATR 的大实体，推动有力',
+                'ob_slow': lambda: f'之后的推动不够猛（2 根内最大实体只有 {A2(nt[1])} 倍 ATR，也没有吞没 OB 实体）',
+                'fvg_size': lambda: f'缺口宽 {A2(nt[1])} 倍 ATR',
+                'fvg_small': lambda: f'缺口只有 {A2(nt[1])} 倍 ATR，一根影线就可能补掉',
+                'fvg_break': lambda: f'伴随结构突破（{T(nt[1])}）',
+                'fvg_nobreak': lambda: '没有伴随结构突破，没有结构配合的 FVG 很容易被一穿而过',
+                'sw_pool': lambda: '扫的是等高 / 等低，止损最集中',
+                'sw_shallow': lambda: f'只越过 {A2(nt[1])} 倍 ATR，几乎只是碰了一下',
+                'sw_react': lambda: f'扫完 3 根内收盘反向离开关键位 {A2(nt[1])} 倍 ATR，有反应',
+                'sw_noreact': lambda: f'扫完 3 根内没有明显反应（收盘最多离开关键位 {A2(nt[1])} 倍 ATR）',
+                'sw_pending': lambda: '刚发生，还看不出反应',
+                'br_thin': lambda: f'收盘只越过关键位 {A2(nt[1])} 倍 ATR，差一点就是假突破',
+                'br_disp': lambda: '有位移配合（留下同向 FVG 或突破 K 线实体大）',
+                'br_nodisp': lambda: '没有位移配合（没有同向 FVG，突破 K 线实体也不大）',
+            }[c]()
+        return {
+            'ob_full': lambda: f'full-bodied OB candle ({PC(nt[1])} of its range, {A2(nt[2])}×ATR)',
+            'ob_thin': lambda: f'OB body is not full ({PC(nt[1])} of its range, {A2(nt[2])}×ATR), so few orders sit there',
+            'ob_doji': lambda: f'OB is nearly a doji ({PC(nt[1])} of its range, {A2(nt[2])}×ATR): buyers and sellers drew, which says little about big orders',
+            'ob_engulf': lambda: 'the next candle engulfs the OB body: a forceful move',
+            'ob_disp': lambda: f'a {A2(nt[1])}×ATR body within 2 candles: a forceful move',
+            'ob_slow': lambda: f'the move away is weak (largest body within 2 candles is {A2(nt[1])}×ATR, and no engulfing)',
+            'fvg_size': lambda: f'gap is {A2(nt[1])}×ATR wide',
+            'fvg_small': lambda: f'gap is only {A2(nt[1])}×ATR, one wick can fill it',
+            'fvg_break': lambda: f'part of a structure break ({T(nt[1])})',
+            'fvg_nobreak': lambda: 'no structure break with it; an FVG without structure is easily run through',
+            'sw_pool': lambda: 'it took equal highs / lows, where stops cluster most',
+            'sw_shallow': lambda: f'it went only {A2(nt[1])}×ATR beyond the level, barely a touch',
+            'sw_react': lambda: f'within 3 candles price closed {A2(nt[1])}×ATR back from the level: a reaction',
+            'sw_noreact': lambda: f'no clear reaction within 3 candles (closes got at most {A2(nt[1])}×ATR back from the level)',
+            'sw_pending': lambda: 'too recent to see a reaction',
+            'br_thin': lambda: f'the close cleared the level by only {A2(nt[1])}×ATR, close to a false break',
+            'br_disp': lambda: 'backed by displacement (a same-direction FVG or a large breaking body)',
+            'br_nodisp': lambda: 'no displacement (no same-direction FVG and a small breaking body)',
+        }[c]()
+
+    def grade_line(obj):
+        weak = [note(x) for x in obj['notes'] if x[0] in WEAK]
+        good = [note(x) for x in obj['notes'] if x[0] not in WEAK]
+        sep = '；' if zh else '; '
+        if obj['grade'] == 'strong':
+            return ('   → 强：' if zh else '   → Strong: ') + sep.join(good)
+        t = ('   → 弱，偏重低、容易失效：' if zh else '   → Weak, low weight, fails easily: ') + sep.join(weak)
+        if good:
+            t += ('。好的一面：' if zh else '. On the plus side: ') + sep.join(good)
+        return t
 
     def T(i):
         t = K[i]['t']
@@ -3250,6 +3435,7 @@ def report(K, R, sel, info=None, lang='zh'):
     out.append('')
     for n_, it in enumerate(sel['items'], 1):
         kind, idx = it['ref'][0], it['ref'][1]
+        graded = {'event': 'events', 'sweep': 'sweeps', 'ob': 'obs', 'fvg': 'fvgs'}.get(kind)
         if kind == 'event':
             e = R['events'][idx]
             gate = ('守门点' if e['type'] == 'CHoCH' else '摆动点') if zh else ('guard point' if e['type'] == 'CHoCH' else 'swing point')
@@ -3330,6 +3516,8 @@ def report(K, R, sel, info=None, lang='zh'):
                 out.append(f'{n_}. 【对侧流动性】{"上方最近的未扫高点 BSL" if lv["type"] == "high" else "下方最近的未扫低点 SSL"} {P(lv["price"])}（{T(lv["i"])}）')
             else:
                 out.append(f'{n_}. [Liquidity] nearest untaken {"swing high above (BSL)" if lv["type"] == "high" else "swing low below (SSL)"} {P(lv["price"])} ({T(lv["i"])})')
+        if graded:
+            out.append(grade_line(R[graded][idx]))
     if not sel['items']:
         out.append('图上范围内没有识别到符合规则的项目。' if zh else 'Nothing in view meets the rules.')
     cand = [o for o in R['obs'] if not o['valid'] and o['invalidated'] is None and o['i'] >= sel['from']][-2:]
@@ -3345,9 +3533,11 @@ def report(K, R, sel, info=None, lang='zh'):
             out.append(f'- {T(ob["i"])} {P(ob["top"])}–{P(ob["bottom"])}' + ('：' + '、'.join(miss) if zh else ': ' + ', '.join(miss)))
     out.append('')
     if zh:
+        out.append('强 / 弱：按实体是否饱满、推动是否有力、缺口大小、清扫深度和反应、突破幅度判断（标准见 09 第五节）。"弱"不是错，而是偏重低、容易失效，图上画成虚线。')
         out.append('程序没有判断的：诱导（Miller 严格口径）、多周期方向、消息面、拒绝针和入场触发。这些需要你自己核对。')
         out.append('识别规则见 references/09-数据识别引擎.md。仅供学习，不构成交易建议。')
     else:
+        out.append('Strong / weak: graded by body fullness, force of the move, gap size, sweep depth and reaction, and break margin (rules in 09 section 5). "Weak" is not wrong, but low weight and easy to fail; it is drawn dashed.')
         out.append('Not judged by the program: inducement (Miller strict view), higher-timeframe bias, news, rejection wicks and entry triggers. Check these yourself.')
         out.append('Rules: references/09-数据识别引擎.md. For learning only, not trading advice.')
     return '\n'.join(out)
@@ -3380,27 +3570,29 @@ def plot(K, R, sel, path, info=None, title=''):
 
     for ix, it in enumerate(sel['items'], 1):
         k = it['kind']
+        wk = it.get('grade') == 'weak'
         no = f'{ix} '
+        lab = it['label'] + (' (weak)' if wk else '')
         if it['type'] == 'hline':
             ax.hlines(it['price'], it['i1'], right if k in ('liquidity', 'target') else it['i2'],
-                      color=col[k], lw=1.4, linestyles='--' if k != 'structure' else '-')
+                      color=col[k], lw=1.4, linestyles=':' if wk else ('--' if k != 'structure' else '-'))
             if k == 'structure':
-                tag(it['i2'] + .6, it['price'], no + it['label'] + f' {it["price"]:.{d}f}', col[k], va='center', ha='left')
+                tag(it['i2'] + .6, it['price'], no + lab + f' {fx(it["price"], d)}', col[k], va='center', ha='left')
             else:
-                tag(right, it['price'], no + it['label'] + f' {it["price"]:.{d}f}', col[k])
+                tag(right, it['price'], no + lab + f' {fx(it["price"], d)}', col[k])
         elif it['type'] == 'box':
             ax.add_patch(Rectangle((it['i1'] - .5, it['bottom']), right - it['i1'] + .5, it['top'] - it['bottom'],
-                                   fc=col[k], alpha=0.22, ec=col[k], lw=1))
-            tag(it['i1'] - .4, it['bottom'], no + it['label'], col[k], va='top', ha='left')
+                                   fc=col[k], alpha=0.1 if wk else 0.22, ec=col[k], lw=1.2, ls='--' if wk else '-'))
+            tag(it['i1'] - .4, it['bottom'], no + lab, col[k], va='top', ha='left')
         elif it['type'] == 'marker':
-            ax.plot([it['i']], [it['price']], 'o', ms=14, mfc='none', mec=col[k], mew=2)
-            tag(it['i'], it['price'] + (pad * .5 if it['place'] == 'above' else -pad * .5), no + it['label'], col[k],
+            ax.plot([it['i']], [it['price']], 'o', ms=14, mfc='none', mec=col[k], mew=2, alpha=0.55 if wk else 1)
+            tag(it['i'], it['price'] + (pad * .5 if it['place'] == 'above' else -pad * .5), no + lab, col[k],
                 va='bottom' if it['place'] == 'above' else 'top', ha='center')
         elif it['type'] == 'range':
             ax.add_patch(Rectangle((it['i1'] - .5, it['eq']), right - it['i1'] + .5, it['high'] - it['eq'], fc='#ef5350', alpha=0.05, ec='none'))
             ax.add_patch(Rectangle((it['i1'] - .5, it['low']), right - it['i1'] + .5, it['eq'] - it['low'], fc='#26a69a', alpha=0.05, ec='none'))
             ax.hlines(it['eq'], it['i1'], right, color='#97a1b3', lw=1, linestyles=':')
-            tag(it['i1'] - .4, it['eq'], no + f'EQ 50% {it["eq"]:.{d + 1}f}', '#97a1b3', ha='left')
+            tag(it['i1'] - .4, it['eq'], no + f'EQ 50% {fx(it["eq"], d + 1)}', '#97a1b3', ha='left')
             ax.add_patch(Rectangle((it['i1'] - .5, min(it['ote'][0], it['ote'][2])), right - it['i1'] + .5,
                                    abs(it['ote'][2] - it['ote'][0]), fc='#ff9f43', alpha=0.08, ec='#ff9f43', lw=.6, ls=':'))
             tag(it['i1'] - .4, it['ote'][1], 'OTE', '#ff9f43', va='center', ha='left')

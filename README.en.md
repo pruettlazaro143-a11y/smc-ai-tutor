@@ -74,7 +74,8 @@ Prompting an AI to draw on a screenshot can't be made precise: it is off by a fe
 
 1. Export candle data for the chart (a CSV from MT5, MT4 or TradingView, or any table with open/high/low/close; for crypto, pull it straight from Binance)
 2. Open the [online detector](https://pruettlazaro143-a11y.github.io/smc-ai-tutor/detector/) (or [`detector/index.html`](detector/index.html) offline) and load the data. It computes structure (BOS / CHoCH), equal highs and lows, sweeps, FVGs, order blocks (body only, and only when a sweep, an FVG and a structure break are all present), premium / discount and OTE by the curriculum's rules, and draws them
-3. Click "Copy" and paste the report to the AI running the tutor. It explains each item **without moving any position or price the program found**
+3. **Every item is graded strong or weak.** An order block needs a full-bodied opposite candle followed by a forceful move; a doji that technically fits the definition is drawn dashed as "weak", and the report explains why it carries little weight and fails easily. FVGs are graded on width and structure, sweeps on depth and reaction, and structure breaks on close margin and displacement. Nothing is labelled just to fill the chart
+4. Click "Copy" and paste the report to the AI running the tutor. It explains each item **without moving any position or price the program found**
 
 AIs that can run code (ChatGPT's data analysis, Claude) run the bundled [`tools/smc_detect.py`](tools/smc_detect.py) directly: upload a CSV and get the annotated chart plus the explanation. Data is processed only in your browser or the AI's code sandbox.
 

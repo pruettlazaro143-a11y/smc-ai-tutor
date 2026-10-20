@@ -38,14 +38,25 @@ def test_planted():
     check(len(pools) == 1 and pools[0]['members'] == [7, 13] and pools[0]['level'] == 110.6, 'planted: equal lows 7/13 @110.6')
     check(pools and pools[0]['state'] == 'swept' and pools[0]['at'] == 16, 'planted: equal lows swept at 16')
     ch = [e for e in R['events'] if e['dir'] == 1]
-    check(len(ch) == 1 and ch[0]['type'] == 'CHoCH' and ch[0]['i'] == 19 and ch[0]['from'] == 10 and ch[0]['level'] == 114.4,
-          'planted: CHoCH at 19 breaking LH 114.4 (candle 10)')
+    check(len(ch) == 1 and ch[0]['type'] == 'CHoCH' and ch[0]['i'] == 18 and ch[0]['from'] == 10 and ch[0]['level'] == 114.4,
+          'planted: CHoCH at 18 breaking LH 114.4 (candle 10)')
+    check(ch and ch[0]['grade'] == 'strong', 'planted: the CHoCH is backed by displacement')
     check(not [e for e in R['events'] if e['dir'] == -1 and e['i'] > 13], 'planted: no bearish break after the equal lows')
+    sw = [w for w in R['sweeps'] if w['i'] == 16 and w['pool']]
+    check(sw and sw[0]['grade'] == 'strong', 'planted: the equal-low sweep is strong (real depth, clear reaction)')
     obs = [o for o in R['obs'] if o['valid']]
-    check(len(obs) == 1 and obs[0]['i'] == 17 and (obs[0]['top'], obs[0]['bottom']) == (110.9, 110.7) and obs[0]['tapped'] == 23,
-          'planted: bullish OB = candle 17 body 110.9–110.7, first return 23')
-    f = [x for x in R['fvgs'] if x['b'] == 18]
-    check(f and f[0]['dir'] == 1 and (f[0]['top'], f[0]['bottom']) == (113.1, 111.1), 'planted: FVG A=17 C=19 113.1–111.1')
+    check(len(obs) == 1 and obs[0]['i'] == 16 and (obs[0]['top'], obs[0]['bottom']) == (112.6, 110.8) and obs[0]['tapped'] == 22,
+          'planted: bullish OB = candle 16 body 112.6–110.8, first return 22')
+    check(obs and obs[0]['grade'] == 'strong' and ['ob_engulf'] in obs[0]['notes'], 'planted: textbook OB graded strong (full body, engulfed)')
+    f = [x for x in R['fvgs'] if x['b'] == 17]
+    check(f and f[0]['dir'] == 1 and (f[0]['top'], f[0]['bottom']) == (113.5, 112.7), 'planted: FVG A=16 C=18 113.5–112.7')
+    # 反例：把 OB 那根改成十字星，引擎必须把它判为弱
+    K2 = [dict(k) for k in K]
+    K2[16].update(o=111.0, c=110.9)
+    K2[17].update(o=110.9)
+    R2 = sd.detect(K2, {'swing': 2})
+    o2 = [o for o in R2['obs'] if o['i'] == 16]
+    check(o2 and o2[0]['grade'] == 'weak' and o2[0]['notes'][0][0] == 'ob_doji', 'planted: doji OB graded weak with reason')
 
 
 # ---------------------------------------------------------------- 2. 定义复核
@@ -119,6 +130,7 @@ def verify(K, R):
         if ob['invalidated'] is not None:
             x = ob['invalidated']
             check(C[x] < ob['bottom'] if d == 1 else C[x] > ob['top'], f'ob {j} invalidation is a close through the body')
+    verify_grades(K, R)
     r = R['range']
     if r:
         check(r['eq'] == (r['high'] + r['low']) / 2, 'range eq midpoint')
@@ -128,6 +140,51 @@ def verify(K, R):
         else:
             check(r['low'] <= r['ote'][0] <= r['ote'][1] <= r['ote'][2] <= r['high'], 'bear OTE inside range, measured from the low')
             check(r['high'] == H[r['high_i']] and r['low'] == min(L[r['high_i']:]), 'bear range extremes')
+
+
+def verify_grades(K, R):
+    """强弱判断：按 09 第五节的标准独立重算，必须和引擎给的强 / 弱一致。"""
+    p = R['params']
+    n = len(K)
+    O = [k['o'] for k in K]
+    C = [k['c'] for k in K]
+
+    def A(x):  # 前一根的 ATR
+        return sd_atr(K, max(0, x - 1), p['atr_len'])
+
+    def near(a, b):
+        return abs(a - b) <= 1e-9 * max(1.0, abs(b))
+
+    for ob in R['obs']:
+        j, d = ob['i'], ob['dir']
+        body, full = abs(C[j] - O[j]), K[j]['h'] - K[j]['l']
+        ratio = body / full if full > 0 else 0
+        a = A(j)
+        weak_body = ratio < p['full_body_ratio'] or body < p['full_body_atr'] * a
+        nxt = [x for x in range(j + 1, min(j + 3, n)) if (C[x] - O[x]) * d > 0]
+        big = max([abs(C[x] - O[x]) for x in nxt] or [0])
+        eng = j + 1 < n and (C[j + 1] - O[j + 1]) * d > 0 and min(O[j + 1], C[j + 1]) <= ob['bottom'] + 1e-12 and max(O[j + 1], C[j + 1]) >= ob['top'] - 1e-12
+        strong = (not weak_body) and (eng or big >= p['disp_atr'] * a)
+        check((ob['grade'] == 'strong') == strong, f'ob {j}: grade (body {ratio:.2f}, {body / a:.2f} ATR)')
+        if ratio < 0.3 and ob['grade'] == 'strong':
+            check(False, f'ob {j}: doji-like OB must never be strong')
+    for f in R['fvgs']:
+        a = A(f['b'])
+        small = f['top'] - f['bottom'] < p['fvg_weak_atr'] * a
+        withbrk = any(e['dir'] == f['dir'] and e.get('origin', e['from'] + 1) <= f['b'] <= e['i'] for e in R['events'])
+        check((f['grade'] == 'strong') == (not small and withbrk), f'fvg {f["b"]}: grade')
+    for w in R['sweeps']:
+        i, a = w['i'], A(w['i'])
+        depth = w['level'] - K[i]['l'] if w['side'] == 'low' else K[i]['h'] - w['level']
+        cl = C[i:min(i + p['react_bars'], n - 1) + 1]
+        best = (max(cl) - w['level']) if w['side'] == 'low' else (w['level'] - min(cl))
+        check((w['grade'] == 'strong') == (depth >= p['sweep_min_atr'] * a and best >= p['react_atr'] * a), f'sweep {i}: grade')
+    for e in R['events']:
+        i, a = e['i'], A(e['i'])
+        margin = (C[i] - e['level']) * e['dir']
+        st = e.get('origin', e['from'] + 1)
+        disp = any(f['dir'] == e['dir'] and st <= f['b'] <= i for f in R['fvgs']) or (C[i] - O[i]) * e['dir'] >= p['break_body_atr'] * a
+        check((e['grade'] == 'strong') == (margin >= p['break_min_atr'] * a and disp), f'event {i}: grade')
 
 
 def sd_atr(K, i, ln):
@@ -153,6 +210,11 @@ def verify_select(K, R, sel):
             check(f['filled'] is None and (it['top'], it['bottom']) == (f['top'], f['bottom']) and it['i1'] == f['b'], 'select: FVG drawn from B')
         elif kind == 'level':
             check(R['levels'][idx]['state'] == 'active', 'select: target untaken')
+    for kind, lst, ok in (('ob', R['obs'], lambda o: o['valid'] and o['invalidated'] is None and o['i'] >= sel['from']),
+                          ('fvg', R['fvgs'], lambda f: f['filled'] is None and f['b'] >= sel['from'])):
+        shown = [R[kind + 's'][it['ref'][1]] for it in sel['items'] if it['ref'][0] == kind]
+        strong_all = [x for x in lst if ok(x) and x['grade'] == 'strong']
+        check(sum(x['grade'] == 'strong' for x in shown) == min(2, len(strong_all)), f'select: {kind} slots go to strong items first')
 
 
 # ---------------------------------------------------------------- 3. 数据文件（多种格式）

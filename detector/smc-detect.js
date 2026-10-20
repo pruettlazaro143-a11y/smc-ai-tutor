@@ -9,7 +9,17 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
   var VERSION = 1;
-  var DEFAULTS = { swing: 3, atr_len: 14, eq_tol_atr: 0.1, eq_bounce_atr: 0.5, fvg_min_atr: 0.0, last: 120 };
+  var DEFAULTS = { swing: 3, atr_len: 14, eq_tol_atr: 0.1, eq_bounce_atr: 0.5, fvg_min_atr: 0.0, last: 120,
+    full_body_ratio: 0.5, full_body_atr: 0.5, doji_ratio: 0.3, doji_atr: 0.25, disp_atr: 1.5, fvg_weak_atr: 0.3,
+    sweep_min_atr: 0.1, react_atr: 0.5, react_bars: 3, break_min_atr: 0.1, break_body_atr: 1.0 };
+  var WEAK = ['ob_doji', 'ob_thin', 'ob_slow', 'fvg_small', 'fvg_nobreak', 'sw_shallow', 'sw_noreact', 'sw_pending', 'br_thin', 'br_nodisp'];
+  function isWeak(nt) { return WEAK.indexOf(nt[0]) >= 0; }
+  // 四舍五入到 d 位小数（与 Python 版同一种舍入）
+  function fx(x, d) {
+    var m = Math.floor(Math.abs(x) * Math.pow(10, d) + 0.5), t = String(m);
+    if (d > 0) { while (t.length < d + 1) t = '0' + t; t = t.slice(0, -d) + '.' + t.slice(-d); }
+    return (x < 0 && m > 0 ? '-' : '') + t;
+  }
   var OTE = [0.62, 0.705, 0.79];
 
   // ============================== 1. 读数据 ==============================
@@ -271,6 +281,54 @@
       obs.push(ob);
     });
 
+    // ---------------- 强弱判断 ----------------
+    var pre = function (x) { return x > 0 ? atr[x - 1] : atr[0]; };
+    var legStart = function (e) { return e.origin !== undefined ? e.origin : e.from + 1; };
+    var gradeOf = function (notes) { return notes.some(isWeak) ? 'weak' : 'strong'; };
+    obs.forEach(function (ob) {
+      var j = ob.i, d = ob.dir, A = pre(j), body = ob.top - ob.bottom, full = H[j] - L[j];
+      var ratio = full > 0 ? body / full : 0.0, notes = [];
+      if (ratio < p.doji_ratio || body < p.doji_atr * A) notes.push(['ob_doji', ratio, body / A]);
+      else if (ratio < p.full_body_ratio || body < p.full_body_atr * A) notes.push(['ob_thin', ratio, body / A]);
+      else notes.push(['ob_full', ratio, body / A]);
+      var big = 0.0;
+      for (var x = j + 1; x < Math.min(j + 3, n); x++) if ((C[x] - O[x]) * d > 0) big = Math.max(big, Math.abs(C[x] - O[x]));
+      var nx = j + 1;
+      var engulf = nx < n && (C[nx] - O[nx]) * d > 0 &&
+        (d === 1 ? (O[nx] <= ob.bottom && C[nx] >= ob.top) : (O[nx] >= ob.top && C[nx] <= ob.bottom));
+      if (engulf) notes.push(['ob_engulf']);
+      else if (big >= p.disp_atr * A) notes.push(['ob_disp', big / A]);
+      else notes.push(['ob_slow', big / A]);
+      ob.notes = notes; ob.grade = gradeOf(notes);
+    });
+    fvgs.forEach(function (f) {
+      var A = pre(f.b), size = f.top - f.bottom;
+      var notes = [size < p.fvg_weak_atr * A ? ['fvg_small', size / A] : ['fvg_size', size / A]];
+      var brk = events.filter(function (e) { return e.dir === f.dir && legStart(e) <= f.b && f.b <= e.i; });
+      notes.push(brk.length ? ['fvg_break', brk[0].i] : ['fvg_nobreak']);
+      f.notes = notes; f.grade = gradeOf(notes);
+    });
+    sweeps.forEach(function (w) {
+      var i = w.i, A = pre(i), depth = w.side === 'low' ? w.level - L[i] : H[i] - w.level;
+      var notes = w.pool ? [['sw_pool']] : [];
+      if (depth < p.sweep_min_atr * A) notes.push(['sw_shallow', depth / A]);
+      var end = Math.min(i + p.react_bars, n - 1), cs = C.slice(i, end + 1);
+      var best = w.side === 'low' ? Math.max.apply(null, cs) - w.level : w.level - Math.min.apply(null, cs);
+      if (best >= p.react_atr * A) notes.push(['sw_react', best / A]);
+      else if (i + p.react_bars > n - 1) notes.push(['sw_pending']);
+      else notes.push(['sw_noreact', best / A]);
+      w.notes = notes; w.grade = gradeOf(notes);
+    });
+    events.forEach(function (e) {
+      var i = e.i, A = pre(i), margin = (C[i] - e.level) * e.dir, notes = [];
+      if (margin < p.break_min_atr * A) notes.push(['br_thin', margin / A]);
+      var st = legStart(e);
+      var hasF = fvgs.some(function (f) { return f.dir === e.dir && st <= f.b && f.b <= i; });
+      var big = (C[i] - O[i]) * e.dir >= p.break_body_atr * A;
+      notes.push(hasF || big ? ['br_disp'] : ['br_nodisp']);
+      e.notes = notes; e.grade = gradeOf(notes);
+    });
+
     var rng = null;
     if (events.length) {
       var e = events[events.length - 1], m = e.origin;
@@ -296,6 +354,12 @@
 
   // ============================== 3. 挑出值得画的 ==============================
   function lastN(arr, k) { return arr.slice(Math.max(0, arr.length - k)); }
+  function pick2(lst, key) {
+    var strong = lst.filter(function (x) { return x.grade === 'strong'; }), weak = lst.filter(function (x) { return x.grade !== 'strong'; });
+    var out = lastN(strong, 2), need = 2 - out.length;
+    if (need > 0) out = out.concat(lastN(weak, need));
+    return out.sort(function (a, b) { return a[key] - b[key]; });
+  }
 
   function select(K, R, last) {
     var n = K.length;
@@ -303,7 +367,7 @@
     var v0 = Math.max(0, n - last), items = [];
     lastN(R.events.filter(function (e) { return e.i >= v0; }), 2).forEach(function (e) {
       items.push({ type: 'hline', kind: 'structure', i1: Math.max(e.from, v0), i2: e.i, price: e.level,
-        label: e.type + (e.dir === 1 ? '↑' : '↓'), ref: ['event', R.events.indexOf(e)] });
+        label: e.type + (e.dir === 1 ? '↑' : '↓'), grade: e.grade, ref: ['event', R.events.indexOf(e)] });
     });
     lastN(R.pools.filter(function (pl) { return pl.state === 'active' && pl.members[pl.members.length - 1] >= v0; }), 2).forEach(function (pl) {
       items.push({ type: 'hline', kind: 'liquidity', i1: Math.max(pl.members[0], v0), i2: n - 1, price: pl.level,
@@ -318,15 +382,15 @@
     }
     shown.reverse().forEach(function (w) {
       items.push({ type: 'marker', kind: 'liquidity', i: w.i, price: w.side === 'high' ? K[w.i].h : K[w.i].l,
-        place: w.side === 'high' ? 'above' : 'below', label: 'sweep', ref: ['sweep', R.sweeps.indexOf(w)] });
+        place: w.side === 'high' ? 'above' : 'below', label: 'sweep', grade: w.grade, ref: ['sweep', R.sweeps.indexOf(w)] });
     });
-    lastN(R.obs.filter(function (o) { return o.valid && o.invalidated === null && o.i >= v0; }), 2).forEach(function (ob) {
+    pick2(R.obs.filter(function (o) { return o.valid && o.invalidated === null && o.i >= v0; }), 'i').forEach(function (ob) {
       items.push({ type: 'box', kind: 'ob', i1: ob.i, i2: n - 1, top: ob.top, bottom: ob.bottom,
-        label: ob.dir === 1 ? 'Bull OB' : 'Bear OB', ref: ['ob', R.obs.indexOf(ob)] });
+        label: ob.dir === 1 ? 'Bull OB' : 'Bear OB', grade: ob.grade, ref: ['ob', R.obs.indexOf(ob)] });
     });
-    lastN(R.fvgs.filter(function (f) { return f.filled === null && f.b >= v0; }), 2).forEach(function (f) {
+    pick2(R.fvgs.filter(function (f) { return f.filled === null && f.b >= v0; }), 'b').forEach(function (f) {
       items.push({ type: 'box', kind: 'fvg', i1: f.b, i2: n - 1, top: f.top, bottom: f.bottom,
-        label: 'FVG' + (f.dir === 1 ? '↑' : '↓'), ref: ['fvg', R.fvgs.indexOf(f)] });
+        label: 'FVG' + (f.dir === 1 ? '↑' : '↓'), grade: f.grade, ref: ['fvg', R.fvgs.indexOf(f)] });
     });
     var r = R.range;
     if (r && Math.max(r.low_i, r.high_i) >= v0) {
@@ -355,8 +419,61 @@
   // ============================== 4. 文字报告 ==============================
   function report(K, R, sel, info, lang) {
     var d = info && info.decimals != null ? info.decimals : 2, zh = lang !== 'en';
-    function P(x) { return x.toFixed(d); }
-    function P1(x) { return x.toFixed(d + 1); }
+    function P(x) { return fx(x, d); }
+    function P1(x) { return fx(x, d + 1); }
+    function A2(x) { return fx(x, 2); }
+    function PC(x) { return fx(x * 100, 0) + '%'; }
+    function note(nt) {
+      var c = nt[0];
+      if (zh) switch (c) {
+        case 'ob_full': return 'OB 实体饱满（占全长 ' + PC(nt[1]) + '，' + A2(nt[2]) + ' 倍 ATR）';
+        case 'ob_thin': return 'OB 实体不够饱满（只占全长 ' + PC(nt[1]) + '，' + A2(nt[2]) + ' 倍 ATR），挂在这里的单不多';
+        case 'ob_doji': return 'OB 接近十字星（实体只占全长 ' + PC(nt[1]) + '，' + A2(nt[2]) + ' 倍 ATR），多空几乎打平，说明不了大资金在这里成交';
+        case 'ob_engulf': return '下一根就用实体吞没了 OB 的实体，推动很猛';
+        case 'ob_disp': return '之后 2 根内出现 ' + A2(nt[1]) + ' 倍 ATR 的大实体，推动有力';
+        case 'ob_slow': return '之后的推动不够猛（2 根内最大实体只有 ' + A2(nt[1]) + ' 倍 ATR，也没有吞没 OB 实体）';
+        case 'fvg_size': return '缺口宽 ' + A2(nt[1]) + ' 倍 ATR';
+        case 'fvg_small': return '缺口只有 ' + A2(nt[1]) + ' 倍 ATR，一根影线就可能补掉';
+        case 'fvg_break': return '伴随结构突破（' + T(nt[1]) + '）';
+        case 'fvg_nobreak': return '没有伴随结构突破，没有结构配合的 FVG 很容易被一穿而过';
+        case 'sw_pool': return '扫的是等高 / 等低，止损最集中';
+        case 'sw_shallow': return '只越过 ' + A2(nt[1]) + ' 倍 ATR，几乎只是碰了一下';
+        case 'sw_react': return '扫完 3 根内收盘反向离开关键位 ' + A2(nt[1]) + ' 倍 ATR，有反应';
+        case 'sw_noreact': return '扫完 3 根内没有明显反应（收盘最多离开关键位 ' + A2(nt[1]) + ' 倍 ATR）';
+        case 'sw_pending': return '刚发生，还看不出反应';
+        case 'br_thin': return '收盘只越过关键位 ' + A2(nt[1]) + ' 倍 ATR，差一点就是假突破';
+        case 'br_disp': return '有位移配合（留下同向 FVG 或突破 K 线实体大）';
+        case 'br_nodisp': return '没有位移配合（没有同向 FVG，突破 K 线实体也不大）';
+      }
+      switch (c) {
+        case 'ob_full': return 'full-bodied OB candle (' + PC(nt[1]) + ' of its range, ' + A2(nt[2]) + '×ATR)';
+        case 'ob_thin': return 'OB body is not full (' + PC(nt[1]) + ' of its range, ' + A2(nt[2]) + '×ATR), so few orders sit there';
+        case 'ob_doji': return 'OB is nearly a doji (' + PC(nt[1]) + ' of its range, ' + A2(nt[2]) + '×ATR): buyers and sellers drew, which says little about big orders';
+        case 'ob_engulf': return 'the next candle engulfs the OB body: a forceful move';
+        case 'ob_disp': return 'a ' + A2(nt[1]) + '×ATR body within 2 candles: a forceful move';
+        case 'ob_slow': return 'the move away is weak (largest body within 2 candles is ' + A2(nt[1]) + '×ATR, and no engulfing)';
+        case 'fvg_size': return 'gap is ' + A2(nt[1]) + '×ATR wide';
+        case 'fvg_small': return 'gap is only ' + A2(nt[1]) + '×ATR, one wick can fill it';
+        case 'fvg_break': return 'part of a structure break (' + T(nt[1]) + ')';
+        case 'fvg_nobreak': return 'no structure break with it; an FVG without structure is easily run through';
+        case 'sw_pool': return 'it took equal highs / lows, where stops cluster most';
+        case 'sw_shallow': return 'it went only ' + A2(nt[1]) + '×ATR beyond the level, barely a touch';
+        case 'sw_react': return 'within 3 candles price closed ' + A2(nt[1]) + '×ATR back from the level: a reaction';
+        case 'sw_noreact': return 'no clear reaction within 3 candles (closes got at most ' + A2(nt[1]) + '×ATR back from the level)';
+        case 'sw_pending': return 'too recent to see a reaction';
+        case 'br_thin': return 'the close cleared the level by only ' + A2(nt[1]) + '×ATR, close to a false break';
+        case 'br_disp': return 'backed by displacement (a same-direction FVG or a large breaking body)';
+        case 'br_nodisp': return 'no displacement (no same-direction FVG and a small breaking body)';
+      }
+    }
+    function gradeLine(obj) {
+      var weak = obj.notes.filter(isWeak).map(note), good = obj.notes.filter(function (x) { return !isWeak(x); }).map(note);
+      var sep = zh ? '；' : '; ';
+      if (obj.grade === 'strong') return (zh ? '   → 强：' : '   → Strong: ') + good.join(sep);
+      var t = (zh ? '   → 弱，偏重低、容易失效：' : '   → Weak, low weight, fails easily: ') + weak.join(sep);
+      if (good.length) t += (zh ? '。好的一面：' : '. On the plus side: ') + good.join(sep);
+      return t;
+    }
     function T(i) { var t = K[i].t; return '#' + i + (t ? ' (' + t + ')' : ''); }
     function dirw(x) { return zh ? (x === 1 ? '多' : '空') : (x === 1 ? 'bullish' : 'bearish'); }
     function J(arr, sep) { return arr.map(T).join(sep); }
@@ -371,6 +488,7 @@
     out.push('');
     sel.items.forEach(function (it, ix) {
       var n_ = ix + 1, kind = it.ref[0], idx = it.ref[1];
+      var graded = { event: 'events', sweep: 'sweeps', ob: 'obs', fvg: 'fvgs' }[kind];
       if (kind === 'event') {
         var e = R.events[idx];
         var gate = zh ? (e.type === 'CHoCH' ? '守门点' : '摆动点') : (e.type === 'CHoCH' ? 'guard point' : 'swing point');
@@ -421,6 +539,7 @@
         if (zh) out.push(n_ + '. 【对侧流动性】' + (lv.type === 'high' ? '上方最近的未扫高点 BSL' : '下方最近的未扫低点 SSL') + ' ' + P(lv.price) + '（' + T(lv.i) + '）');
         else out.push(n_ + '. [Liquidity] nearest untaken ' + (lv.type === 'high' ? 'swing high above (BSL)' : 'swing low below (SSL)') + ' ' + P(lv.price) + ' (' + T(lv.i) + ')');
       }
+      if (graded) out.push(gradeLine(R[graded][idx]));
     });
     if (!sel.items.length) out.push(zh ? '图上范围内没有识别到符合规则的项目。' : 'Nothing in view meets the rules.');
     var cand = lastN(R.obs.filter(function (o) { return !o.valid && o.invalidated === null && o.i >= sel.from; }), 2);
@@ -436,9 +555,11 @@
     }
     out.push('');
     if (zh) {
+      out.push('强 / 弱：按实体是否饱满、推动是否有力、缺口大小、清扫深度和反应、突破幅度判断（标准见 09 第五节）。"弱"不是错，而是偏重低、容易失效，图上画成虚线。');
       out.push('程序没有判断的：诱导（Miller 严格口径）、多周期方向、消息面、拒绝针和入场触发。这些需要你自己核对。');
       out.push('识别规则见 references/09-数据识别引擎.md。仅供学习，不构成交易建议。');
     } else {
+      out.push('Strong / weak: graded by body fullness, force of the move, gap size, sweep depth and reaction, and break margin (rules in 09 section 5). "Weak" is not wrong, but low weight and easy to fail; it is drawn dashed.');
       out.push('Not judged by the program: inducement (Miller strict view), higher-timeframe bias, news, rejection wicks and entry triggers. Check these yourself.');
       out.push('Rules: references/09-数据识别引擎.md. For learning only, not trading advice.');
     }

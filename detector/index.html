@@ -80,6 +80,7 @@ label.chk{font-size:13px;color:var(--muted);display:inline-flex;align-items:cent
     <ul class="help">
       <li>图上每个标注前的数字，对应报告里的条目编号（手机上只显示编号）；鼠标放在 K 线上可以看到它的序号 # 和开高低收，方便逐项核对。</li>
       <li>规则：摆动点 = 左右各 N 根的分形；BOS / CHoCH 只认<b>实体收盘</b>越过；清扫 = 影线越过、收盘收回；FVG = A、C 不重叠的那一段，从 B 开始画；OB = 位移前最后一根反向 K 线，<b>只取实体</b>，且必须同时有清扫、FVG、结构突破。完整说明见仓库 <code>references/09-数据识别引擎.md</code>。</li>
+      <li><b>强 / 弱</b>：OB 要实体饱满、之后被暴力拉开；FVG 要够宽、伴随结构突破；清扫要真正越过、扫完有反应；结构突破要收盘明显越过、有位移配合。达不到的标"弱"（虚线），报告里写明为什么偏重低、容易失效。</li>
       <li>程序不判断诱导、多周期方向、消息面和入场触发，这些要你自己核对。仅供学习，不构成交易建议。</li>
     </ul>
   </section>
@@ -182,20 +183,22 @@ function draw(){
   var labels=[];
   sel.items.forEach(function(it,ix){
     if(!on(LAYER[it.kind])) return;
-    var n=(ix+1)+' ',c=COL[it.kind];
+    var wk=it.grade==='weak',n=(ix+1)+(wk&&W<600?'弱':'')+' ',c=COL[it.kind];
+    var lab=it.label+(wk?($('lang').value==='en'?' (weak)':' 弱'):'');
     ctx.setLineDash([]);
     if(it.type==='hline'){
       var x2=it.kind==='structure'?X(it.i2):right, y=Y(it.price);
-      ctx.strokeStyle=c; ctx.lineWidth=1.4; ctx.setLineDash(it.kind==='structure'?[]:[6,4]);
+      ctx.strokeStyle=c; ctx.lineWidth=1.4; ctx.setLineDash(wk?[2,4]:(it.kind==='structure'?[]:[6,4]));
       ctx.beginPath(); ctx.moveTo(X(it.i1),y); ctx.lineTo(x2,y); ctx.stroke(); ctx.setLineDash([]);
-      labels.push(it.kind==='structure'?[n+it.label+' '+fmt(it.price),X(it.i2)+6,y,c,'left']:[n+it.label+' '+fmt(it.price),right,y-9,c,'right']);
+      labels.push(it.kind==='structure'?[n+lab+' '+fmt(it.price),X(it.i2)+6,y,c,'left']:[n+lab+' '+fmt(it.price),right,y-9,c,'right']);
     }else if(it.type==='box'){
       var yt=Y(it.top),yb=Y(it.bottom),x1=X(it.i1)-step/2;
-      ctx.fillStyle=c+'38'; ctx.fillRect(x1,yt,right-x1,Math.max(1,yb-yt)); ctx.strokeStyle=c; ctx.lineWidth=1; ctx.strokeRect(x1,yt,right-x1,Math.max(1,yb-yt));
-      labels.push([n+it.label,x1+2,yb+9,c,'left']);
+      ctx.fillStyle=c+(wk?'1c':'38'); ctx.fillRect(x1,yt,right-x1,Math.max(1,yb-yt));
+      ctx.strokeStyle=c; ctx.lineWidth=1.2; ctx.setLineDash(wk?[5,4]:[]); ctx.strokeRect(x1,yt,right-x1,Math.max(1,yb-yt)); ctx.setLineDash([]);
+      labels.push([n+lab,x1+2,yb+9,c,'left']);
     }else if(it.type==='marker'){
-      var mx=X(it.i),my=Y(it.price); ctx.strokeStyle=c; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(mx,my,8,0,Math.PI*2); ctx.stroke();
-      labels.push([n+it.label,mx,it.place==='above'?my-18:my+18,c,'center']);
+      var mx=X(it.i),my=Y(it.price); ctx.strokeStyle=c; ctx.lineWidth=2; ctx.setLineDash(wk?[3,3]:[]); ctx.beginPath(); ctx.arc(mx,my,8,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+      labels.push([n+lab,mx,it.place==='above'?my-18:my+18,c,'center']);
     }else if(it.type==='range'){
       var rx=X(it.i1)-step/2,ye=Y(it.eq);
       ctx.fillStyle='rgba(239,83,80,.06)'; ctx.fillRect(rx,Y(it.high),right-rx,ye-Y(it.high));

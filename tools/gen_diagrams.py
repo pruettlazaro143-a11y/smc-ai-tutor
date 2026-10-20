@@ -453,6 +453,7 @@ def d04():
     check(all(p.L(j) > idm for j in range(9, 12)), "d04: IDM swept too early")
     check(p.L(12) < idm, "d04: candle 12 must sweep IDM")
     check(p.Cl(13) < p.O(13) and p.Cl(14) > p.O(14), "d04: OB must be the last bearish candle before displacement")
+    check(p.O(13) - p.Cl(13) >= 0.5 * (p.H(13) - p.L(13)), "d04: OB candle must be full-bodied")
     kb = p.first_close_above(top, 9)
     check(kb == 15, f"d04: BOS candle expected 15, got {kb}")
     p.zone(7, 8, p.H(7), idm, C["bear"], None, opacity=0.14)
@@ -506,7 +507,7 @@ def d05():
 def d06():
     ch = Chart("订单区 OB：位移前最后一根反向 K 线的实体", "OB 三个硬条件：扫过流动性 + 留下失衡(FVG) + 打出结构；区域取实体，影线只作缓冲", 900, 500)
     cs = mk(113, [112.0, 110.6, 109.2, 107.8, (106.4, None, 105.4), 106.8, 108.2, (109.0, 109.8, None),   # 0-7
-                  108.1, 107.0, 106.2, (105.5, None, 105.45), (104.6, None, 103.6),                        # 8-12 OB idx12 sweeps 105.4
+                  108.1, 107.0, 106.2, (105.5, None, 105.45), (104.0, 105.6, 103.8),                        # 8-12 OB idx12：实体饱满的阴线，影线扫前低 105.4
                   (107.4, None, 104.5), (110.6, None, 107.9), 111.4,                                       # 13-15 displacement
                   110.4, 109.0, 107.6, (106.4, None, 105.0), 107.8, 109.6, 111.2, 112.6, 114.0], seed=14)
     p = ch.panel(cs, 24, 86, 876, 470)
@@ -514,6 +515,9 @@ def d06():
     check(all(p.L(j) > p.L(4) for j in range(5, 12)), "d06: prior low broken before OB")
     check(p.L(12) < p.L(4), "d06: OB candle must sweep the prior low")
     check(p.Cl(12) < p.O(12) and p.Cl(13) > p.O(13), "d06: OB = last bearish candle before displacement")
+    body12 = p.O(12) - p.Cl(12)
+    check(body12 >= 0.5 * (p.H(12) - p.L(12)), "d06: OB candle must be full-bodied (body >= 50% of range), not a doji")
+    check(p.O(13) <= p.Cl(12) and p.Cl(13) >= p.O(12), "d06: next candle engulfs the OB body (forceful displacement)")
     ob_top, ob_bot = max(p.O(12), p.Cl(12)), min(p.O(12), p.Cl(12))
     first_ret = next(j for j in range(15, p.n) if p.L(j) <= ob_top)  # after the displacement candles
     check(first_ret == 19, f"d06: first return to OB expected at 19, got {first_ret}")

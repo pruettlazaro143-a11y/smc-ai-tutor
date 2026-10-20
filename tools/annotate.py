@@ -139,7 +139,10 @@ def draw(img_path, spec, out_path):
             d.rectangle((x0, top, x1, bot), fill=col + (50,))
             for a, b, c2, e in ((x0, top, x1, top), (x0, bot, x1, bot), (x0, top, x0, bot), (x1, top, x1, bot)):
                 dashed(a, b, c2, e, col, max(1, lw - 1)) if low else d.line((a, b, c2, e), fill=col + (230,), width=max(1, lw - 1))
-            tag(x0 + 6, bot + 6, text_of(it), col, 'la')
+            if it.get('label_pos') == 'br':  # 文字放在区域右下角（左下角被别的标注占用时）
+                tag(x1 - 6, bot + 6, text_of(it), col, 'ra')
+            else:
+                tag(x0 + 6, bot + 6, text_of(it), col, 'la')
         elif t in ('line', 'arrow'):
             xa, xb = m.x(it['x1']), m.x(it['x2'])
             ya, yb = m.y_of(it, 'y1', 'price1'), m.y_of(it, 'y2', 'price2')
