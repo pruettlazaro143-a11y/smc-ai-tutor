@@ -5,8 +5,8 @@
 > **把一整套 SMC 知识做成 AI 能直接执行的教学指令。上传给任意 AI 助手，它就会变成你的一对一 SMC 教练。**
 > **A complete Smart Money Concepts curriculum packaged as instructions any AI assistant can run: upload one file and get a one-on-one SMC tutor.**
 >
-> 按课程带学 · 随时答疑 · 出题检验 · 画图讲解 · 截图标注 · 记住你自己的认知
-> Guided lessons · Q&A · quizzes · diagrams · screenshot annotation · your own notes as memory
+> 按课程带学 · 随时答疑 · 出题检验 · 画图讲解 · K 线数据精确识别 · 截图标注 · 记住你自己的认知
+> Guided lessons · Q&A · quizzes · diagrams · exact detection from candle data · screenshot annotation · your own notes as memory
 
 **看懂流动性猎杀，不再做被扫的那一个。 · Learn to read liquidity hunts — and stop being the liquidity.**
 
@@ -34,7 +34,7 @@
 
 AI 会一次问你五个问题：**基础、市场、想怎么学、想用哪种方式看图、要不要启用认知记忆区**，然后进入对应模式。
 
-> AI 读不全大文件、或者回答明显没按指令走时，换用精简版 [`prompt/SMC-AI-Tutor-lite.md`](prompt/SMC-AI-Tutor-lite.md)（去掉了进阶模型的字符图和标注代码，其他内容相同）。
+> AI 读不全大文件、或者回答明显没按指令走时，换用精简版 [`prompt/SMC-AI-Tutor-lite.md`](prompt/SMC-AI-Tutor-lite.md)（去掉了进阶模型的字符图、标注代码和识别代码，其他内容相同；识别改用在线识别器）。
 
 ### 方式二：Claude Skill（Claude Code / Claude 应用）
 
@@ -67,22 +67,38 @@ AI 会一次问你五个问题：**基础、市场、想怎么学、想用哪种
 
 流程类内容（入场节奏、十一步清单）在支持的环境里还可以用 Mermaid 流程图。
 
-### 2. 截图标注：发一张 K 线截图，AI 帮你标出结构
+### 2. 精确标注：用 K 线数据，由程序识别、AI 讲解
 
-AI 会按固定流程来：先读图、列出候选关键点（位置、依据、把握程度），再逐项核对，**不满足条件的不标**，拿不准的标成虚线加"?"。标注有四种输出：
+只靠提示词让 AI 看截图画线，精度上不去：偏几根 K 线、把重叠看成缺口、分不清收盘在关键位里面还是外面，都很常见。所以真实行情的标注**交给程序算，AI 只负责讲解**：
+
+1. 导出这段行情的 K 线数据（MT5 / MT4 / TradingView 导出的 CSV，或任何带开高低收的表格；加密货币可以直接从币安拉取）
+2. 打开[在线识别器](https://pruettlazaro143-a11y.github.io/smc-ai-tutor/detector/)（或离线打开 [`detector/index.html`](detector/index.html)），放入数据：程序按教程规则算出结构（BOS / CHoCH）、等高等低、清扫、FVG、OB（只取实体，且必须同时满足清扫 + FVG + 结构突破）、Premium / Discount 和 OTE，画在图上
+3. 点"复制报告给 AI"，粘贴给加载了教程的 AI，它按报告逐项讲解，**不改动程序识别的位置和价格**
+
+能运行代码的 AI（如 ChatGPT 的数据分析、Claude）会直接运行自带的 [`tools/smc_detect.py`](tools/smc_detect.py)，你上传 CSV 就能拿到标注图和讲解。数据只在你的浏览器或 AI 的代码环境里处理。
+
+![识别器示例](docs/detector-example.png)
+
+*（虚构走势。图上每个标注前的编号对应报告条目。）*
+
+识别规则逐条对应教程定义，写在 [`references/09-数据识别引擎.md`](skills/smc-learning/references/09-数据识别引擎.md)。程序不判断诱导、多周期方向、消息面和入场触发，这些仍然要你自己核对。
+
+### 3. 截图标注：只有截图时的粗略参考
+
+拿不到数据时，AI 会按固定流程来：先读图、列出候选关键点（位置、依据、把握程度），再逐项核对，**不满足条件的不标**，拿不准的标成虚线加"?"。标注有四种输出：
 
 - **直接画在原图上**：能运行代码的 AI 用 [`tools/annotate.py`](tools/annotate.py) 的代码画好发给你
 - **标注器网页**：任何 AI 都能输出一段标注 JSON，用[在线标注器](https://pruettlazaro143-a11y.github.io/smc-ai-tutor/annotator/)（或离线打开 [`annotator/index.html`](annotator/index.html)）放入截图、粘贴 JSON，就能看到标注，**位置不准可以直接拖动修正**，再导出 PNG（全部在浏览器本地完成，图片不上传）
 - **TradingView 画线指引**：按价格和时间告诉你在哪画线、画框
 - **文字表格**
 
-> AI 从截图里读位置是估计，可能偏几根 K 线或一点价格。标注器的拖动校正就是为这个准备的。
+> AI 从截图里读位置是**估计**，可能偏几根 K 线或一点价格，只能当粗略参考。标注器的拖动校正就是为这个准备的；要精确结果，请用上面的数据识别。
 
 打开标注器点"看示例"，可以看到下面这张演示（虚构走势）：
 
 ![截图标注示例](docs/annotation-example.png)
 
-### 3. 认知记忆区：加入你自己的 SMC 理解
+### 4. 认知记忆区：加入你自己的 SMC 理解
 
 学的课程、书不同，口径难免有出入。开场时选择启用，你可以：
 
@@ -123,6 +139,7 @@ Claude Skill 用户把笔记放进 [`skills/smc-learning/my-notes/`](skills/smc-
 
 - **示意图由数据生成**：每张 K 线图都先写好每根 K 线的开高低收，标注从数据计算出来，生成前跑一遍逻辑断言（例如 FVG 必须满足 C 的最低点高于 A 的最高点、清扫必须影线越过且实体收回、OB 必须是位移前最后一根反向 K 线）。任何一条不满足，脚本直接报错，不会出图。
 - **字符图同源**：字符图库由同一套数据生成，并检查"该高的点在更高的行"，保证文字版和图形版说的是一回事。
+- **真实行情由程序识别**：识别器的每条规则对应教程定义。`tools/test_detect.py` 做四类检查：示例图里人工确认过的每一项必须原样识别出来；在 60 组随机走势上把识别出的每一项按定义独立重算（共约 6000 项）；Python 版和网页版对 360 个不同格式的数据文件结果逐项一致；网页报告和 Python 版一字不差。
 - **标注前核对清单**：AI 在画任何图、标任何截图之前，都要逐项过一遍核对清单；标注器和标注代码也会拒绝明显矛盾的标注。
 - 发现错误欢迎提 Issue，见[参与贡献](#参与贡献)。
 
@@ -147,9 +164,11 @@ smc-ai-tutor/
 │   └── SMC-AI-Tutor-lite.md    # 精简版（自动生成）
 ├── skills/smc-learning/        # Claude Skill
 │   ├── SKILL.md                # 教练指令（自动生成）
-│   ├── references/             # 01 认知框架 … 08 截图标注规范（内容源文件）
+│   ├── references/             # 01 认知框架 … 09 数据识别引擎（内容源文件）
+│   ├── scripts/smc_detect.py   # 识别程序（自动复制）
 │   ├── assets/                 # SVG 示意图
 │   └── my-notes/               # 你自己的 SMC 认知（默认不提交）
+├── detector/                   # K 线数据识别器（网页版引擎 + 页面，浏览器本地运行）
 ├── annotator/index.html        # 截图标注器（浏览器本地运行）
 ├── docs/                       # 手册、图鉴、认知蒸馏
 ├── diagrams/                   # 全部示意图 SVG / PNG
@@ -157,7 +176,7 @@ smc-ai-tutor/
 └── SOURCES.md                  # 出处对照
 ```
 
-**内容只改 `skills/smc-learning/references/`（01–06、08）和 `tools/tutor_core.md`（教练指令）**，然后重新生成：
+**内容只改 `skills/smc-learning/references/`（01–06、08、09）和 `tools/tutor_core.md`（教练指令）**；识别规则改 `tools/smc_detect.py` 时，`detector/smc-detect.js` 要同步改，再跑测试确认两边一致，然后重新生成：
 
 ```bash
 python3 tools/gen_diagrams.py                       # 基础示意图（带逻辑断言）
@@ -165,6 +184,8 @@ python3 tools/ob_poster.py                          # OB 一图看懂
 python3 tools/gen_models.py                         # 进阶与入场模型图（带逻辑断言）
 python3 tools/gen_ascii.py                          # 字符图库 07（带逻辑断言）
 python3 tools/gen_example.py                        # 标注器示例图与示例 JSON（虚构数据）
+python3 tools/gen_detector_demo.py                  # 识别器演示数据与效果图（虚构数据）
+python3 tools/test_detect.py                        # 识别引擎测试（需要 Node.js；网页测试需要 playwright）
 python3 tools/build.py                              # SKILL.md、prompt/、docs/
 python3 tools/render.py diagrams/svg diagrams/png   # SVG 转 PNG（需要 playwright）
 python3 tools/render.py diagrams/models/svg diagrams/models/png
@@ -195,6 +216,7 @@ python3 tools/render.py diagrams/models/svg diagrams/models/png
 - 本项目**仅用于学习交流**，不构成任何投资建议，不荐股、不喊单、不带单。
 - 交易有风险，**任何方法都不能保证盈利**。请根据自身风险承受能力独立决策，盈亏自负。
 - AI 的回答和截图标注可能出错。请把它当作学习辅助，不要当作交易信号，更不要用它代替自己的判断。
+- 识别器只按固定规则识别形态，识别出 OB、FVG 不代表价格会在那里反应。它不是交易信号，也不是自动交易程序（EA）。
 - 标有【作者实战经验】的内容是个人经验总结，不代表普遍规律。
 
 ## 许可证

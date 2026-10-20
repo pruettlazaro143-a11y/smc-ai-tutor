@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMC 识别器 · Detector</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface2:#eef0f3; --text:#1d2330; --muted:#5b6475; --border:#d9dde4;
+  --accent:#5b4bd6; --accent-text:#ffffff; --danger:#c62828; --ok:#1b7f5a;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1218; --surface:#161b24; --surface2:#1d2430; --text:#e6eaf0; --muted:#97a1b3; --border:#2b3442;
+    --accent:#8f84ff; --accent-text:#0f1218; --danger:#ff6b6b; --ok:#4cc9a0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1218; --surface:#161b24; --surface2:#1d2430; --text:#e6eaf0; --muted:#97a1b3; --border:#2b3442;
+  --accent:#8f84ff; --accent-text:#0f1218; --danger:#ff6b6b; --ok:#4cc9a0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif}
+header{padding:20px 16px 8px;max-width:1320px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0;font-size:14px}
+.sub a{color:var(--accent)}
+main{max-width:1320px;margin:0 auto;padding:8px 16px 32px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px}
+@media (max-width:960px){main{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;min-width:0}
+#stage{position:relative;background:#131722;border-radius:10px;overflow:hidden}
+#stage.drag{outline:2px dashed var(--accent)}
+canvas{display:block;width:100%;touch-action:none}
+#empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:#97a1b3;padding:24px;font-size:14px}
+#tip{position:absolute;pointer-events:none;background:rgba(15,18,24,.92);color:#e6eaf0;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:6px 8px;border-radius:6px;display:none;white-space:pre}
+textarea{width:100%;font:12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px;resize:vertical}
+#paste{min-height:90px}
+#report{min-height:320px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+button,select,input[type=text],input[type=number]{appearance:none;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:7px 10px;font:inherit;font-size:14px}
+button{cursor:pointer}
+button.primary{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+button:hover{filter:brightness(1.05)}
+input[type=file]{display:none}
+input[type=text]{width:120px} input[type=number]{width:72px}
+h2{font-size:15px;margin:14px 0 4px}
+h2:first-child{margin-top:0}
+#msg{font-size:13px;white-space:pre-wrap;min-height:1.2em;margin-top:8px}
+#msg.err{color:var(--danger)} #msg.ok{color:var(--ok)}
+.help{font-size:13px;color:var(--muted);margin:4px 0}
+.help li{margin:2px 0}
+label.chk{font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.layers{display:flex;flex-wrap:wrap;gap:4px 14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>SMC 识别器 <span style="font-weight:400;color:var(--muted)">· Detector</span></h1>
+  <p class="sub">放入 K 线数据，程序按教程规则<b>精确计算</b>结构、流动性、FVG、OB、区间并画出来；把报告复制给 AI，让它负责讲解。数据只在你的浏览器里处理，不会上传。<br>
+  Load candle data; the program computes structure, liquidity, FVGs, order blocks and ranges by fixed rules. Copy the report to your AI for the explanation. Nothing is uploaded.
+  · 只有截图？用 <a href="../annotator/">标注器 Annotator</a>（AI 读图是估计，精度有限）</p>
+</header>
+<main>
+  <section class="card">
+    <div id="stage"><canvas id="cv"></canvas><div id="empty">① 拖入数据文件，或在右侧选择 / 粘贴 / 拉取数据<br>Drop a CSV here, or load data on the right</div><div id="tip"></div></div>
+    <div class="row">
+      <span class="help" style="margin:0">图层 · Layers</span>
+      <div class="layers">
+        <label class="chk"><input type="checkbox" data-layer="structure" checked>结构</label>
+        <label class="chk"><input type="checkbox" data-layer="liquidity" checked>流动性</label>
+        <label class="chk"><input type="checkbox" data-layer="ob" checked>OB</label>
+        <label class="chk"><input type="checkbox" data-layer="fvg" checked>FVG</label>
+        <label class="chk"><input type="checkbox" data-layer="range" checked>区间 / OTE</label>
+      </div>
+    </div>
+    <div class="row">
+      <button id="pngBtn" type="button">导出图片 · PNG</button>
+      <button id="jsonBtn" type="button">导出识别结果 · JSON</button>
+    </div>
+    <ul class="help">
+      <li>图上每个标注前的数字，对应报告里的条目编号（手机上只显示编号）；鼠标放在 K 线上可以看到它的序号 # 和开高低收，方便逐项核对。</li>
+      <li>规则：摆动点 = 左右各 N 根的分形；BOS / CHoCH 只认<b>实体收盘</b>越过；清扫 = 影线越过、收盘收回；FVG = A、C 不重叠的那一段，从 B 开始画；OB = 位移前最后一根反向 K 线，<b>只取实体</b>，且必须同时有清扫、FVG、结构突破。完整说明见仓库 <code>references/09-数据识别引擎.md</code>。</li>
+      <li>程序不判断诱导、多周期方向、消息面和入场触发，这些要你自己核对。仅供学习，不构成交易建议。</li>
+    </ul>
+  </section>
+  <aside class="card">
+    <h2>② 数据 · Data</h2>
+    <div class="row">
+      <button id="pick" type="button" class="primary">选择文件 · File</button>
+      <button id="demoBtn" type="button">看示例 · Demo</button>
+      <input type="file" id="file" accept=".csv,.txt,.json,text/csv,text/plain,application/json">
+    </div>
+    <p class="help">支持 MT5 / MT4 导出的历史数据、TradingView 导出的 CSV、任何带 open/high/low/close（或 开盘/最高/最低/收盘）列的表格。</p>
+    <details>
+      <summary class="help" style="cursor:pointer">粘贴数据 · Paste</summary>
+      <textarea id="paste" spellcheck="false" placeholder="time,open,high,low,close&#10;..."></textarea>
+      <div class="row"><button id="pasteBtn" type="button">识别粘贴的数据</button></div>
+    </details>
+    <details>
+      <summary class="help" style="cursor:pointer">从币安拉取（加密货币）· Binance</summary>
+      <div class="row">
+        <input type="text" id="sym" value="BTCUSDT" aria-label="symbol">
+        <select id="itv" aria-label="interval"><option>5m</option><option selected>15m</option><option>1h</option><option>4h</option><option>1d</option></select>
+        <button id="bnBtn" type="button">拉取 500 根</button>
+      </div>
+      <p class="help">用的是币安公开行情接口，所在网络访问不了时请改用导出文件。</p>
+    </details>
+    <h2>③ 参数 · Settings</h2>
+    <div class="row">
+      <label class="chk">摆动点 N <input type="number" id="swing" min="1" max="10" value="3"></label>
+      <label class="chk">显示最近 <select id="last"><option>60</option><option selected>120</option><option>200</option><option>300</option></select> 根</label>
+      <select id="lang" aria-label="language"><option value="zh">中文报告</option><option value="en">English</option></select>
+    </div>
+    <p class="help">N 越大，只认越明显的高低点（结构级别越大）；N 小会把小波动也算进来。</p>
+    <h2>④ 报告 · Report</h2>
+    <textarea id="report" readonly spellcheck="false"></textarea>
+    <div class="row">
+      <button id="copyBtn" type="button" class="primary">复制报告给 AI · Copy</button>
+    </div>
+    <p class="help">把报告粘贴给加载了 SMC 教程的 AI，说"按这份识别报告给我讲解"。AI 只负责讲解，不应改动程序识别的位置和价格。</p>
+    <div id="msg"></div>
+  </aside>
+</main>
+<script src="smc-detect.js"></script>
+<script>
+(function(){
+'use strict';
+var DEMO=/*DEMO*/"<DATE>\t<TIME>\t<OPEN>\t<HIGH>\t<LOW>\t<CLOSE>\t<TICKVOL>\t<VOL>\t<SPREAD>\n2026.03.02\t00:00:00\t1.08500\t1.08641\t1.08433\t1.08621\t100\t0\t8\n2026.03.02\t00:15:00\t1.08621\t1.08642\t1.08568\t1.08580\t101\t0\t8\n2026.03.02\t00:30:00\t1.08580\t1.08680\t1.08550\t1.08664\t102\t0\t8\n2026.03.02\t00:45:00\t1.08664\t1.08684\t1.08628\t1.08635\t103\t0\t8\n2026.03.02\t01:00:00\t1.08635\t1.08710\t1.08600\t1.08687\t104\t0\t8\n2026.03.02\t01:15:00\t1.08687\t1.08706\t1.08665\t1.08674\t105\t0\t8\n2026.03.02\t01:30:00\t1.08674\t1.08713\t1.08639\t1.08677\t106\t0\t8\n2026.03.02\t01:45:00\t1.08677\t1.08723\t1.08663\t1.08696\t107\t0\t8\n2026.03.02\t02:00:00\t1.08696\t1.08796\t1.08685\t1.08750\t108\t0\t8\n2026.03.02\t02:15:00\t1.08750\t1.08829\t1.08743\t1.08820\t109\t0\t8\n2026.03.02\t02:30:00\t1.08820\t1.08883\t1.08755\t1.08860\t110\t0\t8\n2026.03.02\t02:45:00\t1.08860\t1.08940\t1.08814\t1.08928\t111\t0\t8\n2026.03.02\t03:00:00\t1.08928\t1.08951\t1.08908\t1.08917\t112\t0\t8\n2026.03.02\t03:15:00\t1.08917\t1.08976\t1.08903\t1.08942\t113\t0\t8\n2026.03.02\t03:30:00\t1.08942\t1.08957\t1.08901\t1.08911\t114\t0\t8\n2026.03.02\t03:45:00\t1.08911\t1.08928\t1.08833\t1.08856\t115\t0\t8\n2026.03.02\t04:00:00\t1.08856\t1.08897\t1.08818\t1.08879\t116\t0\t8\n2026.03.02\t04:15:00\t1.08879\t1.08959\t1.08869\t1.08945\t117\t0\t8\n2026.03.02\t04:30:00\t1.08945\t1.08955\t1.08896\t1.08925\t118\t0\t8\n2026.03.02\t04:45:00\t1.08925\t1.08948\t1.08920\t1.08938\t119\t0\t8\n2026.03.02\t05:00:00\t1.08938\t1.09022\t1.08936\t1.09019\t120\t0\t8\n2026.03.02\t05:15:00\t1.09019\t1.09060\t1.09009\t1.09055\t121\t0\t8\n2026.03.02\t05:30:00\t1.09055\t1.09137\t1.09009\t1.09127\t122\t0\t8\n2026.03.02\t05:45:00\t1.09127\t1.09194\t1.09117\t1.09169\t123\t0\t8\n2026.03.02\t06:00:00\t1.09169\t1.09172\t1.09113\t1.09141\t124\t0\t8\n2026.03.02\t06:15:00\t1.09141\t1.09179\t1.09123\t1.09155\t125\t0\t8\n2026.03.02\t06:30:00\t1.09155\t1.09236\t1.09148\t1.09225\t126\t0\t8\n2026.03.02\t06:45:00\t1.09225\t1.09306\t1.09207\t1.09283\t127\t0\t8\n2026.03.02\t07:00:00\t1.09283\t1.09287\t1.09190\t1.09195\t128\t0\t8\n2026.03.02\t07:15:00\t1.09195\t1.09272\t1.09190\t1.09234\t129\t0\t8\n2026.03.02\t07:30:00\t1.09234\t1.09341\t1.09213\t1.09280\t130\t0\t8\n2026.03.02\t07:45:00\t1.09280\t1.09288\t1.09191\t1.09201\t131\t0\t8\n2026.03.02\t08:00:00\t1.09201\t1.09209\t1.09096\t1.09103\t132\t0\t8\n2026.03.02\t08:15:00\t1.09103\t1.09230\t1.09066\t1.09187\t133\t0\t8\n2026.03.02\t08:30:00\t1.09187\t1.09244\t1.09179\t1.09219\t134\t0\t8\n2026.03.02\t08:45:00\t1.09219\t1.09282\t1.09194\t1.09198\t135\t0\t8\n2026.03.02\t09:00:00\t1.09198\t1.09290\t1.09177\t1.09244\t136\t0\t8\n2026.03.02\t09:15:00\t1.09244\t1.09258\t1.09166\t1.09174\t100\t0\t8\n2026.03.02\t09:30:00\t1.09174\t1.09209\t1.09155\t1.09156\t101\t0\t8\n2026.03.02\t09:45:00\t1.09156\t1.09219\t1.09096\t1.09171\t102\t0\t8\n2026.03.02\t10:00:00\t1.09171\t1.09207\t1.09086\t1.09116\t103\t0\t8\n2026.03.02\t10:15:00\t1.09116\t1.09173\t1.09069\t1.09090\t104\t0\t8\n2026.03.02\t10:30:00\t1.09090\t1.09122\t1.09081\t1.09106\t105\t0\t8\n2026.03.02\t10:45:00\t1.09106\t1.09153\t1.09060\t1.09123\t106\t0\t8\n2026.03.02\t11:00:00\t1.09123\t1.09138\t1.08969\t1.08978\t107\t0\t8\n2026.03.02\t11:15:00\t1.08978\t1.09052\t1.08931\t1.08990\t108\t0\t8\n2026.03.02\t11:30:00\t1.08990\t1.09056\t1.08962\t1.09053\t109\t0\t8\n2026.03.02\t11:45:00\t1.09053\t1.09104\t1.09006\t1.09079\t110\t0\t8\n2026.03.02\t12:00:00\t1.09079\t1.09247\t1.09033\t1.09217\t111\t0\t8\n2026.03.02\t12:15:00\t1.09217\t1.09236\t1.09090\t1.09108\t112\t0\t8\n2026.03.02\t12:30:00\t1.09108\t1.09114\t1.08918\t1.08977\t113\t0\t8\n2026.03.02\t12:45:00\t1.08977\t1.08992\t1.08909\t1.08923\t114\t0\t8\n2026.03.02\t13:00:00\t1.08923\t1.08961\t1.08899\t1.08911\t115\t0\t8\n2026.03.02\t13:15:00\t1.08911\t1.08924\t1.08823\t1.08827\t116\t0\t8\n2026.03.02\t13:30:00\t1.08827\t1.08959\t1.08790\t1.08948\t117\t0\t8\n2026.03.02\t13:45:00\t1.08948\t1.09096\t1.08911\t1.09090\t118\t0\t8\n2026.03.02\t14:00:00\t1.09090\t1.09091\t1.09006\t1.09063\t119\t0\t8\n2026.03.02\t14:15:00\t1.09063\t1.09076\t1.08930\t1.08972\t120\t0\t8\n2026.03.02\t14:30:00\t1.08972\t1.08994\t1.08920\t1.08945\t121\t0\t8\n2026.03.02\t14:45:00\t1.08945\t1.08996\t1.08856\t1.08981\t122\t0\t8\n2026.03.02\t15:00:00\t1.08981\t1.09043\t1.08941\t1.09037\t123\t0\t8\n2026.03.02\t15:15:00\t1.09037\t1.09131\t1.08992\t1.09103\t124\t0\t8\n2026.03.02\t15:30:00\t1.09103\t1.09132\t1.09077\t1.09079\t125\t0\t8\n2026.03.02\t15:45:00\t1.09079\t1.09127\t1.09063\t1.09069\t126\t0\t8\n2026.03.02\t16:00:00\t1.09069\t1.09070\t1.09005\t1.09041\t127\t0\t8\n2026.03.02\t16:15:00\t1.09041\t1.09125\t1.08811\t1.08832\t128\t0\t8\n2026.03.02\t16:30:00\t1.08832\t1.08931\t1.08817\t1.08895\t129\t0\t8\n2026.03.02\t16:45:00\t1.08895\t1.08954\t1.08825\t1.08853\t130\t0\t8\n2026.03.02\t17:00:00\t1.08853\t1.08968\t1.08774\t1.08948\t131\t0\t8\n2026.03.02\t17:15:00\t1.08948\t1.09090\t1.08909\t1.09023\t132\t0\t8\n2026.03.02\t17:30:00\t1.09023\t1.09099\t1.08949\t1.09071\t133\t0\t8\n2026.03.02\t17:45:00\t1.09071\t1.09094\t1.09033\t1.09037\t134\t0\t8\n2026.03.02\t18:00:00\t1.09037\t1.09060\t1.09028\t1.09052\t135\t0\t8\n2026.03.02\t18:15:00\t1.09052\t1.09120\t1.09052\t1.09100\t136\t0\t8\n2026.03.02\t18:30:00\t1.09100\t1.09285\t1.09082\t1.09282\t100\t0\t8\n2026.03.02\t18:45:00\t1.09282\t1.09326\t1.09244\t1.09278\t101\t0\t8\n2026.03.02\t19:00:00\t1.09278\t1.09280\t1.09144\t1.09190\t102\t0\t8\n2026.03.02\t19:15:00\t1.09190\t1.09220\t1.09141\t1.09193\t103\t0\t8\n2026.03.02\t19:30:00\t1.09193\t1.09212\t1.09142\t1.09152\t104\t0\t8\n2026.03.02\t19:45:00\t1.09152\t1.09187\t1.09137\t1.09178\t105\t0\t8\n2026.03.02\t20:00:00\t1.09178\t1.09314\t1.09176\t1.09264\t106\t0\t8\n2026.03.02\t20:15:00\t1.09264\t1.09370\t1.09252\t1.09335\t107\t0\t8\n2026.03.02\t20:30:00\t1.09335\t1.09466\t1.09290\t1.09454\t108\t0\t8\n2026.03.02\t20:45:00\t1.09454\t1.09785\t1.09445\t1.09724\t109\t0\t8\n2026.03.02\t21:00:00\t1.09724\t1.09724\t1.09681\t1.09722\t110\t0\t8\n2026.03.02\t21:15:00\t1.09722\t1.09933\t1.09668\t1.09927\t111\t0\t8\n2026.03.02\t21:30:00\t1.09927\t1.09997\t1.09897\t1.09935\t112\t0\t8\n2026.03.02\t21:45:00\t1.09935\t1.09973\t1.09842\t1.09895\t113\t0\t8\n2026.03.02\t22:00:00\t1.09895\t1.10056\t1.09846\t1.10034\t114\t0\t8\n2026.03.02\t22:15:00\t1.10034\t1.10091\t1.09938\t1.09946\t115\t0\t8\n2026.03.02\t22:30:00\t1.09946\t1.10107\t1.09882\t1.10011\t116\t0\t8\n2026.03.02\t22:45:00\t1.10011\t1.10041\t1.09919\t1.09925\t117\t0\t8\n2026.03.02\t23:00:00\t1.09925\t1.10141\t1.09869\t1.10074\t118\t0\t8\n2026.03.02\t23:15:00\t1.10074\t1.10184\t1.09976\t1.09978\t119\t0\t8\n2026.03.02\t23:30:00\t1.09978\t1.09980\t1.09746\t1.09846\t120\t0\t8\n2026.03.02\t23:45:00\t1.09846\t1.09932\t1.09745\t1.09922\t121\t0\t8\n2026.03.03\t00:00:00\t1.09922\t1.10079\t1.09864\t1.09912\t122\t0\t8\n2026.03.03\t00:15:00\t1.09912\t1.10064\t1.09853\t1.09998\t123\t0\t8\n2026.03.03\t00:30:00\t1.09998\t1.10080\t1.09975\t1.10047\t124\t0\t8\n2026.03.03\t00:45:00\t1.10047\t1.10156\t1.09978\t1.10148\t125\t0\t8\n2026.03.03\t01:00:00\t1.10148\t1.10185\t1.10069\t1.10124\t126\t0\t8\n2026.03.03\t01:15:00\t1.10124\t1.10187\t1.10007\t1.10149\t127\t0\t8\n2026.03.03\t01:30:00\t1.10149\t1.10257\t1.10094\t1.10250\t128\t0\t8\n2026.03.03\t01:45:00\t1.10250\t1.10282\t1.10228\t1.10240\t129\t0\t8\n2026.03.03\t02:00:00\t1.10240\t1.10358\t1.10177\t1.10311\t130\t0\t8\n2026.03.03\t02:15:00\t1.10311\t1.10445\t1.10275\t1.10435\t131\t0\t8\n2026.03.03\t02:30:00\t1.10435\t1.10753\t1.10387\t1.10752\t132\t0\t8\n2026.03.03\t02:45:00\t1.10752\t1.10822\t1.10659\t1.10781\t133\t0\t8\n2026.03.03\t03:00:00\t1.10781\t1.10874\t1.10718\t1.10789\t134\t0\t8\n2026.03.03\t03:15:00\t1.10789\t1.10824\t1.10698\t1.10735\t135\t0\t8\n2026.03.03\t03:30:00\t1.10735\t1.10766\t1.10658\t1.10661\t136\t0\t8\n2026.03.03\t03:45:00\t1.10661\t1.10723\t1.10539\t1.10696\t100\t0\t8\n2026.03.03\t04:00:00\t1.10696\t1.10755\t1.10605\t1.10693\t101\t0\t8\n2026.03.03\t04:15:00\t1.10693\t1.10955\t1.10600\t1.10869\t102\t0\t8\n2026.03.03\t04:30:00\t1.10869\t1.10901\t1.10701\t1.10709\t103\t0\t8\n2026.03.03\t04:45:00\t1.10709\t1.10714\t1.10561\t1.10584\t104\t0\t8\n2026.03.03\t05:00:00\t1.10584\t1.10769\t1.10543\t1.10701\t105\t0\t8\n2026.03.03\t05:15:00\t1.10701\t1.10985\t1.10638\t1.10943\t106\t0\t8\n2026.03.03\t05:30:00\t1.10943\t1.10976\t1.10827\t1.10878\t107\t0\t8\n2026.03.03\t05:45:00\t1.10878\t1.11451\t1.10710\t1.11200\t108\t0\t8\n2026.03.03\t06:00:00\t1.11200\t1.11269\t1.11163\t1.11214\t109\t0\t8\n2026.03.03\t06:15:00\t1.11214\t1.11535\t1.11191\t1.11355\t110\t0\t8\n2026.03.03\t06:30:00\t1.11355\t1.11423\t1.11353\t1.11362\t111\t0\t8\n2026.03.03\t06:45:00\t1.11362\t1.11405\t1.11095\t1.11197\t112\t0\t8\n2026.03.03\t07:00:00\t1.11197\t1.11278\t1.11100\t1.11246\t113\t0\t8\n2026.03.03\t07:15:00\t1.11246\t1.11491\t1.11030\t1.11399\t114\t0\t8\n2026.03.03\t07:30:00\t1.11399\t1.11460\t1.11118\t1.11208\t115\t0\t8\n2026.03.03\t07:45:00\t1.11208\t1.11285\t1.11155\t1.11192\t116\t0\t8\n2026.03.03\t08:00:00\t1.11192\t1.11231\t1.10901\t1.11009\t117\t0\t8\n2026.03.03\t08:15:00\t1.11009\t1.11282\t1.10895\t1.11245\t118\t0\t8\n2026.03.03\t08:30:00\t1.11245\t1.11626\t1.11227\t1.11563\t119\t0\t8\n2026.03.03\t08:45:00\t1.11563\t1.11629\t1.11491\t1.11559\t120\t0\t8\n2026.03.03\t09:00:00\t1.11559\t1.11609\t1.11512\t1.11574\t121\t0\t8\n2026.03.03\t09:15:00\t1.11574\t1.11664\t1.11557\t1.11558\t122\t0\t8\n2026.03.03\t09:30:00\t1.11558\t1.11630\t1.11541\t1.11546\t123\t0\t8\n2026.03.03\t09:45:00\t1.11546\t1.12017\t1.11523\t1.11999\t124\t0\t8\n2026.03.03\t10:00:00\t1.11999\t1.12230\t1.11988\t1.12154\t125\t0\t8\n2026.03.03\t10:15:00\t1.12154\t1.12340\t1.12037\t1.12299\t126\t0\t8\n2026.03.03\t10:30:00\t1.12299\t1.12304\t1.12282\t1.12297\t127\t0\t8\n2026.03.03\t10:45:00\t1.12297\t1.12302\t1.12219\t1.12269\t128\t0\t8\n2026.03.03\t11:00:00\t1.12269\t1.12428\t1.12179\t1.12254\t129\t0\t8\n2026.03.03\t11:15:00\t1.12254\t1.12279\t1.12109\t1.12124\t130\t0\t8\n2026.03.03\t11:30:00\t1.12124\t1.12648\t1.12002\t1.12634\t131\t0\t8\n2026.03.03\t11:45:00\t1.12634\t1.12770\t1.12564\t1.12753\t132\t0\t8\n2026.03.03\t12:00:00\t1.12753\t1.12849\t1.12702\t1.12828\t133\t0\t8\n2026.03.03\t12:15:00\t1.12828\t1.12849\t1.12579\t1.12717\t134\t0\t8\n2026.03.03\t12:30:00\t1.12717\t1.12731\t1.12585\t1.12663\t135\t0\t8\n2026.03.03\t12:45:00\t1.12663\t1.12755\t1.12575\t1.12750\t136\t0\t8\n2026.03.03\t13:00:00\t1.12750\t1.12901\t1.12646\t1.12663\t100\t0\t8\n2026.03.03\t13:15:00\t1.12663\t1.12728\t1.12446\t1.12578\t101\t0\t8\n2026.03.03\t13:30:00\t1.12578\t1.12628\t1.12440\t1.12512\t102\t0\t8\n2026.03.03\t13:45:00\t1.12512\t1.12659\t1.12490\t1.12605\t103\t0\t8\n2026.03.03\t14:00:00\t1.12605\t1.12650\t1.12495\t1.12517\t104\t0\t8\n2026.03.03\t14:15:00\t1.12517\t1.12582\t1.12483\t1.12516\t105\t0\t8\n2026.03.03\t14:30:00\t1.12516\t1.12608\t1.12148\t1.12302\t106\t0\t8\n2026.03.03\t14:45:00\t1.12302\t1.12547\t1.12273\t1.12412\t107\t0\t8\n2026.03.03\t15:00:00\t1.12412\t1.12738\t1.12400\t1.12654\t108\t0\t8\n2026.03.03\t15:15:00\t1.12654\t1.12684\t1.12606\t1.12665\t109\t0\t8\n2026.03.03\t15:30:00\t1.12665\t1.12847\t1.12583\t1.12775\t110\t0\t8\n2026.03.03\t15:45:00\t1.12775\t1.12875\t1.12629\t1.12694\t111\t0\t8\n2026.03.03\t16:00:00\t1.12694\t1.12707\t1.12601\t1.12626\t112\t0\t8\n2026.03.03\t16:15:00\t1.12626\t1.12900\t1.12502\t1.12671\t113\t0\t8\n2026.03.03\t16:30:00\t1.12671\t1.12761\t1.12620\t1.12719\t114\t0\t8\n2026.03.03\t16:45:00\t1.12719\t1.12728\t1.12504\t1.12660\t115\t0\t8\n2026.03.03\t17:00:00\t1.12660\t1.12726\t1.12644\t1.12650\t116\t0\t8\n2026.03.03\t17:15:00\t1.12650\t1.12833\t1.12484\t1.12800\t117\t0\t8\n2026.03.03\t17:30:00\t1.12800\t1.12914\t1.12698\t1.12893\t118\t0\t8\n2026.03.03\t17:45:00\t1.12893\t1.12898\t1.12877\t1.12878\t119\t0\t8\n2026.03.03\t18:00:00\t1.12878\t1.12982\t1.12841\t1.12904\t120\t0\t8\n2026.03.03\t18:15:00\t1.12904\t1.12923\t1.12826\t1.12862\t121\t0\t8\n2026.03.03\t18:30:00\t1.12862\t1.12865\t1.12804\t1.12817\t122\t0\t8\n2026.03.03\t18:45:00\t1.12817\t1.12827\t1.12674\t1.12715\t123\t0\t8\n2026.03.03\t19:00:00\t1.12715\t1.12725\t1.12652\t1.12715\t124\t0\t8\n2026.03.03\t19:15:00\t1.12715\t1.12775\t1.12672\t1.12755\t125\t0\t8\n2026.03.03\t19:30:00\t1.12755\t1.13008\t1.12709\t1.12996\t126\t0\t8\n2026.03.03\t19:45:00\t1.12996\t1.13050\t1.12945\t1.13015\t127\t0\t8\n2026.03.03\t20:00:00\t1.13015\t1.13040\t1.12942\t1.12970\t128\t0\t8\n2026.03.03\t20:15:00\t1.12970\t1.13005\t1.12879\t1.12911\t129\t0\t8\n2026.03.03\t20:30:00\t1.12911\t1.13004\t1.12880\t1.12934\t130\t0\t8\n2026.03.03\t20:45:00\t1.12934\t1.13006\t1.12915\t1.12993\t131\t0\t8\n2026.03.03\t21:00:00\t1.12993\t1.13001\t1.12633\t1.12705\t132\t0\t8\n2026.03.03\t21:15:00\t1.12705\t1.12743\t1.12527\t1.12566\t133\t0\t8\n2026.03.03\t21:30:00\t1.12566\t1.12615\t1.12502\t1.12539\t134\t0\t8\n2026.03.03\t21:45:00\t1.12539\t1.12592\t1.12516\t1.12584\t135\t0\t8\n2026.03.03\t22:00:00\t1.12584\t1.12684\t1.12537\t1.12674\t136\t0\t8\n2026.03.03\t22:15:00\t1.12674\t1.12691\t1.12587\t1.12619\t100\t0\t8\n2026.03.03\t22:30:00\t1.12619\t1.12697\t1.12598\t1.12629\t101\t0\t8\n2026.03.03\t22:45:00\t1.12629\t1.12690\t1.12554\t1.12560\t102\t0\t8\n2026.03.03\t23:00:00\t1.12560\t1.12650\t1.12484\t1.12553\t103\t0\t8\n2026.03.03\t23:15:00\t1.12553\t1.12614\t1.12114\t1.12170\t104\t0\t8\n2026.03.03\t23:30:00\t1.12170\t1.12209\t1.12039\t1.12097\t105\t0\t8\n2026.03.03\t23:45:00\t1.12097\t1.12110\t1.12022\t1.12028\t106\t0\t8\n2026.03.04\t00:00:00\t1.12028\t1.12031\t1.11917\t1.11931\t107\t0\t8\n2026.03.04\t00:15:00\t1.11931\t1.11958\t1.11783\t1.11804\t108\t0\t8\n2026.03.04\t00:30:00\t1.11804\t1.11928\t1.11716\t1.11890\t109\t0\t8\n2026.03.04\t00:45:00\t1.11890\t1.11925\t1.11824\t1.11914\t110\t0\t8\n2026.03.04\t01:00:00\t1.11914\t1.11915\t1.11761\t1.11824\t111\t0\t8\n2026.03.04\t01:15:00\t1.11824\t1.11972\t1.11790\t1.11957\t112\t0\t8\n2026.03.04\t01:30:00\t1.11957\t1.11965\t1.11605\t1.11665\t113\t0\t8\n2026.03.04\t01:45:00\t1.11665\t1.11930\t1.11560\t1.11852\t114\t0\t8\n2026.03.04\t02:00:00\t1.11852\t1.11951\t1.11801\t1.11917\t115\t0\t8\n2026.03.04\t02:15:00\t1.11917\t1.12040\t1.11821\t1.12032\t116\t0\t8\n2026.03.04\t02:30:00\t1.12032\t1.12113\t1.11924\t1.12102\t117\t0\t8\n2026.03.04\t02:45:00\t1.12102\t1.12111\t1.11962\t1.12004\t118\t0\t8\n2026.03.04\t03:00:00\t1.12004\t1.12069\t1.11790\t1.11901\t119\t0\t8\n2026.03.04\t03:15:00\t1.11901\t1.12028\t1.11818\t1.11824\t120\t0\t8\n2026.03.04\t03:30:00\t1.11824\t1.11914\t1.11750\t1.11848\t121\t0\t8\n2026.03.04\t03:45:00\t1.11848\t1.11914\t1.11638\t1.11771\t122\t0\t8\n2026.03.04\t04:00:00\t1.11771\t1.11857\t1.11668\t1.11803\t123\t0\t8\n2026.03.04\t04:15:00\t1.11803\t1.11825\t1.11774\t1.11774\t124\t0\t8\n2026.03.04\t04:30:00\t1.11774\t1.11827\t1.11633\t1.11665\t125\t0\t8\n2026.03.04\t04:45:00\t1.11665\t1.11670\t1.11617\t1.11617\t126\t0\t8\n2026.03.04\t05:00:00\t1.11617\t1.11728\t1.11540\t1.11689\t127\t0\t8\n2026.03.04\t05:15:00\t1.11689\t1.11722\t1.11605\t1.11611\t128\t0\t8\n2026.03.04\t05:30:00\t1.11611\t1.11651\t1.11510\t1.11603\t129\t0\t8\n2026.03.04\t05:45:00\t1.11603\t1.11604\t1.11377\t1.11389\t130\t0\t8\n2026.03.04\t06:00:00\t1.11389\t1.11419\t1.11074\t1.11259\t131\t0\t8\n2026.03.04\t06:15:00\t1.11259\t1.11393\t1.11244\t1.11371\t132\t0\t8\n2026.03.04\t06:30:00\t1.11371\t1.11408\t1.11266\t1.11269\t133\t0\t8\n2026.03.04\t06:45:00\t1.11269\t1.11306\t1.11188\t1.11235\t134\t0\t8\n2026.03.04\t07:00:00\t1.11235\t1.11241\t1.10975\t1.11010\t135\t0\t8\n2026.03.04\t07:15:00\t1.11010\t1.11224\t1.10915\t1.11109\t136\t0\t8\n2026.03.04\t07:30:00\t1.11109\t1.11395\t1.10964\t1.11388\t100\t0\t8\n2026.03.04\t07:45:00\t1.11388\t1.11483\t1.11348\t1.11431\t101\t0\t8\n2026.03.04\t08:00:00\t1.11431\t1.11542\t1.11241\t1.11310\t102\t0\t8\n2026.03.04\t08:15:00\t1.11310\t1.11429\t1.11092\t1.11142\t103\t0\t8\n2026.03.04\t08:30:00\t1.11142\t1.11248\t1.11083\t1.11115\t104\t0\t8\n2026.03.04\t08:45:00\t1.11115\t1.11327\t1.11010\t1.11318\t105\t0\t8\n2026.03.04\t09:00:00\t1.11318\t1.11384\t1.11279\t1.11305\t106\t0\t8\n2026.03.04\t09:15:00\t1.11305\t1.11431\t1.11188\t1.11387\t107\t0\t8\n2026.03.04\t09:30:00\t1.11387\t1.11420\t1.11035\t1.11095\t108\t0\t8\n2026.03.04\t09:45:00\t1.11095\t1.11117\t1.10901\t1.10959\t109\t0\t8\n2026.03.04\t10:00:00\t1.10959\t1.11333\t1.10917\t1.11240\t110\t0\t8\n2026.03.04\t10:15:00\t1.11240\t1.11256\t1.11223\t1.11242\t111\t0\t8\n2026.03.04\t10:30:00\t1.11242\t1.11345\t1.11165\t1.11167\t112\t0\t8\n2026.03.04\t10:45:00\t1.11167\t1.11229\t1.10970\t1.11107\t113\t0\t8\n2026.03.04\t11:00:00\t1.11107\t1.11446\t1.11067\t1.11373\t114\t0\t8\n2026.03.04\t11:15:00\t1.11373\t1.11529\t1.11306\t1.11340\t115\t0\t8\n2026.03.04\t11:30:00\t1.11340\t1.11466\t1.11134\t1.11144\t116\t0\t8\n2026.03.04\t11:45:00\t1.11144\t1.11212\t1.11077\t1.11192\t117\t0\t8\n2026.03.04\t12:00:00\t1.11192\t1.11247\t1.11081\t1.11237\t118\t0\t8\n2026.03.04\t12:15:00\t1.11237\t1.11268\t1.10994\t1.11123\t119\t0\t8\n2026.03.04\t12:30:00\t1.11123\t1.11329\t1.11095\t1.11308\t120\t0\t8\n2026.03.04\t12:45:00\t1.11308\t1.11381\t1.11204\t1.11325\t121\t0\t8\n2026.03.04\t13:00:00\t1.11325\t1.11366\t1.11175\t1.11175\t122\t0\t8\n2026.03.04\t13:15:00\t1.11175\t1.11227\t1.10994\t1.11138\t123\t0\t8\n2026.03.04\t13:30:00\t1.11138\t1.11262\t1.10785\t1.10832\t124\t0\t8\n2026.03.04\t13:45:00\t1.10832\t1.10838\t1.10745\t1.10798\t125\t0\t8\n2026.03.04\t14:00:00\t1.10798\t1.10929\t1.10759\t1.10825\t126\t0\t8\n2026.03.04\t14:15:00\t1.10825\t1.10989\t1.10729\t1.10808\t127\t0\t8\n2026.03.04\t14:30:00\t1.10808\t1.10869\t1.10595\t1.10626\t128\t0\t8\n2026.03.04\t14:45:00\t1.10626\t1.10910\t1.10612\t1.10784\t129\t0\t8\n2026.03.04\t15:00:00\t1.10784\t1.11020\t1.10765\t1.10933\t130\t0\t8\n2026.03.04\t15:15:00\t1.10933\t1.11000\t1.10845\t1.10917\t131\t0\t8\n2026.03.04\t15:30:00\t1.10917\t1.11007\t1.10848\t1.10851\t132\t0\t8\n2026.03.04\t15:45:00\t1.10851\t1.10998\t1.10754\t1.10964\t133\t0\t8\n2026.03.04\t16:00:00\t1.10964\t1.11132\t1.10927\t1.10980\t134\t0\t8\n2026.03.04\t16:15:00\t1.10980\t1.11018\t1.10542\t1.10595\t135\t0\t8\n2026.03.04\t16:30:00\t1.10595\t1.10819\t1.10515\t1.10583\t136\t0\t8\n2026.03.04\t16:45:00\t1.10583\t1.10806\t1.10527\t1.10764\t100\t0\t8\n2026.03.04\t17:00:00\t1.10764\t1.10801\t1.10732\t1.10763\t101\t0\t8\n2026.03.04\t17:15:00\t1.10763\t1.11307\t1.10741\t1.11256\t102\t0\t8\n2026.03.04\t17:30:00\t1.11256\t1.11275\t1.11255\t1.11256\t103\t0\t8\n2026.03.04\t17:45:00\t1.11256\t1.11289\t1.11143\t1.11249\t104\t0\t8\n2026.03.04\t18:00:00\t1.11249\t1.11492\t1.11158\t1.11383\t105\t0\t8\n2026.03.04\t18:15:00\t1.11383\t1.11402\t1.11200\t1.11242\t106\t0\t8\n2026.03.04\t18:30:00\t1.11242\t1.11380\t1.11232\t1.11236\t107\t0\t8\n2026.03.04\t18:45:00\t1.11236\t1.11456\t1.11152\t1.11396\t108\t0\t8\n2026.03.04\t19:00:00\t1.11396\t1.11574\t1.11282\t1.11502\t109\t0\t8\n2026.03.04\t19:15:00\t1.11502\t1.11993\t1.11483\t1.11963\t110\t0\t8\n2026.03.04\t19:30:00\t1.11963\t1.12115\t1.11944\t1.12008\t111\t0\t8\n2026.03.04\t19:45:00\t1.12008\t1.12155\t1.11923\t1.12131\t112\t0\t8\n2026.03.04\t20:00:00\t1.12131\t1.12229\t1.12127\t1.12167\t113\t0\t8\n2026.03.04\t20:15:00\t1.12167\t1.12349\t1.12016\t1.12032\t114\t0\t8\n2026.03.04\t20:30:00\t1.12032\t1.12112\t1.11865\t1.11887\t115\t0\t8\n2026.03.04\t20:45:00\t1.11887\t1.12003\t1.11806\t1.11925\t116\t0\t8\n2026.03.04\t21:00:00\t1.11925\t1.12061\t1.11727\t1.12019\t117\t0\t8\n2026.03.04\t21:15:00\t1.12019\t1.12072\t1.11900\t1.11913\t118\t0\t8\n2026.03.04\t21:30:00\t1.11913\t1.12232\t1.11822\t1.12165\t119\t0\t8\n2026.03.04\t21:45:00\t1.12165\t1.12250\t1.11840\t1.11986\t120\t0\t8\n2026.03.04\t22:00:00\t1.11986\t1.12142\t1.11475\t1.11567\t121\t0\t8\n2026.03.04\t22:15:00\t1.11567\t1.11584\t1.11225\t1.11365\t122\t0\t8\n2026.03.04\t22:30:00\t1.11365\t1.11612\t1.11310\t1.11598\t123\t0\t8\n2026.03.04\t22:45:00\t1.11598\t1.11641\t1.11271\t1.11362\t124\t0\t8\n2026.03.04\t23:00:00\t1.11362\t1.11743\t1.11333\t1.11645\t125\t0\t8\n2026.03.04\t23:15:00\t1.11645\t1.11862\t1.11477\t1.11776\t126\t0\t8\n2026.03.04\t23:30:00\t1.11776\t1.11865\t1.11676\t1.11684\t127\t0\t8\n2026.03.04\t23:45:00\t1.11684\t1.11873\t1.11613\t1.11740\t128\t0\t8\n2026.03.05\t00:00:00\t1.11740\t1.11777\t1.11483\t1.11554\t129\t0\t8\n2026.03.05\t00:15:00\t1.11554\t1.11681\t1.11549\t1.11649\t130\t0\t8\n2026.03.05\t00:30:00\t1.11649\t1.11685\t1.11409\t1.11467\t131\t0\t8\n2026.03.05\t00:45:00\t1.11467\t1.11496\t1.11435\t1.11478\t132\t0\t8\n2026.03.05\t01:00:00\t1.11478\t1.11538\t1.11237\t1.11308\t133\t0\t8\n2026.03.05\t01:15:00\t1.11308\t1.11309\t1.11220\t1.11265\t134\t0\t8\n2026.03.05\t01:30:00\t1.11265\t1.11313\t1.11234\t1.11266\t135\t0\t8\n2026.03.05\t01:45:00\t1.11266\t1.11564\t1.10986\t1.11136\t136\t0\t8\n2026.03.05\t02:00:00\t1.11136\t1.11267\t1.11112\t1.11198\t100\t0\t8\n2026.03.05\t02:15:00\t1.11198\t1.11226\t1.11162\t1.11212\t101\t0\t8\n2026.03.05\t02:30:00\t1.11212\t1.11274\t1.11173\t1.11225\t102\t0\t8\n2026.03.05\t02:45:00\t1.11225\t1.11341\t1.11110\t1.11267\t103\t0\t8"/*END*/;
+var COL={structure:'#cfd8dc',liquidity:'#f5c542',target:'#26a69a',fvg:'#4f8cff',ob:'#b47cff',range:'#97a1b3'};
+var LAYER={structure:'structure',liquidity:'liquidity',target:'liquidity',fvg:'fvg',ob:'ob',range:'range'};
+var cv=document.getElementById('cv'),ctx=cv.getContext('2d'),tip=document.getElementById('tip'),msg=document.getElementById('msg');
+var state={K:null,info:null,R:null,sel:null,title:''},geo=null;
+function $(id){return document.getElementById(id);}
+function say(t,cls){msg.textContent=t;msg.className=cls||'';}
+function on(id){var el=document.querySelector('[data-layer="'+id+'"]');return !el||el.checked;}
+
+function load(text,title){
+  try{
+    var r=SMCDetect.parse(text); state.K=r[0]; state.info=r[1]; state.title=title||'';
+    if(state.K.length<5) throw new Error('数据太少 / too few candles');
+    run(); $('empty').style.display='none';
+    say('已读取 '+state.K.length+' 根 K 线 · '+state.K.length+' candles loaded'+(state.info.warnings.length?'\n⚠ '+state.info.warnings.join('\n⚠ '):''),state.info.warnings.length?'':'ok');
+  }catch(e){say('读取失败 / failed: '+(e.message||e),'err');}
+}
+function run(){
+  if(!state.K) return;
+  var last=+$('last').value, swing=Math.max(1,Math.min(10,Math.round(+$('swing').value||3)));
+  state.R=SMCDetect.detect(state.K,{swing:swing,last:last});
+  state.sel=SMCDetect.select(state.K,state.R,last);
+  $('report').value=(state.title?state.title+'\n':'')+SMCDetect.report(state.K,state.R,state.sel,state.info,$('lang').value);
+  draw();
+}
+function fmt(x){return x.toFixed(state.info?state.info.decimals:2);}
+
+function draw(){
+  var W=cv.clientWidth||800,Hh=Math.max(360,Math.min(620,Math.round(W*0.56))),dpr=window.devicePixelRatio||1;
+  cv.width=Math.round(W*dpr); cv.height=Math.round(Hh*dpr); cv.style.height=Hh+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle='#131722'; ctx.fillRect(0,0,W,Hh);
+  if(!state.sel){geo=null;return;}
+  var K=state.K,sel=state.sel,v0=sel.from,v1=sel.to,cnt=v1-v0+1;
+  var padR=W<600?58:76, extra=Math.max(4,Math.floor(cnt/12)), plotW=W-padR-8, top=30, bot=Hh-26;
+  var lo=Infinity,hi=-Infinity,i;
+  for(i=v0;i<=v1;i++){lo=Math.min(lo,K[i].l);hi=Math.max(hi,K[i].h);}
+  var pad=(hi-lo)*0.06||1; lo-=pad; hi+=pad;
+  var step=plotW/(cnt+extra), X=function(i){return 8+(i-v0+0.5)*step;}, Y=function(p){return top+(hi-p)/(hi-lo)*(bot-top);};
+  var right=X(v1+extra-0.5);
+  geo={X:X,Y:Y,step:step,v0:v0,v1:v1,top:top,bot:bot};
+  // 网格和价格轴
+  ctx.font='11px ui-monospace,Menlo,Consolas,monospace'; ctx.textBaseline='middle'; ctx.textAlign='left';
+  var nt=6,tk=niceStep((hi-lo)/nt);
+  for(var p=Math.ceil(lo/tk)*tk;p<=hi;p+=tk){var y=Y(p);ctx.strokeStyle='#2a2e39';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W-padR,y);ctx.stroke();ctx.fillStyle='#b2b5be';ctx.fillText(p.toFixed(Math.max(0,state.info.decimals)),W-padR+6,y);}
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  var ev=Math.max(1,Math.floor(cnt/(W<600?3:7)));
+  for(i=v0+Math.floor(ev/2);i<=v1;i+=ev){ctx.fillStyle='#b2b5be';ctx.fillText(shortT(K[i].t,i,W<600),X(i),bot+6);}
+  // K 线
+  var bw=Math.max(1,step*0.64);
+  for(i=v0;i<=v1;i++){var k=K[i],up=k.c>=k.o;ctx.strokeStyle=ctx.fillStyle=up?'#26a69a':'#ef5350';
+    ctx.lineWidth=Math.max(1,Math.min(1.5,step*0.12));ctx.beginPath();ctx.moveTo(X(i),Y(k.h));ctx.lineTo(X(i),Y(k.l));ctx.stroke();
+    var y1=Y(Math.max(k.o,k.c)),y2=Y(Math.min(k.o,k.c));ctx.fillRect(X(i)-bw/2,y1,bw,Math.max(1,y2-y1));}
+  // 标注
+  var labels=[];
+  sel.items.forEach(function(it,ix){
+    if(!on(LAYER[it.kind])) return;
+    var n=(ix+1)+' ',c=COL[it.kind];
+    ctx.setLineDash([]);
+    if(it.type==='hline'){
+      var x2=it.kind==='structure'?X(it.i2):right, y=Y(it.price);
+      ctx.strokeStyle=c; ctx.lineWidth=1.4; ctx.setLineDash(it.kind==='structure'?[]:[6,4]);
+      ctx.beginPath(); ctx.moveTo(X(it.i1),y); ctx.lineTo(x2,y); ctx.stroke(); ctx.setLineDash([]);
+      labels.push(it.kind==='structure'?[n+it.label+' '+fmt(it.price),X(it.i2)+6,y,c,'left']:[n+it.label+' '+fmt(it.price),right,y-9,c,'right']);
+    }else if(it.type==='box'){
+      var yt=Y(it.top),yb=Y(it.bottom),x1=X(it.i1)-step/2;
+      ctx.fillStyle=c+'38'; ctx.fillRect(x1,yt,right-x1,Math.max(1,yb-yt)); ctx.strokeStyle=c; ctx.lineWidth=1; ctx.strokeRect(x1,yt,right-x1,Math.max(1,yb-yt));
+      labels.push([n+it.label,x1+2,yb+9,c,'left']);
+    }else if(it.type==='marker'){
+      var mx=X(it.i),my=Y(it.price); ctx.strokeStyle=c; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(mx,my,8,0,Math.PI*2); ctx.stroke();
+      labels.push([n+it.label,mx,it.place==='above'?my-18:my+18,c,'center']);
+    }else if(it.type==='range'){
+      var rx=X(it.i1)-step/2,ye=Y(it.eq);
+      ctx.fillStyle='rgba(239,83,80,.06)'; ctx.fillRect(rx,Y(it.high),right-rx,ye-Y(it.high));
+      ctx.fillStyle='rgba(38,166,154,.06)'; ctx.fillRect(rx,ye,right-rx,Y(it.low)-ye);
+      ctx.strokeStyle=c; ctx.lineWidth=1; ctx.setLineDash([2,3]); ctx.beginPath(); ctx.moveTo(rx,ye); ctx.lineTo(right,ye); ctx.stroke();
+      var o0=Y(it.ote[0]),o2=Y(it.ote[2]); ctx.fillStyle='rgba(255,159,67,.10)'; ctx.fillRect(rx,Math.min(o0,o2),right-rx,Math.abs(o2-o0));
+      ctx.strokeStyle='#ff9f43'; ctx.strokeRect(rx,Math.min(o0,o2),right-rx,Math.abs(o2-o0)); ctx.setLineDash([]);
+      labels.push([n+'EQ 50% '+state.R.range.eq.toFixed(state.info.decimals+1),rx+4,ye-9,c,'left']);
+      labels.push(['OTE',rx+4,(o0+o2)/2,'#ff9f43','left']);
+    }
+  });
+  ctx.font='600 12px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif'; ctx.textBaseline='middle';
+  // 文字不超出图表右边界，互相重叠时上下错开
+  var placed=[], maxX=W-padR-4, narrow=W<600;
+  labels.forEach(function(L){
+    if(narrow){ if(L[0]==='OTE') return; L[0]=L[0].split(' ')[0]; }  // 手机上只标编号，详细内容看报告
+    var w=ctx.measureText(L[0]).width,bx=L[4]==='right'?L[1]-w:(L[4]==='center'?L[1]-w/2:L[1]),by=L[2];
+    if(bx+w>maxX){bx=maxX-w;by-=12;} if(bx<4) bx=4;
+    var tries=[0,-19,19],t,y2;
+    for(t=0;t<tries.length;t++){y2=by+tries[t];
+      if(!placed.some(function(r){return bx<r[0]+r[2]+4&&bx+w+4>r[0]&&Math.abs(y2-r[1])<18;})) break;}
+    by=Math.max(top,Math.min(bot-9,y2)); placed.push([bx,by,w]);
+    ctx.fillStyle='rgba(19,23,34,.85)'; ctx.fillRect(bx-3,by-9,w+6,18); ctx.fillStyle=L[3]; ctx.textAlign='left'; ctx.fillText(L[0],bx,by);});
+  ctx.font='12px -apple-system,"PingFang SC",sans-serif'; ctx.fillStyle='#b2b5be'; ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.fillText((state.title?state.title+'  ·  ':'')+'SMC detector · rule-based, not trading advice',10,8);
+}
+function shortT(t,i,narrow){
+  if(!t) return '#'+i; t=String(t); var m=t.match(/(\d{1,2}:\d{2})(:\d{2})?$/);
+  if(m){var d=t.slice(0,m.index).trim().match(/(\d{1,2})\D(\d{1,2})$/);return narrow||!d?m[1]:d[1]+'/'+d[2]+' '+m[1];}
+  return t.slice(-10);
+}
+function niceStep(x){var e=Math.pow(10,Math.floor(Math.log10(x))),f=x/e;return (f<1.5?1:f<3?2:f<7?5:10)*e;}
+
+cv.addEventListener('mousemove',function(ev){
+  if(!geo) return; var r=cv.getBoundingClientRect(),x=ev.clientX-r.left;
+  var i=Math.round((x-8)/geo.step-0.5)+geo.v0; if(i<geo.v0||i>geo.v1){tip.style.display='none';return;}
+  var k=state.K[i]; tip.textContent='#'+i+(k.t?'  '+k.t:'')+'\nO '+fmt(k.o)+'  H '+fmt(k.h)+'\nL '+fmt(k.l)+'  C '+fmt(k.c);
+  tip.style.display='block'; tip.style.left=Math.min(x+14,r.width-170)+'px'; tip.style.top='34px';
+});
+cv.addEventListener('mouseleave',function(){tip.style.display='none';});
+
+function readFile(f){var rd=new FileReader();rd.onload=function(){load(rd.result,f.name.replace(/\.[^.]+$/,''));};rd.readAsText(f);}
+$('pick').onclick=function(){$('file').click();};
+$('file').onchange=function(e){if(e.target.files[0]) readFile(e.target.files[0]);};
+var st=$('stage');
+['dragenter','dragover'].forEach(function(t){st.addEventListener(t,function(e){e.preventDefault();st.classList.add('drag');});});
+['dragleave','drop'].forEach(function(t){st.addEventListener(t,function(e){e.preventDefault();st.classList.remove('drag');});});
+st.addEventListener('drop',function(e){var f=e.dataTransfer.files[0];if(f) readFile(f);});
+$('pasteBtn').onclick=function(){load($('paste').value,'');};
+$('demoBtn').onclick=function(){load(DEMO,'DEMO · 15m (synthetic, not real data)');};
+$('bnBtn').onclick=function(){
+  var sym=$('sym').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,''),itv=$('itv').value;
+  if(!sym){say('请填写交易对，例如 BTCUSDT','err');return;}
+  say('拉取中… / loading…');
+  var q='/api/v3/klines?symbol='+sym+'&interval='+itv+'&limit=500';
+  fetch('https://data-api.binance.vision'+q).then(function(r){if(!r.ok) throw new Error('HTTP '+r.status);return r.text();})
+    .catch(function(){return fetch('https://api.binance.com'+q).then(function(r){if(!r.ok) throw new Error('HTTP '+r.status);return r.text();});})
+    .then(function(t){load(t,'Binance '+sym+' · '+itv+' (UTC)');})
+    .catch(function(e){say('拉取失败：'+(e.message||e)+'。可能是交易对不存在，或当前网络访问不了币安；请改用导出的 CSV。','err');});
+};
+['swing','last','lang'].forEach(function(id){$(id).addEventListener('change',run);});
+document.querySelectorAll('[data-layer]').forEach(function(el){el.addEventListener('change',draw);});
+$('copyBtn').onclick=function(){
+  var t=$('report').value; if(!t){say('还没有报告 / no report yet','err');return;}
+  var done=function(){say('已复制，粘贴给 AI 即可 · Copied','ok');};
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,function(){$('report').select();document.execCommand('copy');done();});
+  else{$('report').select();document.execCommand('copy');done();}
+};
+function download(name,blob){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},2000);}
+$('pngBtn').onclick=function(){if(!state.sel){say('请先放入数据','err');return;}cv.toBlob(function(b){download('smc-detect.png',b);});};
+$('jsonBtn').onclick=function(){if(!state.sel){say('请先放入数据','err');return;}
+  download('smc-detect.json',new Blob([JSON.stringify({info:state.info,detect:state.R,select:state.sel},null,1)],{type:'application/json'}));};
+var rt; window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(draw,120);});
+draw();
+})();
+</script>
+</body>
+</html>

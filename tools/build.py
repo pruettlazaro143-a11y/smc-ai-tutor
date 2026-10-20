@@ -21,11 +21,20 @@ t08 = read(p08)
 code = read('tools/annotate.py').rstrip()
 t08 = re.sub(r'(## 四、[^\n]*\n.*?```python\n).*?(\n```)', lambda m: m.group(1) + code + m.group(2), t08, count=1, flags=re.S)
 open(p08, 'w', encoding='utf-8').write(t08)
+p09 = R + '09-数据识别引擎.md'
+t09 = read(p09)
+code09 = read('tools/smc_detect.py').rstrip()
+t09 = re.sub(r'(## 六、[^\n]*\n.*?```python\n).*?(\n```)', lambda m: m.group(1) + code09 + m.group(2), t09, count=1, flags=re.S)
+open(p09, 'w', encoding='utf-8').write(t09)
+# Skill 里同时带一份可直接运行的脚本
+import os as _os
+_os.makedirs('skills/smc-learning/scripts', exist_ok=True)
+open('skills/smc-learning/scripts/smc_detect.py', 'w', encoding='utf-8').write(read('tools/smc_detect.py'))
 
 # ---------- 1. 教练指令：SKILL.md 与通用单文件共用 tools/tutor_core.md ----------
 TITLES = {}
 for f in ['01-认知框架.md', '02-常见疑问与回答.md', '03-学习路径与练习.md', '04-误区与清单.md',
-          '05-画图规范.md', '06-进阶概念与入场模型.md', '07-字符图库.md', '08-截图标注规范.md']:
+          '05-画图规范.md', '06-进阶概念与入场模型.md', '07-字符图库.md', '08-截图标注规范.md', '09-数据识别引擎.md']:
     TITLES[f[:2]] = (f, read(R + f).split('\n', 1)[0].lstrip('# ').strip())
 
 core = read('tools/tutor_core.md')
@@ -39,7 +48,8 @@ SKILL_TOK = {
                       '| 选展示形式、画图、标注前核对 | `references/05-画图规范.md` + `assets/diagrams/*.svg` |',
                       '| 进阶：ICT 补充概念、QM / 供需入场模型（L11） | `references/06-进阶概念与入场模型.md` + `assets/models/*.svg` |',
                       '| 只能显示文字时的图 | `references/07-字符图库.md`（原样使用，不要改字符） |',
-                      '| 学员发截图、要你标注 | `references/08-截图标注规范.md` |',
+                      '| 学员给 K 线数据、要精确标注 | `references/09-数据识别引擎.md`（能运行代码时直接用 `scripts/smc_detect.py`） |',
+                      '| 只有截图、要你标注 | `references/08-截图标注规范.md` |',
                       '| 学员自己的认知 | `my-notes/*.md`（README 和 _template 除外） |',
                       '', '只读当前需要的文件，不要一次全读。']),
     'LOAD_NOTES': '先查看本 Skill 目录下的 `my-notes/` 文件夹：除了 `README.md` 和 `_template.md`，其他 `.md` 文件都是学员的认知，读取它们。',
@@ -49,7 +59,7 @@ SKILL_TOK = {
 for k, (f, title) in TITLES.items():
     SKILL_TOK['F' + k] = f'`references/{f}`'
 UNI_TOK = {
-    'SRC': '本文件后面的教材部分（01–08）',
+    'SRC': '本文件后面的教材部分（01–09）',
     'NAV': '本文件后面依次是：' + '；'.join(f'「{t}」' for _, t in TITLES.values()) + '。按需要查对应部分，不要复述。',
     'LOAD_NOTES': '检查本文件里有没有"【用户口径】"块（用工具合并过的版本才有），以及对话里有没有学员另外上传的笔记（开头带 `<!-- my-smc -->`，或学员说明这是自己的认知），有就读取。',
     'NOTES_WHERE': '来源有三种：本文件里的"【用户口径】"块（用工具合并过的版本才有）；学员在对话里上传或粘贴的笔记（开头带 `<!-- my-smc -->`，或学员说明这是自己的认知）；学员在对话中让你记下的内容。',
@@ -86,8 +96,10 @@ head = read('tools/universal_header.md')
 parts = [head + '\n' + fill(core, UNI_TOK).replace('\n## ', '\n### ') +
          '\n\n**读完本文件后，不要复述内容，直接按"开场"打招呼并提出五个问题。**']
 for f in ['01-认知框架.md', '02-常见疑问与回答.md', '03-学习路径与练习.md', '04-误区与清单.md',
-          '05-画图规范.md', '06-进阶概念与入场模型.md', '07-字符图库.md', '08-截图标注规范.md']:
+          '05-画图规范.md', '06-进阶概念与入场模型.md', '07-字符图库.md', '08-截图标注规范.md', '09-数据识别引擎.md']:
     t = to_ascii_ref(read(R + f))
+    if f.startswith('09'):
+        t = t.replace('把第六节的代码存成 `smc_detect.py`', '把本节末尾"六、Python 版代码"存成 `smc_detect.py`')
     if f.startswith('05'):
         t = t.replace('能读取文件时，优先用 `assets/diagrams/`（基础概念）和 `assets/models/`（进阶与入场模型）里的 SVG，原样输出或嵌进最简 HTML 页面。索引见第四节。',
                       '（这一项只在 Claude Skill 环境里可用：Skill 文件夹里带有现成的 SVG 示意图。单文件版本里没有这些文件，请改用 2.2 现画。）')
@@ -105,7 +117,9 @@ lite = u
 i = lite.index('## A1 破坏块 Breaker')
 j = lite.index('# 08 · 看图复盘与截图标注')
 lite = lite[:i] + '（精简版省略了进阶入场模型的字符图，需要时请用完整版 SMC-AI-Tutor.md。）\n\n---\n\n' + lite[j:]
-lite = re.sub(r'(## 四、直接画在原图上的代码[^\n]*\n).*?(?=\Z)', lambda m: m.group(1) + '\n精简版不含标注代码。需要直接在截图上画标注时，请改用完整版 SMC-AI-Tutor.md，或输出第三节格式的 JSON，让学员用仓库里的 annotator/index.html（标注器）打开。\n', lite, count=1, flags=re.S)
+lite = re.sub(r'(## 四、直接画在原图上的代码[^\n]*\n).*?(?=\n---\n\n# 09 )', lambda m: m.group(1) + '\n精简版不含标注代码。需要直接在截图上画标注时，请改用完整版 SMC-AI-Tutor.md，或输出第三节格式的 JSON，让学员用在线标注器 https://pruettlazaro143-a11y.github.io/smc-ai-tutor/annotator/ 打开。\n', lite, count=1, flags=re.S)
+lite = re.sub(r'(## 六、Python 版代码[^\n]*\n).*?(?=\Z)', lambda m: m.group(1) + '\n精简版不含识别代码。能运行代码时请改用完整版 SMC-AI-Tutor.md；不能运行代码时，请学员用在线识别器 https://pruettlazaro143-a11y.github.io/smc-ai-tutor/detector/ 生成报告。\n', lite, count=1, flags=re.S)
+assert '# 09 · 数据识别引擎' in lite and 'def detect(' not in lite and 'def draw(' not in lite
 lite = lite.replace('# SMC AI 教程指令 · SMC AI Tutor', '# SMC AI 教程指令 · SMC AI Tutor（精简版 Lite）', 1)
 open('prompt/SMC-AI-Tutor-lite.md', 'w', encoding='utf-8').write(lite)
 

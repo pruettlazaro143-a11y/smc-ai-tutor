@@ -29,7 +29,7 @@ K = [
     (114.0, 114.1, 113.4, 113.7), (113.7, 113.9, 111.9, 112.2), (112.2, 112.4, 110.6, 111.3),  # 13: 等低 2（110.6）
     (111.3, 112.6, 111.1, 112.3), (112.3, 112.5, 111.4, 111.7),
     (111.7, 111.9, 108.9, 110.9),                                                       # 16: 扫等低，收回
-    (110.9, 111.1, 109.8, 110.2),                                                       # 17: 最后一根阴线 = OB
+    (110.9, 111.1, 109.8, 110.7),                                                       # 17: 最后一根阴线 = OB（收盘仍在等低之上）
     (110.2, 113.6, 110.0, 113.3), (113.3, 116.6, 113.1, 116.3),                         # 18-19: 位移，19 收盘破 LH
     (116.3, 117.4, 115.8, 117.0), (117.0, 117.2, 115.2, 115.5), (115.5, 115.7, 113.4, 113.8),
     (113.8, 114.0, 110.4, 111.0),                                                       # 23: 回到 OB 实体
@@ -50,6 +50,7 @@ check(K[7][2] == EQ == K[13][2], 'equal lows')
 check(all(k[2] > EQ for i, k in enumerate(K[:16]) if i not in (7, 13)), 'lows intact before sweep')
 check(K[16][2] < EQ < K[16][3], 'sweep: wick below, close back above')
 check(K[OB][3] < K[OB][0] and K[OB + 1][3] > K[OB + 1][0], 'OB = last bearish candle before displacement')
+check(all(k[3] >= EQ for k in K[13:]), 'no close below the equal lows (otherwise it would be a bearish BOS, not a sweep)')
 lh = K[10][1]
 check(K[0][1] > K[5][1] > lh, 'downtrend: candle 5 and candle 10 are successively lower highs')
 check(K[3][2] > K[7][2], 'downtrend: lower low at candle 7')
@@ -110,7 +111,7 @@ spec = {
          'why': '第 20 根收盘 116.3，高于最后一个 LH 114.4'},
         {'type': 'box', 'x1': fx(OB - .5), 'x2': fx(len(K) + 2), 'price_top': ob_top, 'price_bottom': ob_bot,
          'kind': 'ob', 'label': '看涨 OB（只取实体）', 'label_en': 'Bullish OB (body)', 'confidence': 'high',
-         'why': '扫等低后、位移前最后一根阴线，实体 110.9–110.2'},
+         'why': f'扫等低后、位移前最后一根阴线，实体 {ob_top}–{ob_bot}'},
         {'type': 'box', 'x1': fx(A + .5), 'x2': fx(len(K) + 2), 'price_top': K[C][2], 'price_bottom': K[A][1],
          'kind': 'fvg', 'label': 'FVG', 'confidence': 'high', 'fvg_check': {'a_high': K[A][1], 'c_low': K[C][2]},
          'why': 'A（第 18 根）最高 111.1，C（第 20 根）最低 113.1，中间没有重叠'},

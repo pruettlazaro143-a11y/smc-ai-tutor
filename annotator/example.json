@@ -46,12 +46,12 @@
       "x1": 0.5281,
       "x2": 0.891,
       "price_top": 110.9,
-      "price_bottom": 110.2,
+      "price_bottom": 110.7,
       "kind": "ob",
       "label": "看涨 OB（只取实体）",
       "label_en": "Bullish OB (body)",
       "confidence": "high",
-      "why": "扫等低后、位移前最后一根阴线，实体 110.9–110.2"
+      "why": "扫等低后、位移前最后一根阴线，实体 110.9–110.7"
     },
     {
       "type": "box",

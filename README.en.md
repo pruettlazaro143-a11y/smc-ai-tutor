@@ -5,7 +5,7 @@ English ｜ [中文](README.md)
 > **A complete Smart Money Concepts (SMC) curriculum packaged as instructions any AI assistant can run. Upload one file and your AI becomes a one-on-one SMC tutor.**
 > **把一整套 SMC 知识做成 AI 能直接执行的教学指令，上传给任意 AI 助手，它就会变成你的一对一 SMC 教练。**
 >
-> Guided lessons · Q&A · quizzes · diagrams · screenshot annotation · your own notes as memory
+> Guided lessons · Q&A · quizzes · diagrams · exact detection from candle data · screenshot annotation · your own notes as memory
 
 **Learn to read liquidity hunts — and stop being the liquidity.**
 
@@ -35,7 +35,7 @@ Works with ChatGPT, Claude, Gemini, DeepSeek, Doubao, Kimi and others.
 
 The tutor asks five questions at once: your level, your market, how you want to learn, **how you want to see charts**, and **whether to turn on the notes memory**. Then it switches to the matching mode.
 
-> If your AI can't read the whole file, or clearly ignores the instructions, use the lite version [`prompt/SMC-AI-Tutor-lite.md`](prompt/SMC-AI-Tutor-lite.md). It drops the ASCII charts for the advanced models and the annotation code. Everything else is the same.
+> If your AI can't read the whole file, or clearly ignores the instructions, use the lite version [`prompt/SMC-AI-Tutor-lite.md`](prompt/SMC-AI-Tutor-lite.md). It drops the ASCII charts for the advanced models, the annotation code and the detector code (use the online detector instead). Everything else is the same.
 
 ### Option 2: Claude Skill (Claude Code / Claude apps)
 
@@ -68,22 +68,38 @@ At the start, the tutor checks what its environment can actually render and only
 
 Process content (the entry sequence, the 11-step checklist) can also be shown as Mermaid flowcharts where supported.
 
-### 2. Screenshot annotation
+### 2. Exact annotation: the program detects, the AI explains
 
-Send a chart screenshot and the tutor follows a fixed procedure. It reads the chart, lists candidate key points with their location, reasoning and confidence, and checks each one against a checklist. **Anything that fails a check is not drawn**, and uncertain items are drawn dashed with a "?". Output options:
+Prompting an AI to draw on a screenshot can't be made precise: it is off by a few candles, mistakes overlapping wicks for a gap, or misreads whether a candle closed inside or outside a level. So annotation on real charts is **computed by a program, and the AI only explains it**:
+
+1. Export candle data for the chart (a CSV from MT5, MT4 or TradingView, or any table with open/high/low/close; for crypto, pull it straight from Binance)
+2. Open the [online detector](https://pruettlazaro143-a11y.github.io/smc-ai-tutor/detector/) (or [`detector/index.html`](detector/index.html) offline) and load the data. It computes structure (BOS / CHoCH), equal highs and lows, sweeps, FVGs, order blocks (body only, and only when a sweep, an FVG and a structure break are all present), premium / discount and OTE by the curriculum's rules, and draws them
+3. Click "Copy" and paste the report to the AI running the tutor. It explains each item **without moving any position or price the program found**
+
+AIs that can run code (ChatGPT's data analysis, Claude) run the bundled [`tools/smc_detect.py`](tools/smc_detect.py) directly: upload a CSV and get the annotated chart plus the explanation. Data is processed only in your browser or the AI's code sandbox.
+
+![Detector example](docs/detector-example.png)
+
+*(Synthetic data. The number on each annotation matches the report item.)*
+
+Every rule maps to a curriculum definition; see [`references/09-数据识别引擎.md`](skills/smc-learning/references/09-数据识别引擎.md). The program does not judge inducement, higher-timeframe bias, news or entry triggers; those are still yours to check.
+
+### 3. Screenshot annotation: a rough read when you only have a picture
+
+Without data, the tutor follows a fixed procedure. It reads the chart, lists candidate key points with their location, reasoning and confidence, and checks each one against a checklist. **Anything that fails a check is not drawn**, and uncertain items are drawn dashed with a "?". Output options:
 
 - **Drawn on your image**: AIs that can run code use the code in [`tools/annotate.py`](tools/annotate.py)
 - **Annotator page**: any AI can output an annotation JSON. Open the [online annotator](https://pruettlazaro143-a11y.github.io/smc-ai-tutor/annotator/) (or [`annotator/index.html`](annotator/index.html) offline), drop in your screenshot, paste the JSON, **drag anything that's off**, and export a PNG. Everything runs locally in your browser; the image is never uploaded.
 - **TradingView drawing steps** by price and time
 - **A text table**
 
-> AI-read positions on a screenshot are estimates and can be off by a few candles or a bit of price. The annotator's drag-to-fix is there for exactly that.
+> AI-read positions on a screenshot are **estimates** and can be off by a few candles or a bit of price, so treat them as a rough read. The annotator's drag-to-fix is there for exactly that; for exact results, use the data detector above.
 
 Click "Demo" in the annotator to see this example (synthetic data):
 
 ![Annotation example](docs/annotation-example.png)
 
-### 3. Notes memory: bring your own SMC understanding
+### 4. Notes memory: bring your own SMC understanding
 
 Turn it on at the start, then:
 
@@ -124,11 +140,12 @@ Plus **55 frequently asked questions**, a 20-question final quiz, a list of comm
 
 - **Diagrams are generated from data.** Every candle chart starts from explicit OHLC values, annotations are computed from that data, and logic assertions run before anything is drawn (an FVG needs C's low above A's high, a sweep needs a wick beyond the level and a close back inside, an OB must be the last opposite candle before displacement). If any check fails, the script stops instead of producing a wrong picture.
 - **ASCII charts share the same data** and are checked so that higher points really sit on higher rows.
+- **Real charts are detected by a program.** `tools/test_detect.py` runs four kinds of checks: every item hand-verified on the example chart must be detected exactly; on 60 random price series every detected item (about 6,000) is re-checked against its definition independently; the Python and browser versions must agree item for item on 360 data files in different formats; and the web page's report must match the Python report character for character.
 - **A pre-drawing checklist** is part of the tutor's instructions, and both the annotator and the annotation code reject self-contradictory annotations.
 
 ## Editing and rebuilding
 
-Edit content in `skills/smc-learning/references/` (01–06, 08) and the tutor instructions in `tools/tutor_core.md`, then rebuild:
+Edit content in `skills/smc-learning/references/` (01–06, 08, 09) and the tutor instructions in `tools/tutor_core.md`. If you change a detection rule in `tools/smc_detect.py`, make the same change in `detector/smc-detect.js` and run the tests to confirm both agree. Then rebuild:
 
 ```bash
 python3 tools/gen_diagrams.py                       # core diagrams (with assertions)
@@ -136,6 +153,8 @@ python3 tools/ob_poster.py                          # OB one-pager
 python3 tools/gen_models.py                         # advanced / entry-model diagrams (with assertions)
 python3 tools/gen_ascii.py                          # ASCII chart library 07 (with assertions)
 python3 tools/gen_example.py                        # annotator demo chart and JSON (synthetic)
+python3 tools/gen_detector_demo.py                  # detector demo data and example image (synthetic)
+python3 tools/test_detect.py                        # detector tests (needs Node.js; the page test needs playwright)
 python3 tools/build.py                              # SKILL.md, prompt/, docs/
 python3 tools/render.py diagrams/svg diagrams/png   # SVG → PNG (requires playwright)
 python3 tools/render.py diagrams/models/svg diagrams/models/png
@@ -154,6 +173,7 @@ The content comes from the author's study notes, synthesis and trade reviews. Al
 - For learning only. This project gives no investment advice, trade signals or managed trading.
 - Trading carries risk, and **no method guarantees profit**. Make your own decisions within your own risk tolerance.
 - AI answers and screenshot annotations can be wrong. Treat the tutor as a study aid, not a signal service, and never as a substitute for your own judgment.
+- The detector only labels patterns by fixed rules. A detected order block or FVG does not mean price will react there. It is not a trading signal and not an expert advisor (EA).
 - Content tagged 【作者实战经验】 reflects one trader's experience, not a general rule.
 
 ## License

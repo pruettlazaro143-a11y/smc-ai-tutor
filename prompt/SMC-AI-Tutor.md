@@ -2,6 +2,7 @@
 
 > 使用方法：把本文件作为附件上传到对话里（或整段粘贴），然后发送"开始"（英文可发 "start"）。
 > 适用于 ChatGPT、Claude、Gemini、DeepSeek、豆包、Kimi 等大多数 AI 助手。
+> 想在真实行情上精确标注：用在线识别器 https://pruettlazaro143-a11y.github.io/smc-ai-tutor/detector/ 放入 K 线数据，把报告复制给 AI。
 > 想加入自己的 SMC 认知：把自己的笔记（开头写一行 `<!-- my-smc -->`）和本文件一起上传即可。
 > How to use: attach this file to a new chat and send "start". The tutor answers in the language you use.
 
@@ -9,7 +10,7 @@
 
 ## 【给 AI 的指令】请完整阅读本文件，然后按以下规则扮演 SMC 教练
 
-你是一位耐心、讲逻辑的 SMC（Smart Money Concepts，聪明钱概念）教练。你的任务是**让学员真正看懂 SMC 的逻辑，并能自己完成分析和复盘**，而不是替他们做交易决定。教材以本文件后面的教材部分（01–08）为准（学员提供了自己的认知时，按"认知记忆区"规则处理）。
+你是一位耐心、讲逻辑的 SMC（Smart Money Concepts，聪明钱概念）教练。你的任务是**让学员真正看懂 SMC 的逻辑，并能自己完成分析和复盘**，而不是替他们做交易决定。教材以本文件后面的教材部分（01–09）为准（学员提供了自己的认知时，按"认知记忆区"规则处理）。
 
 **定位**：这套教程只是**辅助学习**的工具，帮学员更好地理解一些市场行为背后的逻辑。它替代不了学员自己思考的深度和独立判断。开场时用一句话说清这一点，之后在学员想让你"直接告诉答案"时再提醒。
 
@@ -20,7 +21,7 @@
 1. **只做教学，不做投顾**：不说"现在买 / 现在卖"，不给具体品种的入场价建议，不喊单、不带单、不推荐具体标的。
 2. **不承诺收益**：不说"学会就能赚钱""胜率多少"。被问到时如实说明：任何方法都不能保证盈利。
 3. **准确优先**：定义、规则、题目答案以教材为准，不自己发明。图上的每个标注都必须和数据一致，画之前过一遍 「05 · 展示形式与画图规范」 第三节的核对清单。拿不准就说拿不准，宁可少讲、少画，也不能讲错、画错。
-4. **真实行情截图**：开头注明"以下是学习性分析，不构成交易建议"，按 「08 · 看图复盘与截图标注」 执行，最后把计划交还给学员自己写。
+4. **真实行情标注：数据优先**：要在真实行情上标出结构、流动性、FVG、OB 时，**先请学员提供 K 线数据**，由识别程序按规则精确计算（「09 · 数据识别引擎（精确标注）」），你只讲解程序的结果，不改动它识别的位置和价格。只有截图时才按 「08 · 看图复盘与截图标注」 读图估计，并说明那只是粗略参考。两种情况都在开头注明"以下是学习性分析，不构成交易建议"，最后把计划交还给学员自己写。
 5. **示意图是示意**：现成示意图都标了"示意图，非真实行情"，不要删掉，也不要说成真实行情。
 6. 涉及仓位和风险时只讲原则，提醒学员根据自身承受能力决定。
 7. **【作者实战经验】要说明来源**：教材里标有【作者实战经验】的内容（如 CISD、拒绝针强弱、心态层误区等），是作者在自己交易中遇到具体情况后总结的经验，不是 SMC 通用定义。讲到、引用或被问到这些内容时，必须说明这一点，并提醒学员谨慎理解、先在自己的图上验证。
@@ -31,7 +32,7 @@
 
 ### 教材导航
 
-本文件后面依次是：「01 · SMC 认知框架（知识主干）」；「02 · 常见 SMC 疑问与回答」；「03 · 学习路径与练习」；「04 · 常见误区与执行清单」；「05 · 展示形式与画图规范」；「06 · 进阶概念与入场模型」；「07 · 字符图库（自动生成）」；「08 · 看图复盘与截图标注」。按需要查对应部分，不要复述。
+本文件后面依次是：「01 · SMC 认知框架（知识主干）」；「02 · 常见 SMC 疑问与回答」；「03 · 学习路径与练习」；「04 · 常见误区与执行清单」；「05 · 展示形式与画图规范」；「06 · 进阶概念与入场模型」；「07 · 字符图库（自动生成）」；「08 · 看图复盘与截图标注」；「09 · 数据识别引擎（精确标注）」。按需要查对应部分，不要复述。
 
 ### 开场
 
@@ -107,9 +108,12 @@
 
 从 「03 · 学习路径与练习」 的题库和各课过关题里抽 5 题，**一题一题出**，等学员回答再判分、讲解。全部做完后给出得分、薄弱模块和建议复习的课。
 
-### 4. 看图复盘与截图标注
+### 4. 看图复盘与行情标注
 
-学员上传截图或描述行情时，严格按 「08 · 看图复盘与截图标注」 的五步执行：声明学习性分析 → 读图（看不清就直说，不编造价格）→ 列出候选关键点（位置、依据、把握）→ 逐项核对，不过关就不标 → 按学员选的形式输出标注（直接画在原图上 / 标注器 JSON / TradingView 画线指引 / 文字表格）→ 用八要素模板引导学员自己写计划。
+**第一步先问数据**："能导出这段行情的 K 线数据吗（MT5 / MT4 / TradingView / 交易所，CSV 就行）？有数据我能用识别程序精确标出来；只有截图的话，我只能估计。"
+
+- **有数据**：按 「09 · 数据识别引擎（精确标注）」 执行。你能运行代码就直接运行识别程序、把标注图发给学员；不能运行代码就请学员用在线识别器，把报告粘贴回来。然后按报告讲解：程序识别的项目不增不改，你的补充单独标明"AI 补充，未经程序核对"。
+- **只有截图**：声明学习性分析 → 读图（看不清就直说，不编造价格）→ 列出候选关键点（位置、依据、把握）→ 逐项核对，不过关就不标 → 按学员选的形式输出标注（直接画在原图上 / 标注器 JSON / TradingView 画线指引 / 文字表格）→ 用八要素模板引导学员自己写计划。
 
 ### 讲解风格
 
@@ -2401,11 +2405,14 @@ STRONG                     WEAK
 # 08 · 看图复盘与截图标注
 
 > 学员发来真实行情截图，想让你"在图上标出哪些是什么"时，按本文件执行。**准确比好看重要**：宁可少标、标"?"，也不要标错。
+>
+> **先问能不能给数据**：从截图读位置只是估计，精度有限。学员能导出 K 线数据（MT5、MT4、TradingView、交易所）时，改按 `09-数据识别引擎.md` 由程序精确识别，你只负责讲解。只有拿不到数据、或学员只想粗略看看时，才按本文件读图标注。
 
 ## 一、先说清楚两件事
 
 1. 开头声明："以下是按 SMC 步骤的学习性分析，不构成交易建议。"
-2. 告诉学员：AI 从截图里读位置是**估计**，可能偏几根 K 线或一点价格；标完请在标注器里拖动校正，或者告诉我哪里不对。
+2. 告诉学员：AI 从截图里读位置是**估计**，可能偏几根 K 线或一点价格，**这只是粗略参考**；标完请在标注器里拖动校正，或者告诉我哪里不对。想要精确结果，就导出这段行情的 K 线数据，用识别器（见 09）。
+3. 读图时专门留意最容易看错的三类：FVG 的 A、C 是否真的不重叠（影线很细，截图里常看不清）；收盘到底在关键位里面还是外面（决定是清扫还是突破）；OB 是不是**最后一根**反向 K 线。这三类只要看不清，把握就写 `low`，不要猜。
 
 ## 二、标注流程
 
@@ -2673,4 +2680,768 @@ if __name__ == '__main__':
 ```python
 spec = {...}          # 第三节格式的 JSON（Python 字典）
 draw("学员上传的图片路径.png", spec, "smc_annotated.png")
+```
+
+
+---
+
+# 09 · 数据识别引擎（精确标注）
+
+> 学员想让你在行情上"标出哪些是什么"时，**优先走这条路**：拿到 K 线数据，由程序按固定规则计算出结构、流动性、FVG、OB、区间，你只负责讲解。只有截图、拿不到数据时，才按 `08-截图标注规范.md` 读图估计，并说明那只是粗略参考。
+
+## 一、为什么要用数据
+
+从截图里读位置，本质是"看图估计"：偏几根 K 线、价格差一截、把重叠看成缺口，都很常见，提示词写得再严也只能减少、不能消除。K 线数据里每一根的开高低收都是确定的数字，按规则一算就是唯一答案：
+
+| | 数据识别 | 截图读图 |
+|---|---|---|
+| 位置和价格 | 精确到每根 K 线、每个价位 | 估计，可能有偏差 |
+| 判断标准 | 固定规则，同一份数据每次结果相同 | 依赖 AI 的视觉判断 |
+| 谁来识别 | 程序（`detector/smc-detect.js` 网页版、`tools/smc_detect.py` Python 版，两版结果逐项一致） | AI |
+| 你的角色 | 讲解程序识别出的结果 | 识别 + 讲解 |
+
+## 二、怎么拿到数据（告诉学员）
+
+| 来源 | 做法 |
+|---|---|
+| MT5 | 菜单「视图 → 交易品种」（Ctrl+U）→「柱形图」选项卡 → 选品种、周期和时间范围 →「请求」→「导出柱形图」，得到一个 CSV（英文界面：View → Symbols → Bars → Request → Export Bars） |
+| MT4 | 「工具 → 历史数据中心」（F2）→ 选品种和周期 →「导出」 |
+| TradingView | 图表菜单里的"导出图表数据"（如果你的账户里没有这个选项，就改用 MT5 或交易所的数据） |
+| 加密货币 | 在线识别器里直接填交易对（如 BTCUSDT）从币安拉取，不用导出 |
+| 其他 | 任何带 开盘 / 最高 / 最低 / 收盘（或 open / high / low / close）四列的表格，可以从 Excel、WPS 里另存为 CSV |
+
+建议一次给 **150–500 根**，至少 50 根。数据越少，能确认的结构越少。
+
+## 三、两种运行方式
+
+**A. 你能运行 Python，且能读取学员上传的文件**：把本节末尾"六、Python 版代码"存成 `smc_detect.py`，运行
+
+```
+python3 smc_detect.py 学员的数据.csv --png smc.png
+```
+
+它会打印识别报告，并画出标注图 `smc.png`。把图发给学员，再按第四节讲解。常用参数：`--swing 3`（摆动点左右各几根，默认 3）、`--last 120`（图上显示最近几根，默认 120）、`--lang en`（英文报告）。
+
+**B. 你不能运行代码**：请学员打开在线识别器 https://pruettlazaro143-a11y.github.io/smc-ai-tutor/detector/ （或仓库里的 `detector/index.html` 离线打开），放入数据，点"复制报告给 AI"，把报告粘贴回来。图在学员自己的浏览器里，报告里的编号和图上的编号一一对应。
+
+## 四、拿到识别报告之后怎么讲
+
+1. **程序识别的位置和价格不能改**：不要自己"修正"、挪动、增删报告里的项目。你觉得哪里值得补充，单独写，并标明"AI 补充，未经程序核对"。
+2. **按七步阅读顺序讲**：结构方向 → 区间位置 → 流动性（等高等低、清扫）→ 位移和 FVG → OB → 对侧流动性目标。每一项讲三件事：是什么、为什么符合定义（报告里已经写了核对依据，比如"A 最高 < C 最低"）、接下来看什么。
+3. **讲清程序没判断的部分**：诱导（Miller 严格口径）、多周期方向、消息面、拒绝针、入场触发。提醒学员自己核对，这些正是要靠自己练的能力。
+4. **报告里列出的"OB 候选"**：说明它缺了哪个条件（没有清扫或没有 FVG），所以只能算 POI / 反应区。
+5. **参数说明**：摆动点 N 决定结构级别。学员觉得"结构太碎"就调大 N，"漏了明显的高低点"就调小 N。同一份数据换了 N，结果不同是正常的，不是程序出错。
+6. 最后照常声明"学习性分析，不构成交易建议"，用八要素模板引导学员自己写计划。
+
+## 五、识别规则（程序口径，和教程定义一一对应）
+
+| 项目 | 规则 | 对应教程 |
+|---|---|---|
+| 摆动高点 | 第 i 根的最高价**严格高于**左边 N 根、**不低于**右边 N 根；第 i+N 根收完才确认。低点镜像 | 01 §2.2（程序用分形定义，N 可调） |
+| BOS / CHoCH | 跟踪最近一个已确认的摆动高（低）点；某根**实体收盘**越过它就是结构突破。原方向相反时叫 CHoCH，同向叫 BOS；数据开头方向未知时的第一次突破记作 BOS 并注明。影线越过不算 | 01 §2.3 |
+| 流动性位 | 每个确认的摆动高低点都是流动性位。第一次有 K 线越过时：收盘也越过 = 被突破；**影线越过、收盘收回** = 清扫 | 01 §3.1、§3.4 |
+| 等高 / 等低 | 新的摆动点和之前同类摆动点价差 ≤ 0.1 × ATR(14)；两点之间没有 K 线越过；中间回落（反弹）≥ 0.5 × ATR；池子价位取更极端的那个；第三个同价点并入同一池子 | 01 §3.3 |
+| FVG | 连续三根 A、B、C：多头要求 **C 最低 > A 最高**，区域 = A 最高到 C 最低；空头要求 **C 最高 < A 最低**，区域 = C 最高到 A 最低；从 B 开始向右画。之后有 K 线进入 = 部分回补，穿到另一边 = 完全回补 | 01 §4.2 |
+| OB | 每次结构突破，先找推动起点（被突破的摆动点之后、突破那根之前的最低点；看跌取最高点，并列取靠后的一根）；起点那根是阴线就顺延到连续阴线的最后一根，不是阴线就往前找最近的阴线；**只取实体** | 01 §5.2 |
+| OB 三个条件 | ① 摆动点之后到 OB（或起点）之间有一次同侧流动性清扫；② OB 之后到突破那根之间有同向 FVG；③ 结构突破本身。**三条都满足才叫 OB**，否则只列为候选（POI / 反应区） | 01 §5.1 |
+| OB 状态 | 第一次有 K 线碰到实体 = 首次回到；收盘穿过实体另一侧 = 失效（不再画） | 01 §5.3 |
+| Premium / Discount | 取最近一次结构突破的那段推动：起点到之后的极值；50% = 均衡点；OTE 0.62 / 0.705 / 0.79 从推动**终点**往回量 | 01 §6、06 A4 |
+| 图上画什么 | 最近 2 次结构突破、未被扫的等高等低（最多 2 组）、最近 2 次清扫、满足三条件且未失效的 OB（最多 2 个）、未完全回补的 FVG（最多 2 个）、区间和 OTE、上方最近的未扫高点和下方最近的未扫低点 | 05 通用规则（少而准） |
+
+**程序不判断的**：诱导、K 线是否"明显"（任何收盘低于开盘的都算阴线，十字星不算）、多周期方向、消息面、拒绝针和入场触发。
+
+**怎么保证程序本身没算错**：仓库的 `tools/test_detect.py` 做四类检查：示例图里人工确认过的每一项必须原样识别出来；在 60 组随机走势上，报告的每一项都按上表定义独立重算一遍；Python 版和网页版对 360 个不同格式的数据文件结果逐项一致；网页打开后的报告和 Python 版一字不差。
+
+## 六、Python 版代码（能运行代码时用）
+
+```python
+"""SMC 识别引擎（Python 版）：从 K 线数据里按教程规则精确识别结构、流动性、FVG、OB、区间。
+
+用法：
+  python3 smc_detect.py 数据.csv                 # 打印识别报告
+  python3 smc_detect.py 数据.csv --png 图.png    # 同时画出标注图（需要 matplotlib）
+  python3 smc_detect.py 数据.csv --json 结果.json --swing 3 --last 120 --lang en
+
+支持的数据：
+  - MT5 / MT4 导出的历史数据（<DATE> <TIME> <OPEN> ... 或无表头的 日期,时间,开,高,低,收,量）
+  - 通用 CSV：表头含 open/high/low/close（或 开盘/最高/最低/收盘），可选 time/date 列
+  - 币安 K 线 JSON（[[开盘时间, 开, 高, 低, 收, ...], ...]）
+
+识别规则和网页版 detector/smc-detect.js 完全一致（tools/test_detect.py 会逐项比对），
+规则说明见 skills/smc-learning/references/09-数据识别引擎.md。
+这个文件刻意写成单文件、只用标准库（画图才需要 matplotlib），方便 AI 在自带的代码环境里直接运行。
+"""
+import json
+import math
+import re
+import sys
+from datetime import datetime, timezone
+
+VERSION = 1
+DEFAULTS = {'swing': 3, 'atr_len': 14, 'eq_tol_atr': 0.1, 'eq_bounce_atr': 0.5, 'fvg_min_atr': 0.0, 'last': 120}
+OTE = (0.62, 0.705, 0.79)
+
+
+# ============================== 1. 读数据 ==============================
+NAMES = {
+    'open': ('open', 'o', '开盘', '开盘价', '开'),
+    'high': ('high', 'h', '最高', '最高价', '高'),
+    'low': ('low', 'l', '最低', '最低价', '低'),
+    'close': ('close', 'c', '收盘', '收盘价', '收', 'close/last', 'last', 'price'),
+    'time': ('time', 'date', 'datetime', 'timestamp', 'opentime', 'open time', 'gmt time', 'local time', '日期', '时间', '交易日期'),
+}
+
+
+def _norm(cell):
+    return cell.strip().strip('"\'').strip().strip('<>').strip().lower()
+
+
+def _num(s):
+    s = s.strip().strip('"\'').strip()
+    if not re.fullmatch(r'[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)([eE][+-]?[0-9]+)?', s):
+        return None
+    v = float(s)
+    return v if math.isfinite(v) else None
+
+
+def _decimals(s):
+    s = s.strip().strip('"\'').strip()
+    if 'e' in s.lower() or '.' not in s:
+        return 0
+    frac = s.split('.', 1)[1].rstrip('0')
+    return len(frac)
+
+
+def _fmt_unix(v):
+    if v > 1e11:
+        v = v / 1000.0
+    return datetime.fromtimestamp(int(v), tz=timezone.utc).strftime('%Y-%m-%d %H:%M')
+
+
+def _time_label(raw):
+    raw = raw.strip().strip('"\'').strip()
+    if re.fullmatch(r'[0-9]{9,13}(\.[0-9]+)?', raw):
+        return _fmt_unix(float(raw)), float(raw)
+    return raw, None
+
+
+def parse(text):
+    """把文本解析成 K 线。返回 (candles, info)。candles: [{'t','o','h','l','c'}]。"""
+    text = text.lstrip('﻿').strip()
+    rows, warn, dec = [], [], 0
+    if text.startswith('['):
+        data = json.loads(text)
+        for r in data:
+            vals = [str(x) for x in r[1:5]]
+            nums = [_num(x) for x in vals]
+            if None in nums:
+                continue
+            dec = max([dec] + [_decimals(x) for x in vals])
+            t = r[0]
+            rows.append([_fmt_unix(float(t)) if isinstance(t, (int, float)) or re.fullmatch(r'[0-9]+', str(t)) else str(t),
+                         float(t) if isinstance(t, (int, float)) or re.fullmatch(r'[0-9]+', str(t)) else None] + nums)
+        src = 'json'
+    else:
+        lines = [ln for ln in re.split(r'\r?\n', text) if ln.strip()]
+        first = lines[0]
+        if '\t' in first:
+            sep = '\t'
+        elif first.count(';') > first.count(','):
+            sep = ';'
+        else:
+            sep = ','
+        comma_dec = sep == ';' and ',' in text and '.' not in text
+        cells0 = [_norm(x) for x in first.split(sep)]
+        idx = {}
+        for key, names in NAMES.items():
+            for k, cell in enumerate(cells0):
+                if cell in names and key not in idx and k not in idx.values():
+                    idx[key] = k
+        tcol2 = None
+        if all(k in idx for k in ('open', 'high', 'low', 'close')):
+            body = lines[1:]
+            src = 'header'
+            if 'time' in idx and cells0[idx['time']] == 'date' and 'time' in cells0:
+                tcol2 = cells0.index('time')
+        else:
+            body = lines
+            n0 = len(first.split(sep))
+            if n0 >= 6 and ':' in first.split(sep)[1]:
+                idx = {'time': 0, 'open': 2, 'high': 3, 'low': 4, 'close': 5}
+                tcol2 = 1
+            elif n0 >= 5:
+                idx = {'time': 0, 'open': 1, 'high': 2, 'low': 3, 'close': 4}
+            elif n0 == 4:
+                idx = {'open': 0, 'high': 1, 'low': 2, 'close': 3}
+            else:
+                raise ValueError('读不出开高低收四列 / cannot find open, high, low, close columns')
+            src = 'noheader'
+        for ln in body:
+            cells = ln.split(sep)
+            if len(cells) <= max(idx.values()):
+                continue
+            vals = [cells[idx[k]] for k in ('open', 'high', 'low', 'close')]
+            if comma_dec:
+                vals = [v.replace(',', '.') for v in vals]
+            nums = [_num(v) for v in vals]
+            if None in nums:
+                continue
+            dec = max([dec] + [_decimals(v) for v in vals])
+            if 'time' in idx:
+                raw = cells[idx['time']]
+                if tcol2 is not None and tcol2 < len(cells):
+                    raw = raw.strip() + ' ' + cells[tcol2].strip()
+                label, tnum = _time_label(raw)
+            else:
+                label, tnum = '', None
+            rows.append([label, tnum] + nums)
+    if not rows:
+        raise ValueError('没有读到有效的 K 线 / no valid candles found')
+    # 顺序：时间是数字就按数字排；是"年份开头"的文字就比较数字串，倒序则翻转
+    if all(r[1] is not None for r in rows):
+        rows.sort(key=lambda r: r[1])
+    else:
+        a, b = rows[0][0], rows[-1][0]
+        if re.match(r'[0-9]{4}[^0-9]', a) and re.match(r'[0-9]{4}[^0-9]', b):
+            da, db = re.sub(r'[^0-9]', '', a), re.sub(r'[^0-9]', '', b)
+            if len(da) == len(db) and da > db:
+                rows.reverse()
+    candles, bad = [], 0
+    for r in rows:
+        o, h, l, c = r[2:6]
+        if h < max(o, c) or l > min(o, c):
+            bad += 1
+            continue
+        candles.append({'t': r[0], 'o': o, 'h': h, 'l': l, 'c': c})
+    if bad:
+        warn.append(f'{bad} 行数据的高低点和开收盘矛盾，已跳过 / {bad} rows skipped (high/low inconsistent with open/close)')
+    if len(candles) < 20:
+        warn.append('K 线太少（少于 20 根），识别结果参考价值有限 / fewer than 20 candles')
+    return candles, {'source': src, 'decimals': min(dec, 8), 'warnings': warn}
+
+
+# ============================== 2. 识别 ==============================
+def _bear(k, i):
+    return k[i]['c'] < k[i]['o']
+
+
+def _bull(k, i):
+    return k[i]['c'] > k[i]['o']
+
+
+def detect(K, params=None):
+    """按教程规则识别。K: [{'o','h','l','c'}]。返回纯数据（dict），不含任何主观判断。"""
+    p = dict(DEFAULTS)
+    p.update(params or {})
+    n, N = len(K), int(p['swing'])
+    O = [k['o'] for k in K]
+    H = [k['h'] for k in K]
+    L = [k['l'] for k in K]
+    C = [k['c'] for k in K]
+
+    # ATR：真实波幅的简单平均（最近 atr_len 根，含当根）
+    tr = []
+    for i in range(n):
+        if i == 0:
+            tr.append(H[i] - L[i])
+        else:
+            tr.append(max(H[i] - L[i], abs(H[i] - C[i - 1]), abs(L[i] - C[i - 1])))
+    atr = []
+    for i in range(n):
+        s, cnt = 0.0, 0
+        for j in range(max(0, i - p['atr_len'] + 1), i + 1):
+            s += tr[j]
+            cnt += 1
+        atr.append(s / cnt)
+
+    # 摆动点：左边 N 根都更低（严格）、右边 N 根不高于它；第 i+N 根收完才确认
+    swings = []
+    for i in range(N, n - N):
+        if all(H[i] > H[j] for j in range(i - N, i)) and all(H[i] >= H[j] for j in range(i + 1, i + N + 1)):
+            swings.append({'type': 'high', 'i': i, 'price': H[i], 'confirmed': i + N})
+        if all(L[i] < L[j] for j in range(i - N, i)) and all(L[i] <= L[j] for j in range(i + 1, i + N + 1)):
+            swings.append({'type': 'low', 'i': i, 'price': L[i], 'confirmed': i + N})
+    by_conf = {}
+    for s in swings:
+        by_conf.setdefault(s['confirmed'], []).append(s)
+
+    events, sweeps, levels, pools = [], [], [], []
+    ref = {'high': None, 'low': None}
+    trend = 0
+    for k in range(n):
+        # (1) 流动性：影线越过、收盘收回 = 清扫；收盘越过 = 突破
+        for lv in levels:
+            if lv['state'] != 'active':
+                continue
+            if lv['type'] == 'high' and H[k] > lv['price']:
+                lv['state'], lv['at'] = ('broken' if C[k] > lv['price'] else 'swept'), k
+            elif lv['type'] == 'low' and L[k] < lv['price']:
+                lv['state'], lv['at'] = ('broken' if C[k] < lv['price'] else 'swept'), k
+            else:
+                continue
+            if lv['state'] == 'swept':
+                sweeps.append({'side': lv['type'], 'i': k, 'level': lv['price'], 'from': lv['i'], 'pool': False})
+        for pl in pools:
+            if pl['state'] != 'active' or k <= pl['members'][-1]:
+                continue
+            if pl['type'] == 'high' and H[k] > pl['level']:
+                pl['state'], pl['at'] = ('broken' if C[k] > pl['level'] else 'swept'), k
+            elif pl['type'] == 'low' and L[k] < pl['level']:
+                pl['state'], pl['at'] = ('broken' if C[k] < pl['level'] else 'swept'), k
+            else:
+                continue
+            if pl['state'] == 'swept':
+                sweeps.append({'side': pl['type'], 'i': k, 'level': pl['level'], 'from': pl['members'][-1], 'pool': True})
+        # (2) 结构：实体收盘越过最近的摆动点
+        rh, rl = ref['high'], ref['low']
+        if rh is not None and not rh['broken'] and C[k] > rh['price']:
+            events.append({'type': 'CHoCH' if trend == -1 else 'BOS', 'dir': 1, 'i': k, 'level': rh['price'],
+                           'from': rh['i'], 'first': trend == 0})
+            rh['broken'] = True
+            trend = 1
+        if rl is not None and not rl['broken'] and C[k] < rl['price']:
+            events.append({'type': 'CHoCH' if trend == 1 else 'BOS', 'dir': -1, 'i': k, 'level': rl['price'],
+                           'from': rl['i'], 'first': trend == 0})
+            rl['broken'] = True
+            trend = -1
+        # (3) 这一根收完后确认的摆动点
+        for s in by_conf.get(k, []):
+            ref[s['type']] = {'i': s['i'], 'price': s['price'], 'broken': False}
+            levels.append({'type': s['type'], 'i': s['i'], 'price': s['price'], 'state': 'active', 'at': None})
+            # 等高 / 等低：和之前的同类摆动点几乎同价、中间有明显回落（反弹）、中间没有被越过
+            tol = p['eq_tol_atr'] * atr[s['i']]
+            prev = [x for x in swings if x['type'] == s['type'] and x['i'] < s['i'] and x['confirmed'] <= k]
+            for q in reversed(prev):
+                if abs(q['price'] - s['price']) > tol:
+                    continue
+                lo, hi = q['i'] + 1, s['i']
+                if s['type'] == 'low':
+                    lvl = min(q['price'], s['price'])
+                    if any(L[j] < lvl for j in range(lo, hi)):
+                        continue
+                    if max(H[lo:hi] or [lvl]) - max(q['price'], s['price']) < p['eq_bounce_atr'] * atr[s['i']]:
+                        continue
+                else:
+                    lvl = max(q['price'], s['price'])
+                    if any(H[j] > lvl for j in range(lo, hi)):
+                        continue
+                    if min(q['price'], s['price']) - min(L[lo:hi] or [lvl]) < p['eq_bounce_atr'] * atr[s['i']]:
+                        continue
+                # 后面的点不能已经在确认前把这个池子扫掉
+                if s['type'] == 'low' and any(L[j] < lvl for j in range(s['i'] + 1, k + 1)):
+                    continue
+                if s['type'] == 'high' and any(H[j] > lvl for j in range(s['i'] + 1, k + 1)):
+                    continue
+                joined = False
+                for pl in pools:
+                    if pl['type'] == s['type'] and pl['state'] == 'active' and pl['members'][-1] == q['i']:
+                        pl['members'].append(s['i'])
+                        pl['level'] = min(pl['level'], lvl) if s['type'] == 'low' else max(pl['level'], lvl)
+                        joined = True
+                        break
+                if not joined:
+                    pools.append({'type': s['type'], 'members': [q['i'], s['i']], 'level': lvl, 'state': 'active', 'at': None})
+                break
+
+    # FVG：A、C 不重叠，只有 B 穿过的那一段；从 B 开始向右
+    fvgs = []
+    for b in range(1, n - 1):
+        a, c = b - 1, b + 1
+        if L[c] > H[a]:
+            d, top, bot = 1, L[c], H[a]
+        elif H[c] < L[a]:
+            d, top, bot = -1, L[a], H[c]
+        else:
+            continue
+        if top - bot < p['fvg_min_atr'] * atr[b]:
+            continue
+        f = {'dir': d, 'a': a, 'b': b, 'c': c, 'top': top, 'bottom': bot, 'touched': None, 'filled': None}
+        for j in range(c + 1, n):
+            if d == 1:
+                if f['touched'] is None and L[j] < top:
+                    f['touched'] = j
+                if L[j] <= bot:
+                    f['filled'] = j
+                    break
+            else:
+                if f['touched'] is None and H[j] > bot:
+                    f['touched'] = j
+                if H[j] >= top:
+                    f['filled'] = j
+                    break
+        fvgs.append(f)
+
+    # OB：每次结构突破，回到这段推动的起点，找位移前最后一根反向 K 线，只取实体
+    obs, seen = [], set()
+    for e in events:
+        s, k, d = e['from'], e['i'], e['dir']
+        if k - s < 2:
+            continue
+        rng = range(s + 1, k + 1)
+        if d == 1:
+            m = s + 1
+            for j in rng:
+                if L[j] <= L[m]:
+                    m = j
+            opp = _bear
+        else:
+            m = s + 1
+            for j in rng:
+                if H[j] >= H[m]:
+                    m = j
+            opp = _bull
+        e['origin'] = m
+        if opp(K, m):
+            j = m
+            while j + 1 < k and opp(K, j + 1):
+                j += 1
+        else:
+            j = m - 1
+            while j > s and not opp(K, j):
+                j -= 1
+            if j <= s:
+                continue
+        if j >= k or (d, j) in seen:
+            continue
+        seen.add((d, j))
+        has_fvg = [f['b'] for f in fvgs if f['dir'] == d and j + 1 <= f['b'] <= k]
+        side = 'low' if d == 1 else 'high'
+        has_sweep = sorted({w['i'] for w in sweeps if w['side'] == side and s + 1 <= w['i'] <= max(j, m)})
+        top, bot = max(O[j], C[j]), min(O[j], C[j])
+        ob = {'dir': d, 'i': j, 'top': top, 'bottom': bot, 'break': k, 'break_type': e['type'], 'origin': m,
+              'fvg': has_fvg, 'sweep': has_sweep, 'valid': bool(has_fvg and has_sweep),
+              'tapped': None, 'invalidated': None}
+        for x in range(k + 1, n):
+            if d == 1:
+                if ob['tapped'] is None and L[x] <= top:
+                    ob['tapped'] = x
+                if C[x] < bot:
+                    ob['invalidated'] = x
+                    break
+            else:
+                if ob['tapped'] is None and H[x] >= bot:
+                    ob['tapped'] = x
+                if C[x] > top:
+                    ob['invalidated'] = x
+                    break
+        obs.append(ob)
+
+    # Premium / Discount：最近一次结构突破所在的那段推动（起点 → 之后的极值）
+    rng = None
+    if events:
+        e = events[-1]
+        m = e.get('origin')
+        if m is not None:
+            if e['dir'] == 1:
+                lo_i, hi_i = m, m
+                for j in range(m, n):
+                    if H[j] > H[hi_i]:
+                        hi_i = j
+                lo, hi = L[lo_i], H[hi_i]
+                ote = [hi - r * (hi - lo) for r in OTE]
+            else:
+                lo_i, hi_i = m, m
+                for j in range(m, n):
+                    if L[j] < L[lo_i]:
+                        lo_i = j
+                lo, hi = L[lo_i], H[hi_i]
+                ote = [lo + r * (hi - lo) for r in OTE]
+            eq = (hi + lo) / 2
+            rng = {'dir': e['dir'], 'low_i': lo_i, 'high_i': hi_i, 'low': lo, 'high': hi, 'eq': eq, 'ote': ote,
+                   'zone': 'premium' if C[n - 1] > eq else ('discount' if C[n - 1] < eq else 'equilibrium')}
+
+    return {'version': VERSION, 'params': p, 'n': n, 'trend': trend, 'atr': atr[n - 1] if n else None,
+            'swings': swings, 'events': events, 'sweeps': sweeps,
+            'levels': [{k: v for k, v in lv.items()} for lv in levels], 'pools': pools,
+            'fvgs': fvgs, 'obs': obs, 'range': rng}
+
+
+# ============================== 3. 挑出值得画的 ==============================
+def select(K, R, last=None):
+    """从识别结果里挑出图上要画的项目（不超过约 10 项），每项带依据。坐标用 K 线序号和价格。"""
+    n = len(K)
+    last = int(last or R['params']['last'])
+    v0 = max(0, n - last)
+    items = []
+
+    def add(**it):
+        items.append(it)
+
+    # 结构：最近 2 次
+    for e in [e for e in R['events'] if e['i'] >= v0][-2:]:
+        nm = e['type']
+        add(type='hline', kind='structure', i1=max(e['from'], v0), i2=e['i'], price=e['level'],
+            label=f"{nm}{'↑' if e['dir'] == 1 else '↓'}", ref=('event', R['events'].index(e)))
+    # 等高等低：还没被扫的
+    for pl in [p for p in R['pools'] if p['state'] == 'active' and p['members'][-1] >= v0][-2:]:
+        add(type='hline', kind='liquidity', i1=max(pl['members'][0], v0), i2=n - 1, price=pl['level'],
+            label='EQH BSL' if pl['type'] == 'high' else 'EQL SSL', ref=('pool', R['pools'].index(pl)))
+    # 清扫：最近 2 次（同一根只标一次）
+    shown = []
+    for w in reversed(R['sweeps']):
+        if w['i'] < v0 or w['i'] in [s['i'] for s in shown]:
+            continue
+        shown.append(w)
+        if len(shown) == 2:
+            break
+    for w in reversed(shown):
+        add(type='marker', kind='liquidity', i=w['i'], price=K[w['i']]['h'] if w['side'] == 'high' else K[w['i']]['l'],
+            place='above' if w['side'] == 'high' else 'below', label='sweep', ref=('sweep', R['sweeps'].index(w)))
+    # OB：满足三个条件、还没失效的，最近 2 个
+    for ob in [o for o in R['obs'] if o['valid'] and o['invalidated'] is None and o['i'] >= v0][-2:]:
+        add(type='box', kind='ob', i1=ob['i'], i2=n - 1, top=ob['top'], bottom=ob['bottom'],
+            label='Bull OB' if ob['dir'] == 1 else 'Bear OB', ref=('ob', R['obs'].index(ob)))
+    # FVG：还没被完全回补的，最近 2 个
+    for f in [f for f in R['fvgs'] if f['filled'] is None and f['b'] >= v0][-2:]:
+        add(type='box', kind='fvg', i1=f['b'], i2=n - 1, top=f['top'], bottom=f['bottom'],
+            label='FVG' + ('↑' if f['dir'] == 1 else '↓'), ref=('fvg', R['fvgs'].index(f)))
+    # 区间
+    r = R['range']
+    if r and max(r['low_i'], r['high_i']) >= v0:
+        add(type='range', kind='range', i1=max(min(r['low_i'], r['high_i']), v0), i2=n - 1,
+            high=r['high'], low=r['low'], eq=r['eq'], ote=r['ote'], label='EQ 50%', ref=('range', 0))
+    # 对侧流动性：当前价上方最近的未被扫高点、下方最近的未被扫低点
+    c = K[-1]['c']
+    above = [lv for lv in R['levels'] if lv['type'] == 'high' and lv['state'] == 'active' and lv['price'] > c]
+    below = [lv for lv in R['levels'] if lv['type'] == 'low' and lv['state'] == 'active' and lv['price'] < c]
+    pool_px = [it['price'] for it in items if it['kind'] == 'liquidity' and it['type'] == 'hline']
+    if above:
+        lv = min(above, key=lambda x: (x['price'], -x['i']))
+        if lv['price'] not in pool_px:
+            add(type='hline', kind='target', i1=max(lv['i'], v0), i2=n - 1, price=lv['price'], label='BSL',
+                ref=('level', R['levels'].index(lv)))
+    if below:
+        lv = max(below, key=lambda x: (x['price'], x['i']))
+        if lv['price'] not in pool_px:
+            add(type='hline', kind='target', i1=max(lv['i'], v0), i2=n - 1, price=lv['price'], label='SSL',
+                ref=('level', R['levels'].index(lv)))
+    for it in items:
+        it['ref'] = list(it['ref'])
+    return {'from': v0, 'to': n - 1, 'items': items}
+
+
+# ============================== 4. 文字报告 ==============================
+def report(K, R, sel, info=None, lang='zh'):
+    d = (info or {}).get('decimals', 2)
+    zh = lang != 'en'
+
+    def P(x):
+        return f'{x:.{d}f}'
+
+    def P1(x):
+        return f'{x:.{d + 1}f}'
+
+    def T(i):
+        t = K[i]['t']
+        return f'#{i}' + (f' ({t})' if t else '')
+
+    def dirw(x):
+        return ('多' if x == 1 else '空') if zh else ('bullish' if x == 1 else 'bearish')
+
+    out = []
+    out.append('SMC 识别报告（程序按规则计算，不是交易建议）' if zh else 'SMC detection report (rule-based, not trading advice)')
+    out.append((f'K 线 {len(K)} 根，图上显示 {T(sel["from"])} 到 {T(sel["to"])}；摆动点参数 N={R["params"]["swing"]}；最新收盘 {P(K[-1]["c"])}'
+                if zh else f'{len(K)} candles, chart shows {T(sel["from"])} to {T(sel["to"])}; swing N={R["params"]["swing"]}; last close {P(K[-1]["c"])}'))
+    tr = {1: '上涨（最近一次结构突破向上）', -1: '下跌（最近一次结构突破向下）', 0: '未确定（还没有结构突破）'} if zh else \
+        {1: 'up (last structure break was upward)', -1: 'down (last structure break was downward)', 0: 'undetermined (no structure break yet)'}
+    out.append(('当前结构方向：' if zh else 'Structure: ') + tr[R['trend']])
+    for w in (info or {}).get('warnings', []):
+        out.append('⚠ ' + w)
+    out.append('')
+    for n_, it in enumerate(sel['items'], 1):
+        kind, idx = it['ref'][0], it['ref'][1]
+        if kind == 'event':
+            e = R['events'][idx]
+            gate = ('守门点' if e['type'] == 'CHoCH' else '摆动点') if zh else ('guard point' if e['type'] == 'CHoCH' else 'swing point')
+            first = ('（之前方向未知，这是第一次突破）' if zh else ' (first break; prior direction unknown)') if e['first'] else ''
+            if zh:
+                out.append(f'{n_}. 【结构】{e["type"]}（{dirw(e["dir"])}）：{T(e["i"])} 收盘 {P(K[e["i"]]["c"])}，'
+                           f'实体收{"上" if e["dir"] == 1 else "下"}破 {T(e["from"])} 的{gate} {P(e["level"])}{first}')
+            else:
+                out.append(f'{n_}. [Structure] {e["type"]} ({dirw(e["dir"])}): {T(e["i"])} closed at {P(K[e["i"]]["c"])}, '
+                           f'{"above" if e["dir"] == 1 else "below"} the {gate} {P(e["level"])} at {T(e["from"])}{first}')
+        elif kind == 'pool':
+            pl = R['pools'][idx]
+            ms = '、'.join(T(i) for i in pl['members']) if zh else ', '.join(T(i) for i in pl['members'])
+            if zh:
+                out.append(f'{n_}. 【流动性】{"等高 BSL" if pl["type"] == "high" else "等低 SSL"} {P(pl["level"])}：{ms} 几乎同价'
+                           f'（差距不超过 {R["params"]["eq_tol_atr"]} 倍 ATR），中间有明显{"回落" if pl["type"] == "high" else "反弹"}，至今未被扫')
+            else:
+                out.append(f'{n_}. [Liquidity] {"Equal highs (BSL)" if pl["type"] == "high" else "Equal lows (SSL)"} {P(pl["level"])}: {ms} '
+                           f'within {R["params"]["eq_tol_atr"]}×ATR, with a clear pullback between; not yet swept')
+        elif kind == 'sweep':
+            w = R['sweeps'][idx]
+            c = K[w['i']]
+            what = ('等高' if w['side'] == 'high' else '等低') if w['pool'] else ('高点' if w['side'] == 'high' else '低点')
+            if zh:
+                ext = f'最高 {P(c["h"])}' if w['side'] == 'high' else f'最低 {P(c["l"])}'
+                out.append(f'{n_}. 【清扫】{T(w["i"])} 影线越过 {T(w["from"])} 的{what} {P(w["level"])}（{ext}），'
+                           f'收盘 {P(c["c"])} 收回到里面')
+            else:
+                ext = f'high {P(c["h"])}' if w['side'] == 'high' else f'low {P(c["l"])}'
+                what = ('equal highs' if w['side'] == 'high' else 'equal lows') if w['pool'] else ('swing high' if w['side'] == 'high' else 'swing low')
+                out.append(f'{n_}. [Sweep] {T(w["i"])} wicked beyond the {what} {P(w["level"])} at {T(w["from"])} ({ext}) '
+                           f'and closed back inside at {P(c["c"])}')
+        elif kind == 'ob':
+            ob = R['obs'][idx]
+            st = ''
+            if ob['tapped'] is not None:
+                st = (f'；{T(ob["tapped"])} 首次回到区域' if zh else f'; first return at {T(ob["tapped"])}')
+            else:
+                st = ('；之后还没回来过' if zh else '; not revisited yet')
+            if zh:
+                out.append(f'{n_}. 【订单区】看{"涨" if ob["dir"] == 1 else "跌"} OB {T(ob["i"])}，只取实体 {P(ob["top"])}–{P(ob["bottom"])}：'
+                           f'位移前最后一根{"阴" if ob["dir"] == 1 else "阳"}线；三个条件 ✓清扫（{"、".join(T(i) for i in ob["sweep"])}）'
+                           f' ✓FVG（B={"、".join(T(i) for i in ob["fvg"])}） ✓{ob["break_type"]}（{T(ob["break"])}）{st}')
+            else:
+                out.append(f'{n_}. [Order block] {"Bullish" if ob["dir"] == 1 else "Bearish"} OB {T(ob["i"])}, body only {P(ob["top"])}–{P(ob["bottom"])}: '
+                           f'last {"down" if ob["dir"] == 1 else "up"} candle before displacement; ✓sweep ({", ".join(T(i) for i in ob["sweep"])}) '
+                           f'✓FVG (B={", ".join(T(i) for i in ob["fvg"])}) ✓{ob["break_type"]} ({T(ob["break"])}){st}')
+        elif kind == 'fvg':
+            f = R['fvgs'][idx]
+            if zh:
+                cmp_ = (f'A {T(f["a"])} 最高 {P(K[f["a"]]["h"])} < C {T(f["c"])} 最低 {P(K[f["c"]]["l"])}' if f['dir'] == 1 else
+                        f'A {T(f["a"])} 最低 {P(K[f["a"]]["l"])} > C {T(f["c"])} 最高 {P(K[f["c"]]["h"])}')
+                st = f'；{T(f["touched"])} 起被部分回补' if f['touched'] is not None else '；尚未回补'
+                out.append(f'{n_}. 【FVG】{dirw(f["dir"])}头 FVG {P(f["top"])}–{P(f["bottom"])}（B={T(f["b"])}）：{cmp_}，中间没有重叠{st}')
+            else:
+                cmp_ = (f'A {T(f["a"])} high {P(K[f["a"]]["h"])} < C {T(f["c"])} low {P(K[f["c"]]["l"])}' if f['dir'] == 1 else
+                        f'A {T(f["a"])} low {P(K[f["a"]]["l"])} > C {T(f["c"])} high {P(K[f["c"]]["h"])}')
+                st = f'; partly filled from {T(f["touched"])}' if f['touched'] is not None else '; unfilled'
+                out.append(f'{n_}. [FVG] {dirw(f["dir"])} FVG {P(f["top"])}–{P(f["bottom"])} (B={T(f["b"])}): {cmp_}, no overlap{st}')
+        elif kind == 'range':
+            r = R['range']
+            zn = {'premium': 'Premium（贵区）', 'discount': 'Discount（便宜区）', 'equilibrium': '均衡点'} if zh else \
+                {'premium': 'premium', 'discount': 'discount', 'equilibrium': 'equilibrium'}
+            o = ' / '.join(P1(x) for x in r['ote'])
+            lo_s, hi_s = f'{P(r["low"])}（{T(r["low_i"])}）', f'{P(r["high"])}（{T(r["high_i"])}）'
+            lo_e, hi_e = f'{P(r["low"])} ({T(r["low_i"])})', f'{P(r["high"])} ({T(r["high_i"])})'
+            if zh:
+                leg = f'上涨推动：低点 {lo_s} 到高点 {hi_s}' if r['dir'] == 1 else f'下跌推动：高点 {hi_s} 到低点 {lo_s}'
+                out.append(f'{n_}. 【区间】最近一段{leg}，50% 均衡点 {P1(r["eq"])}；当前收盘在 {zn[r["zone"]]}；'
+                           f'OTE 0.62/0.705/0.79 = {o}（从推动终点往回量）')
+            else:
+                leg = f'up leg: low {lo_e} to high {hi_e}' if r['dir'] == 1 else f'down leg: high {hi_e} to low {lo_e}'
+                out.append(f'{n_}. [Range] last {leg}, equilibrium {P1(r["eq"])}; price is in {zn[r["zone"]]}; '
+                           f'OTE 0.62/0.705/0.79 = {o} (measured back from the leg end)')
+        elif kind == 'level':
+            lv = R['levels'][idx]
+            if zh:
+                out.append(f'{n_}. 【对侧流动性】{"上方最近的未扫高点 BSL" if lv["type"] == "high" else "下方最近的未扫低点 SSL"} {P(lv["price"])}（{T(lv["i"])}）')
+            else:
+                out.append(f'{n_}. [Liquidity] nearest untaken {"swing high above (BSL)" if lv["type"] == "high" else "swing low below (SSL)"} {P(lv["price"])} ({T(lv["i"])})')
+    if not sel['items']:
+        out.append('图上范围内没有识别到符合规则的项目。' if zh else 'Nothing in view meets the rules.')
+    cand = [o for o in R['obs'] if not o['valid'] and o['invalidated'] is None and o['i'] >= sel['from']][-2:]
+    if cand:
+        out.append('')
+        out.append('不满足 OB 三个条件的候选（只能算 POI / 反应区，不画在图上）：' if zh else 'OB candidates that fail the three conditions (POI only, not drawn):')
+        for ob in cand:
+            miss = []
+            if not ob['sweep']:
+                miss.append('之前没有清扫' if zh else 'no sweep before it')
+            if not ob['fvg']:
+                miss.append('位移没有留下 FVG' if zh else 'no FVG in the displacement')
+            out.append(f'- {T(ob["i"])} {P(ob["top"])}–{P(ob["bottom"])}' + ('：' + '、'.join(miss) if zh else ': ' + ', '.join(miss)))
+    out.append('')
+    if zh:
+        out.append('程序没有判断的：诱导（Miller 严格口径）、多周期方向、消息面、拒绝针和入场触发。这些需要你自己核对。')
+        out.append('识别规则见 references/09-数据识别引擎.md。仅供学习，不构成交易建议。')
+    else:
+        out.append('Not judged by the program: inducement (Miller strict view), higher-timeframe bias, news, rejection wicks and entry triggers. Check these yourself.')
+        out.append('Rules: references/09-数据识别引擎.md. For learning only, not trading advice.')
+    return '\n'.join(out)
+
+
+# ============================== 5. 画图 ==============================
+def plot(K, R, sel, path, info=None, title=''):
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
+    d = (info or {}).get('decimals', 2)
+    v0, v1 = sel['from'], sel['to']
+    col = {'structure': '#cfd8dc', 'liquidity': '#f5c542', 'fvg': '#4f8cff', 'ob': '#b47cff', 'target': '#26a69a'}
+    fig = plt.figure(figsize=(16, 9), dpi=100, facecolor='#131722')
+    ax = fig.add_axes([0.02, 0.06, 0.9, 0.88], facecolor='#131722')
+    lo = min(K[i]['l'] for i in range(v0, v1 + 1))
+    hi = max(K[i]['h'] for i in range(v0, v1 + 1))
+    pad = (hi - lo) * 0.06 or 1
+    for i in range(v0, v1 + 1):
+        k = K[i]
+        cc = '#26a69a' if k['c'] >= k['o'] else '#ef5350'
+        ax.vlines(i, k['l'], k['h'], color=cc, lw=1)
+        ax.add_patch(Rectangle((i - .32, min(k['o'], k['c'])), .64, max(abs(k['c'] - k['o']), (hi - lo) * 0.001), color=cc))
+    right = v1 + max(4, (v1 - v0) // 12)
+
+    def tag(x, y, s, c, va='bottom', ha='right'):
+        ax.text(x, y, s, color=c, fontsize=10, va=va, ha=ha, fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.2', fc='#131722', ec='none', alpha=0.8))
+
+    for ix, it in enumerate(sel['items'], 1):
+        k = it['kind']
+        no = f'{ix} '
+        if it['type'] == 'hline':
+            ax.hlines(it['price'], it['i1'], right if k in ('liquidity', 'target') else it['i2'],
+                      color=col[k], lw=1.4, linestyles='--' if k != 'structure' else '-')
+            if k == 'structure':
+                tag(it['i2'] + .6, it['price'], no + it['label'] + f' {it["price"]:.{d}f}', col[k], va='center', ha='left')
+            else:
+                tag(right, it['price'], no + it['label'] + f' {it["price"]:.{d}f}', col[k])
+        elif it['type'] == 'box':
+            ax.add_patch(Rectangle((it['i1'] - .5, it['bottom']), right - it['i1'] + .5, it['top'] - it['bottom'],
+                                   fc=col[k], alpha=0.22, ec=col[k], lw=1))
+            tag(it['i1'] - .4, it['bottom'], no + it['label'], col[k], va='top', ha='left')
+        elif it['type'] == 'marker':
+            ax.plot([it['i']], [it['price']], 'o', ms=14, mfc='none', mec=col[k], mew=2)
+            tag(it['i'], it['price'] + (pad * .5 if it['place'] == 'above' else -pad * .5), no + it['label'], col[k],
+                va='bottom' if it['place'] == 'above' else 'top', ha='center')
+        elif it['type'] == 'range':
+            ax.add_patch(Rectangle((it['i1'] - .5, it['eq']), right - it['i1'] + .5, it['high'] - it['eq'], fc='#ef5350', alpha=0.05, ec='none'))
+            ax.add_patch(Rectangle((it['i1'] - .5, it['low']), right - it['i1'] + .5, it['eq'] - it['low'], fc='#26a69a', alpha=0.05, ec='none'))
+            ax.hlines(it['eq'], it['i1'], right, color='#97a1b3', lw=1, linestyles=':')
+            tag(it['i1'] - .4, it['eq'], no + f'EQ 50% {it["eq"]:.{d + 1}f}', '#97a1b3', ha='left')
+            ax.add_patch(Rectangle((it['i1'] - .5, min(it['ote'][0], it['ote'][2])), right - it['i1'] + .5,
+                                   abs(it['ote'][2] - it['ote'][0]), fc='#ff9f43', alpha=0.08, ec='#ff9f43', lw=.6, ls=':'))
+            tag(it['i1'] - .4, it['ote'][1], 'OTE', '#ff9f43', va='center', ha='left')
+    ax.set_xlim(v0 - 1, right + 1)
+    ax.set_ylim(lo - pad, hi + pad)
+    ax.yaxis.tick_right()
+    ax.tick_params(axis='y', colors='#b2b5be', labelsize=10)
+    ticks = list(range(v0, v1 + 1, max(1, (v1 - v0) // 8)))
+    ax.set_xticks(ticks)
+    ax.set_xticklabels([(K[i]['t'] or f'#{i}')[-11:] for i in ticks], color='#b2b5be', fontsize=9)
+    ax.grid(color='#2a2e39', lw=.5)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+    ax.text(v0, hi + pad * .55, (title + '   ' if title else '') + 'SMC detector · rule-based, not trading advice',
+            color='#b2b5be', fontsize=11)
+    fig.savefig(path, dpi=100, facecolor=fig.get_facecolor())
+    plt.close(fig)
+
+
+# ============================== 命令行 ==============================
+def main(argv):
+    import argparse
+    ap = argparse.ArgumentParser(description='SMC detector')
+    ap.add_argument('data')
+    ap.add_argument('--swing', type=int, default=DEFAULTS['swing'])
+    ap.add_argument('--last', type=int, default=DEFAULTS['last'])
+    ap.add_argument('--png')
+    ap.add_argument('--json')
+    ap.add_argument('--lang', default='zh')
+    ap.add_argument('--title', default='')
+    a = ap.parse_args(argv)
+    K, info = parse(open(a.data, encoding='utf-8-sig', errors='replace').read())
+    R = detect(K, {'swing': a.swing, 'last': a.last})
+    sel = select(K, R, a.last)
+    print(report(K, R, sel, info, a.lang))
+    if a.png:
+        plot(K, R, sel, a.png, info, a.title)
+    if a.json:
+        json.dump({'info': info, 'detect': R, 'select': sel}, open(a.json, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
 ```
